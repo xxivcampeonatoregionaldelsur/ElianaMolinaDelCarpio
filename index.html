@@ -44,9 +44,6 @@
   .btn-primary:hover{background:var(--dorado-claro);transform:translateY(-2px);}
   .btn-secondary{background:transparent;color:var(--blanco);padding:14px 32px;font-weight:700;font-size:0.9rem;letter-spacing:1px;text-transform:uppercase;border:2px solid rgba(255,255,255,0.3);cursor:pointer;border-radius:4px;text-decoration:none;display:inline-block;transition:all 0.2s;}
   .btn-secondary:hover{border-color:var(--dorado);color:var(--dorado);}
-  .btn-bases{background:var(--rojo);color:var(--blanco);padding:14px 32px;font-weight:700;font-size:0.9rem;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;border-radius:4px;text-decoration:none;display:inline-block;transition:all 0.2s;}
-  .btn-bases:hover{background:var(--rojo-oscuro);transform:translateY(-2px);}
-
   /* SECTIONS */
   section{padding:64px 24px;}
   .container{max-width:1200px;margin:0 auto;}
@@ -147,18 +144,6 @@
   .btn-reservar{background:var(--negro);color:var(--blanco);padding:8px 14px;font-size:0.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;border-radius:4px;transition:background 0.2s;}
   .btn-reservar:hover{background:var(--rojo);}
 
-  /* BASES */
-  .bases-bg{background:var(--gris-oscuro);}
-  .bases-box{max-width:600px;margin:0 auto;text-align:center;background:rgba(255,255,255,0.04);border:2px dashed rgba(240,165,0,0.4);border-radius:12px;padding:48px 32px;}
-  .bases-icon{font-size:3.5rem;margin-bottom:16px;}
-  .bases-titulo{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px;color:var(--blanco);margin-bottom:8px;}
-  .bases-desc{color:#bbb;font-size:0.9rem;line-height:1.6;margin-bottom:28px;}
-  .btn-upload{background:var(--dorado);color:var(--negro);padding:14px 36px;font-weight:700;font-size:0.95rem;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;border-radius:6px;display:inline-flex;align-items:center;gap:10px;transition:all 0.2s;}
-  .btn-upload:hover{background:var(--dorado-claro);transform:translateY(-2px);}
-  #file-input{display:none;}
-  .file-name{margin-top:14px;font-size:0.82rem;color:#aaa;min-height:20px;}
-  .upload-success{display:none;margin-top:16px;color:#4CAF50;font-weight:700;font-size:0.9rem;}
-
   /* REGISTRO ENLACE */
   .registro-link-bg{background:linear-gradient(135deg,var(--rojo-oscuro),var(--negro));}
   .registro-link-box{max-width:600px;margin:0 auto;text-align:center;padding:16px;}
@@ -215,7 +200,6 @@
       <a href="#fiesta">Fiesta</a>
       <a href="#hospedaje">Hospedaje</a>
       <a href="#como-llegar">Cómo llegar</a>
-      <a href="#bases">Bases</a>
       <a href="#registro">Registro</a>
       <a href="#faq">FAQ</a>
     </div>
@@ -237,7 +221,6 @@
   </div>
   <div class="hero-ctas">
     <a href="#registro" class="btn-primary">📋 Registrarse ahora</a>
-    <a href="#bases" class="btn-bases">📄 Ver Bases</a>
     <a href="#disciplinas" class="btn-secondary">Ver Disciplinas →</a>
   </div>
 </section>
@@ -594,23 +577,6 @@
       </div>
     </div>
 
-  </div>
-</section>
-
-<!-- BASES -->
-<section class="bases-bg" id="bases">
-  <div class="container">
-    <div class="bases-box">
-      <div class="bases-icon">📄</div>
-      <div class="bases-titulo">Bases del Campeonato</div>
-      <div class="bases-desc">Descarga o sube aquí las bases oficiales del XXIV Campeonato Regional del Sur "Eliana Amparo Molina del Carpio". Contienen el reglamento completo, requisitos de participación y cronograma detallado.</div>
-      <input type="file" id="file-input" accept=".pdf,.doc,.docx" onchange="handleFile(this)">
-      <button class="btn-upload" onclick="document.getElementById('file-input').click()">
-        📤 Subir Bases
-      </button>
-      <div class="file-name" id="file-name"></div>
-      <div class="upload-success" id="upload-success">✅ Bases subidas correctamente</div>
-    </div>
   </div>
 </section>
 
