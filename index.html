@@ -937,6 +937,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   setInterval(updateRanking,4000);
 
+  function toggleMenu() {
+  const nav = document.getElementById("navLinks");
+  const overlay = document.getElementById("menuOverlay");
+  nav.classList.toggle("show");
+  overlay.classList.toggle("active");
+
+  // Bloquear scroll cuando el menú está abierto
+  document.body.classList.toggle("no-scroll");
+}
+
   /* SCROLL TOP */
   const btn = document.getElementById("scrollTopBtn");
   window.addEventListener("scroll", ()=>{
