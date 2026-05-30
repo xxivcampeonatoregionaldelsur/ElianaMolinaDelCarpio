@@ -16,7 +16,7 @@
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{font-family:'Barlow',sans-serif;background:var(--blanco);color:var(--texto);}
-  body.no-scroll{ overflow:hidden; }
+
   /* NAV */
   nav{background:var(--negro);position:sticky;top:0;z-index:100;border-bottom:3px solid var(--dorado);}
   .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:64px;flex-wrap:wrap;gap:6px;}
@@ -202,13 +202,9 @@
   pointer-events:auto;
 }
 
-  .nav-links{
-  display:flex;
-}
-  
 /* mobile */
 @media(max-width:768px){
-}
+
   .menu-toggle{
     display:block;
   }
@@ -314,19 +310,6 @@
   opacity:1;
   transform:translateY(0);
 }
-  
-/* LOADER */
-  #loader{
-  position:fixed;
-  inset:0;
-  background:#0D0D0D;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-size:3rem;
-  color:var(--dorado);
-  z-index:9999;
-}
 
 /* BOTÓN SCROLL TOP */
 #scrollTopBtn{
@@ -384,10 +367,11 @@
 </style>
 </head>
 <body>
-  <div id="loader">
+ <div id="loader">
   🏆
 </div>
-<!-- NAV -->
+
+  <!-- NAV -->
 <nav>
   <div class="nav-inner">
     <div class="nav-logo">🏆 <span>CAMPEONATO</span> REGIONAL DE SUR</div>
@@ -411,12 +395,12 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div id="countdown" style="margin-top:18px;font-size:1.2rem;color:#FFD166;"></div>
   <div class="hero-badge">⚡ Edición 2026</div>
   <h1>XXIV CAMPEONATO<br><span>REGIONAL DEL SUR</span></h1>
   <p class="hero-nombre">"Eliana Amparo Molina del Carpio"</p>
   <p class="hero-sub">La gran cita del deporte regional</p>
   <div class="hero-fecha">📅 28 de Junio, 2026</div>
+  <div id="countdown" style="margin-top:18px;font-size:1.2rem;color:#FFD166;"></div>
   <div class="hero-stats">
     <div class="hero-stat"><div class="num">14</div><div class="lbl">Disciplinas</div></div>
     <div class="hero-stat"><div class="num">5</div><div class="lbl">Delegaciones</div></div>
@@ -875,10 +859,53 @@
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* LOADER */
-  setTimeout(()=>{
-    document.getElementById("loader").style.display="none";
-  },1000);
+  /* FAQ */
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+  window.toggleFaq = toggleFaq;
+
+  /* TAB MAPAS */
+  function switchTab(btn, panelId) {
+    document.querySelectorAll('.mapa-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.mapa-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(panelId).classList.add('active');
+  }
+  window.switchTab = switchTab;
+
+  /* MENÚ */
+  window.toggleMenu = function(){
+    const nav = document.getElementById('navLinks');
+    const overlay = document.getElementById('menuOverlay');
+    const btn = document.querySelector('.menu-toggle');
+
+    nav.classList.toggle('show');
+    overlay.classList.toggle('active');
+    btn.textContent = nav.classList.contains('show') ? '✖' : '☰';
+  };
+
+  /* cerrar menú */
+  document.querySelectorAll('.nav-links a').forEach(link=>{
+    link.addEventListener('click', ()=>{
+      document.getElementById('navLinks').classList.remove('show');
+      document.getElementById('menuOverlay').classList.remove('active');
+      document.querySelector('.menu-toggle').textContent='☰';
+    });
+  });
+
+  /* SCROLL TOP */
+  const btnTop = document.getElementById("scrollTopBtn");
+  window.addEventListener("scroll", () => {
+    btnTop.style.display = window.scrollY > 300 ? "block" : "none";
+  });
+
+  btnTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 
   /* CONTADOR */
   const targetDate = new Date("June 28, 2026 08:00:00").getTime();
@@ -895,57 +922,19 @@ document.addEventListener("DOMContentLoaded", () => {
     countdown.innerHTML = `⏳ ${d} días ${h}h ${m}m`;
   },1000);
 
-  /* NAV SCROLL */
-  window.addEventListener("scroll", ()=>{
-    document.querySelector("nav").classList.toggle("scrolled", window.scrollY>50);
+  /* ANIMACIÓN AL SCROLL */
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add("show");
+      }
+    });
+  },{threshold:0.1});
+
+  document.querySelectorAll("section, .disc-card, .hotel-card, .fiesta-card").forEach(el=>{
+    el.classList.add("fade-up");
+    observer.observe(el);
   });
-
-  /* DARK MODE */
-  window.toggleDark = function(){
-    document.body.classList.toggle("dark");
-  };
-
-  /* ESTILO DARK MODE */
-  const style = document.createElement("style");
-  style.innerHTML = `
-    body.dark{
-      background:#0D0D0D;
-      color:#eee;
-    }
-    body.dark .disc-card,
-    body.dark .hotel-card,
-    body.dark .fiesta-card{
-      background:#111;
-    }
-  `;
-  document.head.appendChild(style);
-
-  /* RANKING SIMULADO */
-  function updateRanking(){
-    let g = Math.floor(Math.random()*15);
-    let i = Math.floor(Math.random()*5);
-    document.getElementById("g1").innerText = g;
-    document.getElementById("i1").innerText = i;
-    document.getElementById("t1").innerText = g+i;
-  }
-  setInterval(updateRanking,4000);
-
-  function toggleMenu() {
-  const nav = document.getElementById("navLinks");
-  const overlay = document.getElementById("menuOverlay");
-  nav.classList.toggle("show");
-  overlay.classList.toggle("active");
-
-  // Bloquear scroll cuando el menú está abierto
-  document.body.classList.toggle("no-scroll");
-}
-
-  /* SCROLL TOP */
-  const btn = document.getElementById("scrollTopBtn");
-  window.addEventListener("scroll", ()=>{
-    btn.style.display = window.scrollY > 300 ? "block":"none";
-  });
-  btn.onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
 
 });
 </script>
