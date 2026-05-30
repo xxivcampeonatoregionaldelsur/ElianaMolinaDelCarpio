@@ -733,10 +733,10 @@ button, a{
     </div>
 
     <!-- STATUS BAR -->
-    <div id="fixtureStatus" style="display:none;background:var(--gris-claro);border-radius:6px;padding:8px 14px;margin-bottom:14px;font-size:0.78rem;color:#666;display:flex;align-items:center;gap:8px;">
-      <span id="fixtureStatusDot" style="width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0;"></span>
-      <span id="fixtureStatusText">Sin datos cargados</span>
-      <span id="fixtureLastUpdate" style="margin-left:auto;color:#aaa;"></span>
+    <div id="fixtureStatus" style="display:none; background:var(--gris-claro);border-radius:6px;padding:8px 14px;margin-bottom:14px;font-size:0.78rem;color:#666;align-items:center;gap:8px;">
+    <span id="fixtureStatusDot" style="width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0;"></span>
+    <span id="fixtureStatusText">Sin datos cargados</span>
+    <span id="fixtureLastUpdate" style="margin-left:auto;color:#aaa;"></span>
     </div>
 
     <!-- FIXTURE TABLE POR TABS -->
@@ -1486,6 +1486,7 @@ window.toggleMenu = function(){
 
   nav.classList.toggle('show');
   overlay.classList.toggle('active');
+  document.body.style.overflow = nav.classList.contains('show') ? 'hidden' : '';
   btn.textContent = nav.classList.contains('show') ? '✖' : '☰';
 };
 
@@ -1506,26 +1507,26 @@ window.toggleFaq = function(el){
 ================================ */
 const btnTop = document.getElementById("scrollTopBtn");
 window.addEventListener("scroll", () => {
-  btnTop.style.display = window.scrollY > 300 ? "block" : "none";
+  const y = window.scrollY;
+
+  btnTop.style.display = y > 300 ? "block" : "none";
+  document.querySelector("nav").classList.toggle("scrolled", y > 50);
 });
-btnTop.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
-
-
-/* ================================
-   NAV SCROLL
-================================ */
-window.addEventListener("scroll", () => {
-  document.querySelector("nav").classList.toggle("scrolled", window.scrollY > 50);
-});
-
 
 /* ================================
    COUNTDOWN
 ================================ */
 const targetDate = new Date("June 28, 2026 08:00:00").getTime();
 setInterval(()=>{
+ const intervalCountdown = setInterval(()=>{
   const now = Date.now();
   const diff = targetDate - now;
+
+  if(diff <= 0){
+    document.getElementById("countdown").innerHTML = "✅ Evento en curso o finalizado";
+    clearInterval(intervalCountdown);
+    return;
+  }
 
   const d = Math.floor(diff/(1000*60*60*24));
   const h = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
@@ -1561,11 +1562,14 @@ function parseCSV(text){
   return text.split('\n').map(line=>{
     const result=[]; let cur='', inQ=false;
     for(let i=0;i<line.length;i++){
-      const c=line[i];
-      if(c==='"'){inQ=!inQ;}
-      else if(c===',' && !inQ){ result.push(cur.trim()); cur=''; }
-      else{ cur+=c; }
+      const c=line[i];   
+    if(c === '"' && line[i+1] === '"'){
+    cur += '"';
+    i++;
     }
+  else if(c === '"'){
+  inQ = !inQ;
+}
     result.push(cur.trim());
     return result;
   }).filter(r=>r.length>1);
@@ -1603,8 +1607,13 @@ function renderFixture(rows){
 
 async function fetchFixture(){
   try{
-    const res = await fetch(fixtureSheetUrl + '&t=' + Date.now());
-    const text = await res.text();
+   const res = await fetch(fixtureSheetUrl + '&t=' + Date.now());
+
+if(!res.ok){
+  throw new Error("Error cargando datos");
+}
+
+const text = await res.text();
     const rows = parseCSV(text);
     renderFixture(rows);
   }catch(err){
@@ -1643,7 +1652,6 @@ window.switchFixtureTab = function(tab, btn){
 };
 
 });
-</script>
 </script>
 <button id="scrollTopBtn">⬆</button>
 </body>
