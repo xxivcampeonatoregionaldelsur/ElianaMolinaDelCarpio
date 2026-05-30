@@ -16,7 +16,7 @@
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{font-family:'Barlow',sans-serif;background:var(--blanco);color:var(--texto);}
-
+  body.no-scroll{ overflow:hidden; }
   /* NAV */
   nav{background:var(--negro);position:sticky;top:0;z-index:100;border-bottom:3px solid var(--dorado);}
   .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:64px;flex-wrap:wrap;gap:6px;}
@@ -204,7 +204,7 @@
 
 /* mobile */
 @media(max-width:768px){
-
+}
   .menu-toggle{
     display:block;
   }
@@ -333,6 +333,11 @@
   /*PARALLAX HERO*/
 .hero{
   background-attachment:fixed;
+}
+@media(max-width:768px){
+  .hero{
+    background-attachment:scroll;
+  }
 }
 
 /* BOTÓN SCROLL TOP */
