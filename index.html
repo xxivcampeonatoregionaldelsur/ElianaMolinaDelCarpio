@@ -178,36 +178,67 @@
   .footer-txt{font-size:0.8rem;line-height:2;}
   .footer-txt span{color:var(--blanco);}
 
-  @media(max-width:680px){
-    .fixture-item{grid-template-columns:1fr;text-align:center;}
-    .fixture-team.right{text-align:center;}
-    .hero-stats{gap:18px;}
-    .mapa-tabs{justify-content:center;}
-    /* BOTÓN HAMBURGUESA PRO */
+  /* BOTÓN HAMBURGUESA PRO */
 .menu-toggle{
   display:none;
   font-size:1.8rem;
   color:var(--blanco);
   cursor:pointer;
-  z-index:300;
-  transition:0.3s;
 }
 
-/* OVERLAY */
+/* overlay */
 .menu-overlay{
   position:fixed;
   inset:0;
   background:rgba(0,0,0,0.6);
-  backdrop-filter:blur(6px);
   opacity:0;
   pointer-events:none;
-  transition:0.35s;
-  z-index:200;
+  transition:0.3s;
+  z-index:150;
 }
 
 .menu-overlay.active{
   opacity:1;
   pointer-events:auto;
+}
+
+/* mobile */
+@media(max-width:768px){
+
+  .menu-toggle{
+    display:block;
+  }
+
+  .nav-links{
+    position:fixed;
+    top:0;
+    left:-260px;
+    width:260px;
+    height:100vh;
+    background:var(--negro);
+    flex-direction:column;
+    padding-top:70px;
+    transition:0.3s;
+    z-index:200;
+  }
+
+  .nav-links.show{
+    left:0;
+  }
+
+  .nav-links a{
+    display:block;
+    padding:14px 20px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+
+  .menu-header{
+    position:absolute;
+    top:0;
+    width:100%;
+    padding:20px;
+    border-bottom:1px solid rgba(255,255,255,0.1);
+  }
 }
 
 /* MENU PRO */
@@ -304,29 +335,24 @@
     <div class="nav-logo">🏆 <span>CAMPEONATO</span> REGIONAL DE SUR</div>
 
     <!-- BOTÓN HAMBURGUESA -->
-    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
-    <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+<div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
 
 <div class="nav-links" id="navLinks">
-
   <div class="menu-header">
     <div class="menu-logo">🏆</div>
     <div class="menu-title">CAMPEONATO</div>
   </div>
-
-  #disciplinas🏅 Disciplinas</a>
-  #posiciones📊 Posiciones</a>
-  <a href="#fixturee</a>
-  <a href="#danzas</a>
-  <a href="#fiesta</a>
-  <a href="#h� Hospedaje</a>
-  <a href="#como-lleg llegar</a>
-  #registro📝 Registro</a>
-  <faq❓ Preguntas</a>
-
+  <a href="#disciplinas">🏅 Disciplinas</a>
+  <a href="#posiciones">📊 Posiciones</a>
+  <a href="#fixture">📅 Fixture</a>
+  <a href="#danzas">💃 Danzas</a>
+  <a href="#fiesta">🎉 Fiesta</a>
+  <a href="#hospedaje">🏨 Hospedaje</a>
+  <a href="#como-llegar">📍 Cómo llegar</a>
+  <a href="#registro">📝 Registro</a>
+  <a href="#faq">❓ Preguntas</a>
 </div>
-    </div>
-  </div>
 </nav>
 
 <!-- HERO -->
@@ -793,11 +819,36 @@
 
 <script>
   function toggleFaq(el) {
-    const item = el.parentElement;
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
-  }
+  const item = el.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+function switchTab(btn, panelId) {
+  document.querySelectorAll('.mapa-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.mapa-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+
+function toggleMenu(){
+  const nav = document.getElementById('navLinks');
+  const overlay = document.getElementById('menuOverlay');
+  const btn = document.querySelector('.menu-toggle');
+  nav.classList.toggle('show');
+  overlay.classList.toggle('active');
+  btn.textContent = nav.classList.contains('show') ? '✖' : '☰';
+}
+
+/* cerrar al tocar link */
+document.querySelectorAll('.nav-links a').forEach(link=>{
+  link.addEventListener('click', ()=>{
+    document.getElementById('navLinks').classList.remove('show');
+    document.getElementById('menuOverlay').classList.remove('active');
+    document.querySelector('.menu-toggle').textContent='☰';
+  });
+});
 
   function switchTab(btn, panelId) {
     document.querySelectorAll('.mapa-tab').forEach(t => t.classList.remove('active'));
