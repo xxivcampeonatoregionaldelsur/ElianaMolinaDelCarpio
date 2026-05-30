@@ -17,14 +17,70 @@
   html{scroll-behavior:smooth;}
   body{font-family:'Barlow',sans-serif;background:var(--blanco);color:var(--texto);}
 
-  /* NAV */
-  nav{background:var(--negro);position:sticky;top:0;z-index:100;border-bottom:3px solid var(--dorado);}
-  .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:64px;flex-wrap:wrap;gap:6px;}
-  .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;color:var(--dorado);letter-spacing:1px;display:flex;align-items:center;gap:8px;}
-  .nav-logo span{color:var(--blanco);}
-  .nav-links{display:flex;gap:2px;flex-wrap:wrap;}
-  .nav-links a{color:#ccc;text-decoration:none;font-size:0.72rem;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;padding:5px 9px;border-radius:4px;transition:all 0.2s;}
-  .nav-links a:hover{color:var(--dorado);background:rgba(240,165,0,0.1);}
+/* NAV GENERAL */
+nav{
+  background:var(--negro);
+  position:sticky;
+  top:0;
+  z-index:100;
+  border-bottom:3px solid var(--dorado);
+}
+
+.nav-inner{
+  max-width:1200px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
+  height:64px;
+}
+
+/* LOGO */
+.nav-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.3rem;
+  color:var(--dorado);
+  letter-spacing:2px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.nav-logo span{
+  color:var(--blanco);
+}
+
+/* LINKS DESKTOP */
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.nav-links a{
+  color:#ccc;
+  text-decoration:none;
+  font-size:0.8rem;
+  font-weight:600;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  padding:8px 12px;
+  border-radius:4px;
+  transition:all 0.25s;
+}
+
+/* EFECTO HOVER PRO */
+.nav-links a:hover{
+  color:var(--dorado);
+  background:rgba(240,165,0,0.12);
+}
+
+/* MENÚ HEADER SOLO MÓVIL */
+.menu-header{
+  display:none;
+}
+``
 
   /* HERO */
   .hero{background:linear-gradient(135deg,#0a1628 0%,#1a0a0a 50%,#2d1b00 100%);color:var(--blanco);padding:80px 24px 60px;position:relative;overflow:hidden;text-align:center;}
