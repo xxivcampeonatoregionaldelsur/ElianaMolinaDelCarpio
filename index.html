@@ -536,6 +536,85 @@ button, a{
     padding-top: 90px;
   }
 }
+
+/* FIXTURE TABS */
+.ftab{
+  padding:9px 16px;
+  font-weight:700;
+  font-size:0.78rem;
+  letter-spacing:0.8px;
+  text-transform:uppercase;
+  border:2px solid #ddd;
+  border-radius:20px;
+  cursor:pointer;
+  transition:all 0.2s;
+  background:var(--blanco);
+  color:#666;
+  white-space:nowrap;
+}
+.ftab.active{
+  background:var(--gris-oscuro);
+  color:var(--dorado);
+  border-color:var(--gris-oscuro);
+}
+.ftab:hover:not(.active){
+  border-color:var(--dorado);
+  color:var(--negro);
+}
+.fpanel{display:none;}
+.fpanel.active{display:block;}
+
+/* FIXTURE CARGADO DESDE SHEETS */
+.fixture-item.live{
+  border-left-color:#e74c3c;
+  animation: pulseLive 1.5s infinite;
+}
+@keyframes pulseLive{
+  0%,100%{border-left-color:#e74c3c;}
+  50%{border-left-color:#ff8a80;}
+}
+.badge-live{
+  display:inline-block;
+  background:#e74c3c;
+  color:white;
+  font-size:0.62rem;
+  font-weight:700;
+  padding:2px 6px;
+  border-radius:3px;
+  letter-spacing:1px;
+  animation:pulseLive 1s infinite;
+  margin-left:6px;
+}
+.badge-fin{
+  display:inline-block;
+  background:#27ae60;
+  color:white;
+  font-size:0.62rem;
+  font-weight:700;
+  padding:2px 6px;
+  border-radius:3px;
+  letter-spacing:1px;
+  margin-left:6px;
+}
+.badge-prox{
+  display:inline-block;
+  background:#95a5a6;
+  color:white;
+  font-size:0.62rem;
+  font-weight:700;
+  padding:2px 6px;
+  border-radius:3px;
+  letter-spacing:1px;
+  margin-left:6px;
+}
+.fixture-score{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.5rem;
+  color:var(--negro);
+  text-align:center;
+  letter-spacing:2px;
+  line-height:1;
+}
 </style>
 </head>
 <body>
@@ -559,6 +638,7 @@ button, a{
   <a href="#danzas">💃 Danzas</a>
   <a href="#fiesta">🎉 Fiesta</a>
   <a href="#hospedaje">🏨 Hospedaje</a>
+  <a href="#tours">🌿 Tours</a>
   <a href="#como-llegar">📍 Cómo llegar</a>
   <a href="#registro">📝 Registro</a>
   <a href="#faq">❓ Preguntas</a>
@@ -662,74 +742,99 @@ button, a{
       <div class="divider"></div>
       <p style="margin-top:12px;color:#888;font-size:0.88rem">📅 Todos los eventos se realizan el 28 de junio de 2026</p>
     </div>
-    <div class="fixture-list">
-      <div class="fixture-item">
-        <div class="fixture-date">08:00 AM</div>
-        <div class="fixture-team">Todas las delegaciones</div>
-        <div><div class="fixture-vs">—</div><div class="fixture-sport">⚽ Fútbol 7</div></div>
-        <div class="fixture-team right"></div>
-        <div class="fixture-lugar">Cancha<br>Principal</div>
+
+    <!-- TABS DISCIPLINAS -->
+    <div id="fixtureTabs" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;">
+      <button class="ftab active" onclick="switchFixtureTab('todos',this)">📋 Todos</button>
+      <button class="ftab" onclick="switchFixtureTab('futbol',this)">⚽ Fútbol</button>
+      <button class="ftab" onclick="switchFixtureTab('baloncesto',this)">🏀 Baloncesto</button>
+      <button class="ftab" onclick="switchFixtureTab('voley',this)">🏐 Vóley</button>
+      <button class="ftab" onclick="switchFixtureTab('atletismo',this)">🏃 Atletismo</button>
+      <button class="ftab" onclick="switchFixtureTab('tenis',this)">🏓 Tenis de Mesa</button>
+      <button class="ftab" onclick="switchFixtureTab('recreativos',this)">🎯 Recreativos</button>
+    </div>
+
+    <!-- STATUS BAR -->
+    <div id="fixtureStatus" style="display:none;background:var(--gris-claro);border-radius:6px;padding:8px 14px;margin-bottom:14px;font-size:0.78rem;color:#666;display:flex;align-items:center;gap:8px;">
+      <span id="fixtureStatusDot" style="width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0;"></span>
+      <span id="fixtureStatusText">Sin datos cargados</span>
+      <span id="fixtureLastUpdate" style="margin-left:auto;color:#aaa;"></span>
+    </div>
+
+    <!-- FIXTURE TABLE POR TABS -->
+    <div id="fixturePanels">
+
+      <!-- Panel por defecto (estático) -->
+      <div id="fp-todos" class="fpanel active">
+        <div class="fixture-list" id="fixtureListTodos">
+          <div class="fixture-item">
+            <div class="fixture-date">08:00 AM</div>
+            <div class="fixture-team">Todas las delegaciones</div>
+            <div><div class="fixture-vs">—</div><div class="fixture-sport">⚽ Fútbol 7</div></div>
+            <div class="fixture-team right"></div>
+            <div class="fixture-lugar">Cancha<br>Principal</div>
+          </div>
+          <div class="fixture-item">
+            <div class="fixture-date">08:00 AM</div>
+            <div class="fixture-team">Todas las delegaciones</div>
+            <div><div class="fixture-vs">—</div><div class="fixture-sport">🏀 Baloncesto</div></div>
+            <div class="fixture-team right"></div>
+            <div class="fixture-lugar">Coliseo<br>Central</div>
+          </div>
+          <div class="fixture-item">
+            <div class="fixture-date">08:00 AM</div>
+            <div class="fixture-team">Todas las delegaciones</div>
+            <div><div class="fixture-vs">—</div><div class="fixture-sport">🏐 Vóley Mixto</div></div>
+            <div class="fixture-team right"></div>
+            <div class="fixture-lugar">Polideportivo</div>
+          </div>
+          <div class="fixture-item">
+            <div class="fixture-date">08:00 AM</div>
+            <div class="fixture-team">Todas las delegaciones</div>
+            <div><div class="fixture-vs">—</div><div class="fixture-sport">🏓 Tenis de Mesa</div></div>
+            <div class="fixture-team right"></div>
+            <div class="fixture-lugar">Sala<br>Multiusos</div>
+          </div>
+          <div class="fixture-item">
+            <div class="fixture-date">08:00 AM</div>
+            <div class="fixture-team">Todas las delegaciones</div>
+            <div><div class="fixture-vs">—</div><div class="fixture-sport">🏃 Maratón · 100m</div></div>
+            <div class="fixture-team right"></div>
+            <div class="fixture-lugar">Pista Atlética</div>
+          </div>
+          <div class="fixture-item">
+            <div class="fixture-date">Todo el día</div>
+            <div class="fixture-team">Todas las delegaciones</div>
+            <div><div class="fixture-vs">—</div><div class="fixture-sport">♟️ Ajedrez · 🎲 Cubilete · ⚽ Futbolín · 🐸 Sapo</div></div>
+            <div class="fixture-team right"></div>
+            <div class="fixture-lugar">Sala<br>Recreativa</div>
+          </div>
+          <div class="fixture-item" style="border-left-color:#9B59B6;">
+            <div class="fixture-date">07:00 PM</div>
+            <div class="fixture-team" style="color:#9B59B6;">💃 Concurso de Danzas</div>
+            <div><div class="fixture-vs" style="color:#9B59B6;">💃</div><div class="fixture-sport" style="background:#6C3483;">Local ISIS</div></div>
+            <div class="fixture-team right"></div>
+            <div class="fixture-lugar">Local ISIS</div>
+          </div>
+          <div class="fixture-item" style="border-left-color:var(--verde);">
+            <div class="fixture-date">08:00 PM</div>
+            <div class="fixture-team" style="color:var(--verde-claro);">🤠 Gran Fiesta — Vaqueros Amazónicos</div>
+            <div><div class="fixture-vs" style="color:var(--verde);">🎉</div><div class="fixture-sport" style="background:var(--verde);">Local ISIS</div></div>
+            <div class="fixture-team right"></div>
+            <div class="fixture-lugar">Local ISIS</div>
+          </div>
+        </div>
       </div>
-      <div class="fixture-item">
-        <div class="fixture-date">08:00 AM</div>
-        <div class="fixture-team">Todas las delegaciones</div>
-        <div><div class="fixture-vs">—</div><div class="fixture-sport">🏀 Baloncesto</div></div>
-        <div class="fixture-team right"></div>
-        <div class="fixture-lugar">Coliseo<br>Central</div>
-      </div>
-      <div class="fixture-item">
-        <div class="fixture-date">08:00 AM</div>
-        <div class="fixture-team">Todas las delegaciones</div>
-        <div><div class="fixture-vs">—</div><div class="fixture-sport">🏐 Vóley Mixto</div></div>
-        <div class="fixture-team right"></div>
-        <div class="fixture-lugar">Polideportivo</div>
-      </div>
-      <div class="fixture-item">
-        <div class="fixture-date">08:00 AM</div>
-        <div class="fixture-team">Todas las delegaciones</div>
-        <div><div class="fixture-vs">—</div><div class="fixture-sport">🏓 Tenis de Mesa</div></div>
-        <div class="fixture-team right"></div>
-        <div class="fixture-lugar">Sala<br>Multiusos</div>
-      </div>
-      <div class="fixture-item">
-        <div class="fixture-date">08:00 AM</div>
-        <div class="fixture-team">Todas las delegaciones</div>
-        <div><div class="fixture-vs">—</div><div class="fixture-sport">🏃 Maratón · 100m</div></div>
-        <div class="fixture-team right"></div>
-        <div class="fixture-lugar">Pista Atlética<br>del Colegio</div>
-      </div>
-      <div class="fixture-item">
-        <div class="fixture-date">08:00 AM</div>
-        <div class="fixture-team">Todas las delegaciones</div>
-        <div><div class="fixture-vs">—</div><div class="fixture-sport">♟️ Ajedrez · 🎲 Cubilete · ⚽ Futbolín</div></div>
-        <div class="fixture-team right"></div>
-        <div class="fixture-lugar">Sala<br>Recreativa</div>
-      </div>
-      <div class="fixture-item">
-        <div class="fixture-date">Todo el día</div>
-        <div class="fixture-team">Todas las delegaciones</div>
-        <div><div class="fixture-vs">—</div><div class="fixture-sport">🐸 Sapo</div></div>
-        <div class="fixture-team right"></div>
-        <div class="fixture-lugar">Zona<br>Recreativa</div>
-      </div>
-      <div class="fixture-item" style="border-left-color:#9B59B6;">
-        <div class="fixture-date">07:00 PM</div>
-        <div class="fixture-team" style="color:#9B59B6;">💃 Concurso de Danzas</div>
-        <div><div class="fixture-vs" style="color:#9B59B6;">💃</div><div class="fixture-sport" style="background:#6C3483;">Local ISIS</div></div>
-        <div class="fixture-team right"></div>
-        <div class="fixture-lugar">Local de<br>ISIS</div>
-      </div>
-      <div class="fixture-item" style="border-left-color:var(--verde);">
-        <div class="fixture-date">08:00 PM</div>
-        <div class="fixture-team" style="color:var(--verde-claro);">🤠 Gran Fiesta — Vaqueros Amazónicos</div>
-        <div><div class="fixture-vs" style="color:var(--verde);">🎉</div><div class="fixture-sport" style="background:var(--verde);">LocalISIS</div></div>
-        <div class="fixture-team right"></div>
-        <div class="fixture-lugar">Local de<br>ISIS</div>
-      </div>
+
+      <div id="fp-futbol" class="fpanel"><div id="fixtureListFutbol" class="fixture-list"><div style="text-align:center;padding:32px;color:#aaa;">Carga el fixture desde Google Sheets para ver los partidos de fútbol.</div></div></div>
+      <div id="fp-baloncesto" class="fpanel"><div id="fixtureListBaloncesto" class="fixture-list"><div style="text-align:center;padding:32px;color:#aaa;">Carga el fixture desde Google Sheets para ver los partidos de baloncesto.</div></div></div>
+      <div id="fp-voley" class="fpanel"><div id="fixtureListVoley" class="fixture-list"><div style="text-align:center;padding:32px;color:#aaa;">Carga el fixture desde Google Sheets para ver los partidos de vóley.</div></div></div>
+      <div id="fp-atletismo" class="fpanel"><div id="fixtureListAtletismo" class="fixture-list"><div style="text-align:center;padding:32px;color:#aaa;">Carga el fixture desde Google Sheets para ver las pruebas de atletismo.</div></div></div>
+      <div id="fp-tenis" class="fpanel"><div id="fixtureListTenis" class="fixture-list"><div style="text-align:center;padding:32px;color:#aaa;">Carga el fixture desde Google Sheets para ver los partidos de tenis de mesa.</div></div></div>
+      <div id="fp-recreativos" class="fpanel"><div id="fixtureListRecreativos" class="fixture-list"><div style="text-align:center;padding:32px;color:#aaa;">Carga el fixture desde Google Sheets para ver los recreativos.</div></div></div>
     </div>
   </div>
 </section>
-
 <!-- DANZAS Y FIESTA -->
 <section class="fiesta-bg" id="danzas">
   <div class="container">
@@ -819,56 +924,228 @@ button, a{
   <div class="container">
     <div class="section-header">
       <div class="section-tag">Alojamiento</div>
-      <h2 class="section-title">Lugares de <span>Hospedaje</span></h2>
+      <h2 class="section-title">Opciones de <span>Hospedaje</span></h2>
       <div class="divider"></div>
-      <p style="margin-top:14px;color:#666;font-size:0.9rem">Alojamientos recomendados con tarifas especiales para participantes del campeonato</p>
+      <p style="margin-top:14px;color:#666;font-size:0.9rem">Puerto Maldonado – Madre de Dios · Opciones cómodas, seguras y bien ubicadas para tu estadía durante el evento.</p>
+      <div style="background:#fff3cd;border:1px solid #f0a500;border-radius:8px;padding:12px 18px;margin-top:16px;display:inline-block;font-size:0.83rem;color:#7a5200;font-weight:600;">⚠️ Precios referenciales sujetos a cambios. ¡Reserva con anticipación para asegurar disponibilidad!</div>
     </div>
-    <div class="hotel-grid">
+
+    <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:2px;color:var(--negro);margin-bottom:18px;padding-bottom:8px;border-bottom:3px solid var(--dorado);">🏨 Grupo 1 de Hospedajes</h3>
+    <div class="hotel-grid" style="margin-bottom:44px;">
+
+      <!-- Hotel Libélula -->
       <div class="hotel-card">
         <div class="hotel-header h1">
-          <div class="hotel-stars">★★★★★</div>
-          <div class="hotel-name">Hotel Gran Sur</div>
+          <div style="font-size:1.6rem;">🌿</div>
+          <div class="hotel-name">Hotel Libélula</div>
+          <div style="font-size:0.73rem;opacity:0.85;margin-top:3px;">Jr. Puno 429, Puerto Maldonado</div>
         </div>
         <div class="hotel-body">
-          <div class="hotel-feature">📍 Cercano a la sede del evento</div>
-          <div class="hotel-feature">🍽️ Desayuno incluido</div>
-          <div class="hotel-feature">🏋️ Gimnasio disponible</div>
-          <div class="hotel-feature">🚌 Transporte a la sede</div>
-          <div class="hotel-price">
-            <div><div class="hotel-price-num">S/ 180</div><div class="hotel-price-lbl">por noche / persona</div></div>
-            <button class="btn-reservar" onclick="document.getElementById('registro').scrollIntoView({behavior:'smooth'})">Reservar</button>
+          <div class="hotel-feature">📍 11 cdras. Colegio Fitzcarrald · 2 de la plaza</div>
+          <div class="hotel-feature">📞 971 134 446</div>
+          <div class="hotel-feature">❄️ A/C · 🚿 Baño pvdo · 📺 Smart TV · 📶 Wi-Fi · 🚗 Garaje gratis</div>
+          <div style="margin-top:11px;border-top:1px solid #eee;padding-top:10px;">
+            <table style="width:100%;font-size:0.74rem;border-collapse:collapse;">
+              <thead><tr style="background:#f5f5f5;"><th style="padding:4px 6px;text-align:left;font-weight:700;">Hab.</th><th style="padding:4px;text-align:center;font-weight:700;">Cap.</th><th style="padding:4px 6px;text-align:right;font-weight:700;">S/</th></tr></thead>
+              <tbody>
+                <tr><td style="padding:3px 6px;">Estándar</td><td style="text-align:center;">1 p</td><td style="text-align:right;color:var(--rojo);font-weight:700;">100</td></tr>
+                <tr style="background:#fafafa;"><td style="padding:3px 6px;">Matrimonial / Doble</td><td style="text-align:center;">2 p</td><td style="text-align:right;color:var(--rojo);font-weight:700;">120</td></tr>
+                <tr><td style="padding:3px 6px;">Doble Familiar</td><td style="text-align:center;">2+2n</td><td style="text-align:right;color:var(--rojo);font-weight:700;">150</td></tr>
+                <tr style="background:#fafafa;"><td style="padding:3px 6px;">Triple</td><td style="text-align:center;">3 p</td><td style="text-align:right;color:var(--rojo);font-weight:700;">150</td></tr>
+                <tr><td style="padding:3px 6px;">Triple Familiar</td><td style="text-align:center;">3+1n</td><td style="text-align:right;color:var(--rojo);font-weight:700;">180</td></tr>
+                <tr style="background:#fafafa;"><td style="padding:3px 6px;">King</td><td style="text-align:center;">2 p</td><td style="text-align:right;color:var(--rojo);font-weight:700;">180</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="margin-top:9px;font-size:0.73rem;color:#888;">ℹ️ 50% adelanto · No incluye desayuno</div>
+          <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+            <a href="https://maps.app.goo.gl/5hBDdus8AZspY3pQ7" target="_blank" class="btn-reservar" style="font-size:0.7rem;padding:7px 10px;background:var(--verde);">📍 Maps</a>
+            <a href="tel:971134446" class="btn-reservar" style="font-size:0.7rem;padding:7px 10px;background:#1a73e8;">📞 Llamar</a>
           </div>
         </div>
       </div>
+
+      <!-- Royal Inn Puerto -->
       <div class="hotel-card">
         <div class="hotel-header h2">
-          <div class="hotel-stars">★★★★</div>
-          <div class="hotel-name">Hostal Deportivo Regional</div>
+          <div style="font-size:1.6rem;">👑</div>
+          <div class="hotel-name">Royal Inn Puerto</div>
+          <div style="font-size:0.73rem;opacity:0.85;margin-top:3px;">Av. 2 de Mayo 333, Puerto Maldonado</div>
         </div>
         <div class="hotel-body">
-          <div class="hotel-feature">📍 A minutos de la sede</div>
-          <div class="hotel-feature">🍳 Cocina compartida</div>
-          <div class="hotel-feature">📶 WiFi de alta velocidad</div>
-          <div class="hotel-feature">🅿️ Estacionamiento gratuito</div>
-          <div class="hotel-price">
-            <div><div class="hotel-price-num">S/ 90</div><div class="hotel-price-lbl">por noche / persona</div></div>
-            <button class="btn-reservar" onclick="document.getElementById('registro').scrollIntoView({behavior:'smooth'})">Reservar</button>
+          <div class="hotel-feature">📍 11 cdras. Colegio Fitzcarrald · 2 de la plaza</div>
+          <div class="hotel-feature">📞 986 764 892</div>
+          <div class="hotel-feature">🚗 Garaje previa reserva · 50% adelanto · Sin desayuno</div>
+          <div style="margin-top:11px;border-top:1px solid #eee;padding-top:10px;">
+            <div style="font-size:0.7rem;font-weight:700;background:var(--gris-oscuro);color:white;padding:3px 8px;border-radius:3px;margin-bottom:5px;letter-spacing:1px;">❄️ AIRE ACONDICIONADO</div>
+            <table style="width:100%;font-size:0.74rem;border-collapse:collapse;margin-bottom:8px;">
+              <tbody>
+                <tr><td style="padding:3px 6px;">Individual</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 100</td></tr>
+                <tr style="background:#fafafa;"><td style="padding:3px 6px;">Doble</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 120</td></tr>
+                <tr><td style="padding:3px 6px;">Triple</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 140</td></tr>
+              </tbody>
+            </table>
+            <div style="font-size:0.7rem;font-weight:700;background:#4a7c59;color:white;padding:3px 8px;border-radius:3px;margin-bottom:5px;letter-spacing:1px;">🌀 CON VENTILADOR</div>
+            <table style="width:100%;font-size:0.74rem;border-collapse:collapse;">
+              <tbody>
+                <tr><td style="padding:3px 6px;">Individual</td><td style="text-align:right;color:var(--verde);font-weight:700;">S/ 70</td></tr>
+                <tr style="background:#fafafa;"><td style="padding:3px 6px;">Doble</td><td style="text-align:right;color:var(--verde);font-weight:700;">S/ 80</td></tr>
+                <tr><td style="padding:3px 6px;">Triple</td><td style="text-align:right;color:var(--verde);font-weight:700;">S/ 110</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+            <a href="https://maps.app.goo.gl/wd9HwmikDYiYKKJt8" target="_blank" class="btn-reservar" style="font-size:0.7rem;padding:7px 10px;background:var(--verde);">📍 Maps</a>
+            <a href="tel:986764892" class="btn-reservar" style="font-size:0.7rem;padding:7px 10px;background:#1a73e8;">📞 Llamar</a>
           </div>
         </div>
       </div>
+
+      <!-- Hotel Príncipe I -->
       <div class="hotel-card">
         <div class="hotel-header h3">
-          <div class="hotel-stars">★★★</div>
-          <div class="hotel-name">Albergue Atleta Sur</div>
+          <div style="font-size:1.6rem;">⭐</div>
+          <div class="hotel-name">Hotel Príncipe I</div>
+          <div style="font-size:0.73rem;opacity:0.85;margin-top:3px;">Jr. Gonzales Prada 335, Puerto Maldonado</div>
         </div>
         <div class="hotel-body">
-          <div class="hotel-feature">📍 Zona central</div>
-          <div class="hotel-feature">🛏️ Habitaciones compartidas</div>
-          <div class="hotel-feature">🥗 Plan de alimentación</div>
-          <div class="hotel-feature">👥 Ideal para delegaciones</div>
-          <div class="hotel-price">
-            <div><div class="hotel-price-num">S/ 45</div><div class="hotel-price-lbl">por noche / persona</div></div>
-            <button class="btn-reservar" onclick="document.getElementById('registro').scrollIntoView({behavior:'smooth'})">Reservar</button>
+          <div class="hotel-feature">📍 10 cdras. Colegio Fitzcarrald · 1 de la plaza</div>
+          <div class="hotel-feature">📞 984 110 013</div>
+          <div class="hotel-feature">🍳 Incluye Desayuno · 50% adelanto</div>
+          <div style="margin-top:11px;border-top:1px solid #eee;padding-top:10px;">
+            <div style="font-size:0.7rem;font-weight:700;background:var(--gris-oscuro);color:white;padding:3px 8px;border-radius:3px;margin-bottom:5px;letter-spacing:1px;">❄️ AIRE ACONDICIONADO</div>
+            <table style="width:100%;font-size:0.74rem;border-collapse:collapse;margin-bottom:8px;">
+              <tbody>
+                <tr><td style="padding:3px 6px;">King</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 290</td></tr>
+                <tr style="background:#fafafa;"><td style="padding:3px 6px;">Triple</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 250</td></tr>
+                <tr><td style="padding:3px 6px;">Doble</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 190</td></tr>
+                <tr style="background:#fafafa;"><td style="padding:3px 6px;">Individual</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 150</td></tr>
+              </tbody>
+            </table>
+            <div style="font-size:0.7rem;font-weight:700;background:#4a7c59;color:white;padding:3px 8px;border-radius:3px;margin-bottom:5px;letter-spacing:1px;">🌀 CON VENTILADOR</div>
+            <table style="width:100%;font-size:0.74rem;border-collapse:collapse;">
+              <tbody>
+                <tr><td style="padding:3px 6px;">Triple</td><td style="text-align:right;color:var(--verde);font-weight:700;">S/ 170</td></tr>
+                <tr style="background:#fafafa;"><td style="padding:3px 6px;">Doble</td><td style="text-align:right;color:var(--verde);font-weight:700;">S/ 140</td></tr>
+                <tr><td style="padding:3px 6px;">Individual</td><td style="text-align:right;color:var(--verde);font-weight:700;">S/ 90</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+            <a href="https://maps.app.goo.gl/mecJ1f87tXEPog2X7" target="_blank" class="btn-reservar" style="font-size:0.7rem;padding:7px 10px;background:var(--verde);">📍 Maps</a>
+            <a href="tel:984110013" class="btn-reservar" style="font-size:0.7rem;padding:7px 10px;background:#1a73e8;">📞 Llamar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GRUPO 2 -->
+    <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:2px;color:var(--negro);margin-bottom:18px;padding-bottom:8px;border-bottom:3px solid var(--dorado);">🏨 Grupo 2 de Hospedajes</h3>
+    <div class="hotel-grid">
+
+      <!-- Hotel Centenario -->
+      <div class="hotel-card">
+        <div class="hotel-header" style="background:linear-gradient(135deg,#1a3a5c,#0d2137);padding:22px;color:white;">
+          <div style="font-size:1.6rem;">🏛️</div>
+          <div class="hotel-name">Hotel Centenario</div>
+          <div style="font-size:0.73rem;opacity:0.85;margin-top:3px;">Av. 2 de Mayo 744, Puerto Maldonado 17001</div>
+        </div>
+        <div class="hotel-body">
+          <div class="hotel-feature">📍 6 cdras. Colegio Fitzcarrald · 6 de la plaza</div>
+          <div class="hotel-feature">📞 962 214 300</div>
+          <div class="hotel-feature">❄️ A/C · 🍳 Desayuno · 🏊 Piscina · 📶 Wi-Fi · 🚗 Cochera</div>
+          <div style="margin-top:11px;border-top:1px solid #eee;padding-top:10px;">
+            <table style="width:100%;font-size:0.74rem;border-collapse:collapse;">
+              <thead><tr style="background:#f5f5f5;"><th style="padding:4px 6px;text-align:left;font-weight:700;">Habitación</th><th style="padding:4px 6px;text-align:right;font-weight:700;">S/</th></tr></thead>
+              <tbody>
+                <tr><td style="padding:3px 6px;">Individual</td><td style="text-align:right;color:var(--rojo);font-weight:700;">171</td></tr>
+                <tr style="background:#fafafa;"><td style="padding:3px 6px;">Doble estándar</td><td style="text-align:right;color:var(--rojo);font-weight:700;">188</td></tr>
+                <tr><td style="padding:3px 6px;">Doble — 2 camas</td><td style="text-align:right;color:var(--rojo);font-weight:700;">198</td></tr>
+                <tr style="background:#fafafa;"><td style="padding:3px 6px;">Suite Junior</td><td style="text-align:right;color:var(--rojo);font-weight:700;">246</td></tr>
+                <tr><td style="padding:3px 6px;">Doble Familiar</td><td style="text-align:right;color:var(--rojo);font-weight:700;">246</td></tr>
+                <tr style="background:#fafafa;"><td style="padding:3px 6px;">Triple</td><td style="text-align:right;color:var(--rojo);font-weight:700;">246</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+            <a href="https://maps.app.goo.gl/Ti2hFughzGXkzF6U7" target="_blank" class="btn-reservar" style="font-size:0.7rem;padding:7px 10px;background:var(--verde);">📍 Maps</a>
+            <a href="tel:962214300" class="btn-reservar" style="font-size:0.7rem;padding:7px 10px;background:#1a73e8;">📞 Llamar</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cabaña Quinta Hotel -->
+      <div class="hotel-card">
+        <div class="hotel-header" style="background:linear-gradient(135deg,#1b5e20,#388e3c);padding:22px;color:white;">
+          <div style="font-size:1.6rem;">🌴</div>
+          <div class="hotel-name">Cabaña Quinta Hotel</div>
+          <div style="font-size:0.73rem;opacity:0.85;margin-top:3px;">Jr. Moquegua 422, Puerto Maldonado</div>
+        </div>
+        <div class="hotel-body">
+          <div class="hotel-feature">📍 9 cdras. Colegio Fitzcarrald · 3 de la plaza</div>
+          <div class="hotel-feature">📞 946 693 181</div>
+          <div class="hotel-feature">🚿 Baño pvdo · 🍳 Desayuno buffet · 🏊 Piscina · 🚗 Garaje · ✈️ Transfer</div>
+          <div style="margin-top:10px;border-top:1px solid #eee;padding-top:8px;">
+            <div style="font-size:0.7rem;font-weight:700;background:#4a7c59;color:white;padding:3px 8px;border-radius:3px;margin-bottom:5px;">🌀 CON VENTILADOR</div>
+            <table style="width:100%;font-size:0.74rem;border-collapse:collapse;margin-bottom:8px;">
+              <tbody>
+                <tr><td style="padding:2px 5px;">Simple (1 cama 1½pl.)</td><td style="text-align:right;color:var(--verde);font-weight:700;">S/ 110</td></tr>
+                <tr style="background:#fafafa;"><td style="padding:2px 5px;">Matrimonial</td><td style="text-align:right;color:var(--verde);font-weight:700;">S/ 170</td></tr>
+                <tr><td style="padding:2px 5px;">Doble (2 camas)</td><td style="text-align:right;color:var(--verde);font-weight:700;">S/ 170</td></tr>
+              </tbody>
+            </table>
+            <div style="font-size:0.7rem;font-weight:700;background:var(--gris-oscuro);color:white;padding:3px 8px;border-radius:3px;margin-bottom:5px;">❄️ CON AIRE ACONDICIONADO</div>
+            <table style="width:100%;font-size:0.73rem;border-collapse:collapse;">
+              <tbody>
+                <tr><td style="padding:2px 5px;">Confort Simple</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 170</td></tr>
+                <tr style="background:#fafafa;"><td style="padding:2px 5px;">Confort Matrimonial</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 200</td></tr>
+                <tr><td style="padding:2px 5px;">Confort Doble</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 210</td></tr>
+                <tr style="background:#fafafa;"><td style="padding:2px 5px;">Confort Doble Superior</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 230</td></tr>
+                <tr><td style="padding:2px 5px;">Triple</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 280</td></tr>
+                <tr style="background:#fafafa;"><td style="padding:2px 5px;">Suite Ejecutiva</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 280</td></tr>
+                <tr><td style="padding:2px 5px;">Suite Tambopata</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 380</td></tr>
+                <tr style="background:#fafafa;"><td style="padding:2px 5px;">Departamento</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 500</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+            <a href="https://maps.app.goo.gl/ZGL6u4cwuHHBk4Fg6" target="_blank" class="btn-reservar" style="font-size:0.7rem;padding:7px 10px;background:var(--verde);">📍 Maps</a>
+            <a href="tel:946693181" class="btn-reservar" style="font-size:0.7rem;padding:7px 10px;background:#1a73e8;">📞 Llamar</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wasaí Lodge -->
+      <div class="hotel-card">
+        <div class="hotel-header" style="background:linear-gradient(135deg,#33691e,#558b2f);padding:22px;color:white;">
+          <div style="font-size:1.6rem;">🌱</div>
+          <div class="hotel-name">Wasaí Lodge Expeditions</div>
+          <div style="font-size:0.73rem;opacity:0.85;margin-top:3px;">Jr. Billinghurst s/n, Puerto Maldonado</div>
+        </div>
+        <div class="hotel-body">
+          <div class="hotel-feature">📍 14 cdras. Colegio · 1 de la plaza · Frente al río</div>
+          <div class="hotel-feature">📞 997 516 351 / 997 516 352</div>
+          <div class="hotel-feature">🏊 Piscina · 🚿 Baño privado · ❌ Sin desayuno ni traslado</div>
+          <div style="margin-top:10px;border-top:1px solid #eee;padding-top:8px;">
+            <table style="width:100%;font-size:0.72rem;border-collapse:collapse;">
+              <thead><tr style="background:#f5f5f5;"><th style="padding:3px 5px;text-align:left;">Tipo</th><th style="padding:3px;text-align:center;">Ventilador</th><th style="padding:3px;text-align:center;">A/C</th></tr></thead>
+              <tbody>
+                <tr><td colspan="3" style="padding:3px 5px;font-weight:700;font-size:0.68rem;color:var(--rojo);background:#fff8f8;">SUPERIOR — EDIFICIO</td></tr>
+                <tr><td style="padding:2px 5px;">Individual</td><td style="text-align:center;color:var(--verde);font-weight:700;">S/200</td><td style="text-align:center;color:var(--rojo);font-weight:700;">S/230</td></tr>
+                <tr style="background:#fafafa;"><td style="padding:2px 5px;">Doble o Matrimonial</td><td style="text-align:center;color:var(--verde);font-weight:700;">S/220</td><td style="text-align:center;color:var(--rojo);font-weight:700;">S/260</td></tr>
+                <tr><td style="padding:2px 5px;">Triple</td><td style="text-align:center;color:var(--verde);font-weight:700;">S/190</td><td style="text-align:center;color:var(--rojo);font-weight:700;">S/260</td></tr>
+                <tr><td colspan="3" style="padding:3px 5px;font-weight:700;font-size:0.68rem;color:var(--rojo);background:#fff8f8;">STANDARD — BUNGALOW</td></tr>
+                <tr><td style="padding:2px 5px;">Matrimonial o Doble</td><td style="text-align:center;color:var(--verde);font-weight:700;">S/150</td><td style="text-align:center;color:#aaa;">—</td></tr>
+                <tr style="background:#fafafa;"><td style="padding:2px 5px;">Doble Familiar</td><td style="text-align:center;color:var(--verde);font-weight:700;">S/170</td><td style="text-align:center;color:#aaa;">—</td></tr>
+                <tr><td colspan="3" style="padding:3px 5px;font-weight:700;font-size:0.68rem;color:#666;background:#f5f5f5;">BÁSICA — HOSTEL</td></tr>
+                <tr><td style="padding:2px 5px;">Matrimonial</td><td style="text-align:center;color:var(--verde);font-weight:700;">S/160</td><td style="text-align:center;color:#aaa;">—</td></tr>
+                <tr style="background:#fafafa;"><td style="padding:2px 5px;">Matrimonial (1 cama)</td><td style="text-align:center;color:var(--verde);font-weight:700;">S/135</td><td style="text-align:center;color:#aaa;">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+            <a href="https://maps.app.goo.gl/47BHjYaEQRgWzDPA8" target="_blank" class="btn-reservar" style="font-size:0.7rem;padding:7px 10px;background:var(--verde);">📍 Maps</a>
+            <a href="tel:997516351" class="btn-reservar" style="font-size:0.7rem;padding:7px 10px;background:#1a73e8;">📞 Llamar</a>
           </div>
         </div>
       </div>
@@ -876,6 +1153,182 @@ button, a{
   </div>
 </section>
 
+<!-- TOURS -->
+<section id="tours" class="bg-gris">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag" style="background:var(--verde);">Turismo</div>
+      <h2 class="section-title">Paquetes <span style="color:var(--verde-claro);">Turísticos</span></h2>
+      <div class="divider" style="background:var(--verde);"></div>
+      <p style="margin-top:14px;color:#666;font-size:0.9rem">Puerto Maldonado · Disfruta lo mejor de la naturaleza en un solo día 🌿</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;">
+
+      <!-- 1. TAMBOPATA EXPEDITIONS -->
+      <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 3px 16px rgba(0,0,0,0.10);border-top:5px solid #2D6A4F;">
+        <div style="background:linear-gradient(135deg,#1B4332,#2D6A4F);color:white;padding:20px 22px;">
+          <div style="font-size:1.8rem;margin-bottom:6px;">🦜</div>
+          <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:1px;">1. Tambopata Expeditions</h3>
+          <div style="font-size:0.78rem;opacity:0.85;margin-top:4px;">📞 949 329 712 / 987 590 164</div>
+          <div style="font-size:0.78rem;opacity:0.85;">📍 Av. León Velarde 1ª cdra. (al costado Plaza de Armas), Tambopata</div>
+        </div>
+        <div style="padding:18px 20px;">
+
+          <div style="background:#f0faf4;border-left:4px solid #2D6A4F;border-radius:4px;padding:12px 14px;margin-bottom:12px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.9rem;letter-spacing:1px;color:#1B4332;margin-bottom:8px;">🦜 COLLPA DE GUACAMAYOS "CHUNCHO" FULL DAY</div>
+            <div style="font-size:0.78rem;color:#555;display:flex;flex-direction:column;gap:3px;">
+              <span>🕒 3:30 a.m. – 5:00 p.m.</span>
+              <span>💰 <strong>S/ 400.00</strong> nacionales (precio a cotizar)</span>
+              <span>✅ Incluye: Traslado, almuerzo y guiado</span>
+            </div>
+          </div>
+
+          <div style="background:#f8fffe;border-left:4px solid #40916C;border-radius:4px;padding:12px 14px;margin-bottom:12px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.9rem;letter-spacing:1px;color:#2D6A4F;margin-bottom:8px;">🌊 LAGO SANDOVAL FULL DAY</div>
+            <div style="font-size:0.78rem;color:#555;display:flex;flex-direction:column;gap:3px;">
+              <span>🕒 9:30 a.m. – 5:00 p.m.</span>
+              <span>💰 <strong>S/ 130.00</strong> nacionales</span>
+              <span>✅ Caminata Reserva Tambopata, canoa Lago Sandoval, almuerzo y guiado</span>
+            </div>
+          </div>
+
+          <div style="background:#f8fffe;border-left:4px solid #40916C;border-radius:4px;padding:12px 14px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.9rem;letter-spacing:1px;color:#2D6A4F;margin-bottom:8px;">🏄 DEPORTE DE AVENTURA FULL DAY</div>
+            <div style="font-size:0.78rem;color:#555;display:flex;flex-direction:column;gap:3px;">
+              <span>🕒 9:00 a.m. – 5:00 p.m.</span>
+              <span>💰 <strong>S/ 130.00</strong> nacionales</span>
+              <span>✅ Canopy bridge, kayak, zipline, Isla de los Monos, almuerzo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. AMAZON ECO LODGE -->
+      <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 3px 16px rgba(0,0,0,0.10);border-top:5px solid #1565C0;">
+        <div style="background:linear-gradient(135deg,#0D47A1,#1565C0);color:white;padding:20px 22px;">
+          <div style="font-size:1.8rem;margin-bottom:6px;">🌿</div>
+          <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:1px;">2. Amazon Eco Lodge</h3>
+          <div style="font-size:0.78rem;opacity:0.85;margin-top:4px;">📞 953 396 223</div>
+          <div style="font-size:0.78rem;opacity:0.85;">📍 Av. León Velarde 1ª cdra. (al costado Plaza de Armas), Tambopata</div>
+        </div>
+        <div style="padding:18px 20px;">
+
+          <div style="background:#f0f4ff;border-left:4px solid #1565C0;border-radius:4px;padding:10px 12px;margin-bottom:10px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:1px;color:#0D47A1;margin-bottom:6px;">🌊 FULL DAY LAGO SANDOVAL</div>
+            <div style="font-size:0.77rem;color:#555;gap:2px;display:flex;flex-direction:column;">
+              <span>🕒 9:30 a.m. – 5:30 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 120</strong> nac. / <strong>S/ 150</strong> extr.</span>
+              <span>✅ Reserva Tambopata, canoa Lago Sandoval, interpretación de bosque</span>
+            </div>
+          </div>
+
+          <div style="background:#f0f4ff;border-left:4px solid #1565C0;border-radius:4px;padding:10px 12px;margin-bottom:10px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:1px;color:#0D47A1;margin-bottom:6px;">🏄 FULL DAY AVENTURA</div>
+            <div style="font-size:0.77rem;color:#555;gap:2px;display:flex;flex-direction:column;">
+              <span>🕒 9:30 a.m. – 5:30 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 120</strong> nac. / <strong>S/ 120</strong> extr.</span>
+              <span>✅ Puente colgante, tirolesa, almuerzo típico, kayak, Isla de los Monos</span>
+            </div>
+          </div>
+
+          <div style="background:#f0f4ff;border-left:4px solid #1565C0;border-radius:4px;padding:10px 12px;margin-bottom:10px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:1px;color:#0D47A1;margin-bottom:6px;">🎣 PESCA DEPORTIVA & FAMILIA NATIVA</div>
+            <div style="font-size:0.77rem;color:#555;gap:2px;display:flex;flex-direction:column;">
+              <span>🕒 9:30 a.m. – 5:30 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 120</strong> nac. / <strong>S/ 150</strong> extr.</span>
+              <span>✅ Pesca, almuerzo, visita familia Matsigenka, tiro al blanco, hilar algodón</span>
+            </div>
+          </div>
+
+          <div style="background:#fff8f0;border-left:4px solid #f0a500;border-radius:4px;padding:10px 12px;margin-bottom:10px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:1px;color:#7a5200;margin-bottom:6px;">🐊 PESCA DE PIRAÑAS – LAGO YACUMAMA (MAÑANA)</div>
+            <div style="font-size:0.77rem;color:#555;gap:2px;display:flex;flex-direction:column;">
+              <span>🕒 5:00 a.m. – 8:00 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 100</strong> por persona</span>
+              <span>✅ Transporte en carro, caminata 15 min, amanecer, avistamiento aves, pesca</span>
+            </div>
+          </div>
+
+          <div style="background:#fff8f0;border-left:4px solid #f0a500;border-radius:4px;padding:10px 12px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:1px;color:#7a5200;margin-bottom:6px;">🌅 PESCA DE PIRAÑAS – LAGO YACUMAMA (TARDE)</div>
+            <div style="font-size:0.77rem;color:#555;gap:2px;display:flex;flex-direction:column;">
+              <span>🕒 3:30 p.m. – 6:30 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 100</strong> por persona</span>
+              <span>✅ Transporte en bicicleta, atardecer, avistamiento aves, búsqueda caimanes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. CARLOS EXPEDITIONS -->
+      <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 3px 16px rgba(0,0,0,0.10);border-top:5px solid #6A1B9A;">
+        <div style="background:linear-gradient(135deg,#4A148C,#6A1B9A);color:white;padding:20px 22px;">
+          <div style="font-size:1.8rem;margin-bottom:6px;">📸</div>
+          <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:1px;">3. Carlos Expeditions</h3>
+          <div style="font-size:0.78rem;opacity:0.85;margin-top:4px;">📞 914 126 312</div>
+          <div style="font-size:0.78rem;opacity:0.85;">📍 Av. León Velarde 1ª cdra. (al costado Plaza de Armas), Tambopata</div>
+        </div>
+        <div style="padding:18px 20px;">
+
+          <div style="background:#fdf0ff;border-left:4px solid #6A1B9A;border-radius:4px;padding:10px 12px;margin-bottom:10px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:1px;color:#4A148C;margin-bottom:6px;">🦜 COLLPA DE GUACAMAYOS FULL DAY</div>
+            <div style="font-size:0.77rem;color:#555;gap:2px;display:flex;flex-direction:column;">
+              <span>🕒 3:30 a.m. – 5:00 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 400.00</strong></span>
+              <span>✅ Traslado, almuerzo y guiado</span>
+            </div>
+          </div>
+
+          <div style="background:#fdf0ff;border-left:4px solid #6A1B9A;border-radius:4px;padding:10px 12px;margin-bottom:10px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:1px;color:#4A148C;margin-bottom:6px;">🌊 LAGO SANDOVAL FULL DAY</div>
+            <div style="font-size:0.77rem;color:#555;gap:2px;display:flex;flex-direction:column;">
+              <span>🕒 9:30 a.m. – 5:00 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 120.00</strong></span>
+              <span>✅ Reserva Tambopata, canoa Lago Sandoval, entrada, almuerzo y guiado</span>
+            </div>
+          </div>
+
+          <div style="background:#fdf0ff;border-left:4px solid #6A1B9A;border-radius:4px;padding:10px 12px;margin-bottom:10px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:1px;color:#4A148C;margin-bottom:6px;">🏄 DEPORTE DE AVENTURA FULL DAY</div>
+            <div style="font-size:0.77rem;color:#555;gap:2px;display:flex;flex-direction:column;">
+              <span>🕒 9:00 a.m. – 5:00 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 120.00</strong></span>
+              <span>✅ Canopy bridge, kayak, zipline, Isla de los Monos, almuerzo</span>
+            </div>
+          </div>
+
+          <div style="background:#fff8f0;border-left:4px solid #f0a500;border-radius:4px;padding:10px 12px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:1px;color:#7a5200;margin-bottom:6px;">🐊 PESCA DE PIRAÑAS – LAGO YACUMAMA</div>
+            <div style="font-size:0.77rem;color:#555;gap:2px;display:flex;flex-direction:column;">
+              <span>🕒 3:30 p.m. – 6:30 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 100</strong> por persona</span>
+              <span>✅ Caminata 15 min, atardecer, avistamiento aves, búsqueda caimanes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INCLUYE + RECOMENDACIONES -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;margin-top:28px;">
+      <div style="background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border:1px solid #81c784;border-radius:10px;padding:20px 22px;">
+        <h4 style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:2px;color:var(--verde);margin-bottom:10px;">✅ INCLUYE EN TODOS LOS TOURS</h4>
+        <ul style="font-size:0.82rem;color:#444;line-height:1.9;list-style:none;padding:0;">
+          <li>🚐 Traslado (según tour)</li>
+          <li>🍽️ Almuerzo</li>
+          <li>🎓 Guiado especializado</li>
+          <li>🎟️ Entrada a los atractivos</li>
+        </ul>
+      </div>
+      <div style="background:linear-gradient(135deg,#fff8e1,#fff3cd);border:1px solid #f0a500;border-radius:10px;padding:20px 22px;">
+        <h4 style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:2px;color:#7a5200;margin-bottom:10px;">🎒 RECOMENDACIONES GENERALES</h4>
+        <ul style="font-size:0.82rem;color:#444;line-height:1.9;list-style:none;padding:0;">
+          <li>🦟 Repelente</li>
+          <li>👟 Zapatillas</li>
+          <li>🧴 Bloqueador solar</li>
+          <li>🧢 Gorra</li>
+          <li>🎁 Víveres para familia nativa (opcionales)</li>
+        </ul>
+      </div>
+      <div style="background:linear-gradient(135deg,#fce4ec,#fdf0f4);border:1px solid #e91e63;border-radius:10px;padding:20px 22px;">
+        <h4 style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:2px;color:#880e4f;margin-bottom:10px;">⚠️ OBSERVACIÓN IMPORTANTE</h4>
+        <p style="font-size:0.82rem;color:#444;line-height:1.7;">Los precios son referenciales y pueden cambiar. Para mayor información y reservas, comunícate directamente con los números de cada agencia. <strong>¡Reserva con anticipación para asegurar tu cupo!</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
 <!-- CÓMO LLEGAR -->
 <section id="como-llegar" class="bg-gris">
   <div class="container">
@@ -1030,7 +1483,17 @@ button, a{
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+// ✅ Cargar automáticamente al iniciar
+setTimeout(() => {
+    fetchAndRender();
 
+    // Auto actualización cada 60 segundos
+    if (fixtureRefreshInterval) clearInterval(fixtureRefreshInterval);
+    fixtureRefreshInterval = setInterval(fetchAndRender, 60000);
+
+    document.getElementById('btnRefrescar').style.display = 'none';
+}, 1000);
+  
   /* FAQ */
   function toggleFaq(el) {
     const item = el.parentElement;
@@ -1127,6 +1590,166 @@ document.addEventListener("DOMContentLoaded", () => {
     el.classList.add("fade-up");
     observer.observe(el);
   });
+
+  /* ===== FIXTURE DESDE GOOGLE SHEETS ===== */
+ 
+// 👉 URL fija del Google Sheet (ya publicada como CSV)
+let fixtureSheetUrl = 'https://docs.google.com/spreadsheets/d/TU_ID/pub?output=csv';
+let fixtureRefreshInterval = null;
+
+  // Mapeo de disciplinas (keywords en la columna Disciplina del sheet)
+  const DISC_MAP = {
+    futbol:      ['futbol','fútbol','futb','foot','soccer'],
+    baloncesto:  ['baloncesto','basket','basquet','básquet'],
+    voley:       ['voley','vóley','volei','vólei','volley','volleyball'],
+    atletismo:   ['atletismo','maraton','maratón','100m','100 m','carrera'],
+    tenis:       ['tenis','ping','mesa','ping-pong'],
+    recreativos: ['ajedrez','cubilete','futbolín','futbolin','sapo','recreati'],
+  };
+
+  function normStr(s){ return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+
+  function getDisc(disciplinaCell){
+    const n = normStr(disciplinaCell||'');
+    for(const [tab, keys] of Object.entries(DISC_MAP)){
+      if(keys.some(k=>n.includes(k))) return tab;
+    }
+    return 'todos';
+  }
+
+  function estadoBadge(estado){
+    const e = normStr(estado||'');
+    if(e.includes('vivo')||e.includes('live')||e.includes('jugan')) return '<span class="badge-live">EN VIVO</span>';
+    if(e.includes('finaliz')||e.includes('fin')||e.includes('termin')) return '<span class="badge-fin">FINALIZADO</span>';
+    return '<span class="badge-prox">PRÓXIMO</span>';
+  }
+
+  function buildFixtureItem(row){
+    // Columns: Disciplina | Hora | Equipo A | Equipo B | Resultado | Lugar | Estado
+    const [disciplina='', hora='', equipoA='', equipoB='', resultado='', lugar='', estado=''] = row;
+    const vsOrScore = resultado.trim()
+      ? `<div class="fixture-score">${resultado}</div>`
+      : `<div class="fixture-vs">VS</div>`;
+    const badge = estadoBadge(estado);
+    const isLive = normStr(estado).includes('vivo')||normStr(estado).includes('live');
+    return `
+      <div class="fixture-item${isLive?' live':''}">
+        <div class="fixture-date">${hora||'—'}</div>
+        <div class="fixture-team">${equipoA||'—'}${badge}</div>
+        <div>
+          ${vsOrScore}
+          <div class="fixture-sport">${disciplina}</div>
+        </div>
+        <div class="fixture-team right">${equipoB||''}</div>
+        <div class="fixture-lugar">${(lugar||'').replace(/\s/g,'<br>')}</div>
+      </div>`;
+  }
+
+  function renderFixture(rows){
+    // rows[0] = headers, skip it
+    const data = rows.slice(1).filter(r=>r.some(c=>c.trim()));
+
+    // Build panels
+    const panels = { todos:[], futbol:[], baloncesto:[], voley:[], atletismo:[], tenis:[], recreativos:[] };
+
+    data.forEach(row=>{
+      const html = buildFixtureItem(row);
+      panels.todos.push(html);
+      const tab = getDisc(row[0]||'');
+      if(tab !== 'todos') panels[tab].push(html);
+    });
+
+    Object.entries(panels).forEach(([tab, items])=>{
+      const el = document.getElementById('fixtureList' + tab.charAt(0).toUpperCase() + tab.slice(1));
+      if(!el) return;
+      el.innerHTML = items.length
+        ? items.join('')
+        : '<div style="text-align:center;padding:28px;color:#aaa;">Sin partidos para esta disciplina.</div>';
+    });
+
+    // Status
+    const dot = document.getElementById('fixtureStatusDot');
+    const txt = document.getElementById('fixtureStatusText');
+    const upd = document.getElementById('fixtureLastUpdate');
+    const statusBar = document.getElementById('fixtureStatus');
+    statusBar.style.display='flex';
+    dot.style.background='#27ae60';
+    txt.textContent = `${data.length} partidos cargados`;
+    upd.textContent = 'Última actualización: ' + new Date().toLocaleTimeString('es-PE');
+  }
+
+  async function cargarFixture(){
+    const raw = document.getElementById('sheetsUrl').value.trim();
+    if(!raw){ alert('Ingresa la URL de tu Google Sheet publicada como CSV.'); return; }
+
+    // Normalize URL — accept normal sheet URL or pub CSV URL
+    let url = raw;
+    if(!url.includes('output=csv')){
+      // Try to convert edit/view URL to CSV export
+      const idMatch = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
+      if(idMatch){
+        url = `https://docs.google.com/spreadsheets/d/${idMatch[1]}/pub?output=csv`;
+      }
+    }
+    fixtureSheetUrl = url;
+
+    await fetchAndRender();
+
+    // Show refresh button and auto-refresh every 60s
+    document.getElementById('btnRefrescar').style.display='inline-block';
+    if(fixtureRefreshInterval) clearInterval(fixtureRefreshInterval);
+    fixtureRefreshInterval = setInterval(fetchAndRender, 60000);
+  }
+
+  async function fetchAndRender(){
+    const statusBar = document.getElementById('fixtureStatus');
+    const dot = document.getElementById('fixtureStatusDot');
+    const txt = document.getElementById('fixtureStatusText');
+    statusBar.style.display='flex';
+    dot.style.background='#f0a500';
+    txt.textContent='Cargando datos...';
+
+    try {
+      const resp = await fetch(fixtureSheetUrl);
+      if(!resp.ok) throw new Error('HTTP '+resp.status);
+      const text = await resp.text();
+
+      // Parse CSV
+      const rows = text.split('\n').map(line=>{
+        // Basic CSV parse (handles quoted fields)
+        const result=[];let cur='',inQ=false;
+        for(let i=0;i<line.length;i++){
+          const c=line[i];
+          if(c==='"'){inQ=!inQ;}
+          else if(c===','&&!inQ){result.push(cur.trim());cur='';}
+          else{cur+=c;}
+        }
+        result.push(cur.trim());
+        return result;
+      }).filter(r=>r.length>1);
+
+      renderFixture(rows);
+    } catch(e){
+      dot.style.background='#e74c3c';
+      txt.textContent='Error al cargar: ' + e.message + '. Verifica que el Sheet esté publicado como CSV.';
+    }
+  }
+
+  async function refrescarFixture(){
+    if(fixtureSheetUrl) await fetchAndRender();
+  }
+
+  window.cargarFixture = cargarFixture;
+  window.refrescarFixture = refrescarFixture;
+
+  /* FIXTURE TABS */
+  function switchFixtureTab(tabId, btn){
+    document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.fpanel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('fp-'+tabId).classList.add('active');
+  }
+  window.switchFixtureTab = switchFixtureTab;
 
 });
 </script>
