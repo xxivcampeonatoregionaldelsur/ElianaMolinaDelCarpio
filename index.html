@@ -1558,20 +1558,35 @@ document.querySelectorAll(".disc-card, .hotel-card, .fiesta-card, .section-heade
    FIXTURE
 ================================ */
 function parseCSV(text){
-  return text.split('\n').map(line=>{
-    const result=[]; let cur='', inQ=false;
-    for(let i=0;i<line.length;i++){
-      const c=line[i];   
-    if(c === '"' && line[i+1] === '"'){
-    cur += '"';
-    i++;
+  const rows = [];
+  const lines = text.split('\n');
+  for(let line of lines){
+    let result = [];
+    let cur = '';
+    let inQ = false;
+    for(let i = 0; i < line.length; i++){
+      const c = line[i];
+      if(c === '"' && line[i+1] === '"'){
+        cur += '"';
+        i++;
+      } 
+      else if(c === '"'){
+        inQ = !inQ;
+      } 
+      else if(c === ',' && !inQ){
+        result.push(cur.trim());
+        cur = '';
+      } 
+      else{
+        cur += c;
+      }
     }
-  else if(c === '"'){
-  inQ = !inQ;
-}
     result.push(cur.trim());
-    return result;
-  }).filter(r=>r.length>1);
+    if(result.length > 1){
+      rows.push(result);
+    }
+  }
+  return rows;
 }
 
 function buildItem(row){
@@ -1607,6 +1622,9 @@ function renderFixture(rows){
 async function fetchFixture(){
   try{
    const res = await fetch(fixtureSheetUrl + '&t=' + Date.now());
+   const text = await res.text();
+   console.log(text); // 👈 ver datos
+
 
 if(!res.ok){
   throw new Error("Error cargando datos");
