@@ -1564,24 +1564,9 @@ document.querySelectorAll("section, .disc-card, .hotel-card, .fiesta-card")
    FIXTURE (PRO)
 ================================ */
 async function fetchFixture(){
-  const statusBar = document.getElementById("fixtureStatus");
-  const statusText = document.getElementById("fixtureStatusText");
-  const statusDot = document.getElementById("fixtureStatusDot");
-  const lastUpdate = document.getElementById("fixtureLastUpdate");
-
   try{
-    statusBar.style.display = "flex";
-    statusText.textContent = "Cargando datos...";
-    statusDot.style.background = "#f0a500";
-
     const res = await fetch(fixtureSheetUrl);
     const data = await res.json();
-
-    if(!data || data.length === 0){
-      statusText.textContent = "⚠️ Hoja vacía";
-      statusDot.style.background = "#ff9800";
-      return;
-    }
 
     const buckets = {
       todos: [],
@@ -1600,12 +1585,14 @@ async function fetchFixture(){
       const badge =
         estado === 'LIVE' ? '<span class="badge-live">EN VIVO</span>' :
         estado === 'FIN'  ? '<span class="badge-fin">FINAL</span>' :
-        '<span class="badge-prox">PRÓXIMO</span>';
+                            '<span class="badge-prox">PRÓXIMO</span>';
 
       const item = `
         <div class="fixture-item ${estado === 'LIVE' ? 'live' : ''}">
           <div class="fixture-date">${row.Hora || '-'}</div>
+
           <div class="fixture-team">${row.EquipoA || ''}</div>
+
           <div style="text-align:center;">
             ${
               row.Resultado
@@ -1615,7 +1602,9 @@ async function fetchFixture(){
             ${badge}
             <div class="fixture-sport">${row.Deporte || ''}</div>
           </div>
+
           <div class="fixture-team right">${row.EquipoB || ''}</div>
+
           <div class="fixture-lugar">
             ${(row.Lugar || '').replace(/\s/g,'<br>')}
           </div>
@@ -1623,16 +1612,30 @@ async function fetchFixture(){
       `;
 
       const dep = (row.Deporte || '').toLowerCase();
+
       buckets.todos.push(item);
 
-      if(dep.includes('futbol')) buckets.futbol.push(item);
-      else if(dep.includes('baloncesto')) buckets.baloncesto.push(item);
-      else if(dep.includes('voley')) buckets.voley.push(item);
-      else if(dep.includes('tenis')) buckets.tenis.push(item);
-      else if(dep.includes('maraton') || dep.includes('100')) buckets.atletismo.push(item);
-      else buckets.recreativos.push(item);
+      if(dep.includes('futbol') || dep.includes('fútbol')){
+        buckets.futbol.push(item);
+      }else if(dep.includes('baloncesto')){
+        buckets.baloncesto.push(item);
+      }else if(dep.includes('voley') || dep.includes('vóley')){
+        buckets.voley.push(item);
+      }else if(
+        dep.includes('maraton') ||
+        dep.includes('atletismo') ||
+        dep.includes('100')
+      ){
+        buckets.atletismo.push(item);
+      }else if(dep.includes('tenis')){
+        buckets.tenis.push(item);
+      }else{
+        buckets.recreativos.push(item);
+      }
+
     });
 
+    // render
     Object.entries(buckets).forEach(([key, list]) => {
       const el = document.getElementById(
         'fixtureList' + key.charAt(0).toUpperCase() + key.slice(1)
@@ -1640,17 +1643,14 @@ async function fetchFixture(){
       if(el) el.innerHTML = list.join('');
     });
 
-    statusText.textContent = "✅ Datos actualizados";
-    statusDot.style.background = "#27ae60";
-    lastUpdate.textContent = "Actualizado: " + new Date().toLocaleTimeString();
-
   }catch(err){
-    console.error("Error:", err);
-    statusBar.style.display = "flex";
-    statusText.textContent = "❌ Error al cargar";
-    statusDot.style.background = "#e74c3c";
+    console.error('❌ Error cargando fixture:', err);
   }
 }
+
+/* INIT */
+fetchFixture();
+setInterval(fetchFixture, 60000);
 
 /* ================================
    MAPA TABS
