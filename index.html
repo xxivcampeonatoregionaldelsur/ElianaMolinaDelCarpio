@@ -86,41 +86,56 @@ body{
   .btn-secondary{background:transparent;color:var(--blanco);padding:14px 32px;font-weight:700;font-size:0.9rem;letter-spacing:1px;text-transform:uppercase;border:2px solid rgba(255,255,255,0.3);cursor:pointer;border-radius:4px;text-decoration:none;display:inline-block;transition:all 0.2s;}
   .btn-secondary:hover{border-color:var(--dorado);color:var(--dorado);}
 .hero{
+  background:linear-gradient(135deg,#0a1628 0%,#1a0a0a 50%,#2d1b00 100%);
+  color:var(--blanco);
+  
   min-height: calc(100dvh - 64px);
   display:flex;
   flex-direction:column;
   justify-content:flex-start;
 
-  padding: 15px 20px 40px; /* ✅ menos espacio arriba */
-  gap: 8px; /* ✅ controla separación uniforme */
+  padding: 10px 20px 30px; /* 🔥 clave para que todo entre */
+  gap: 6px;
 
   text-align:center;
   position:relative;
-}
+  overflow:hidden;
 
-/* subir aún más el contenido principal */
-.hero h1{
-  margin-top: 10px;
-  transform: translateY(-10px);
-}
-
-.hero-badge{
-  margin-top: 0;
-  transform: translateY(-5px);
-}
-
-   /* HERO CINEMATOGRÁFICO */
-.hero{
+  /* animación */
   opacity:0;
   transform:scale(1.05);
   transition:all 1.2s ease;
 }
-
 .hero.show{
   opacity:1;
   transform:scale(1);
 }
+  
+/* subir aún más el contenido principal */
+.hero-badge{ margin:0; }
 
+.hero h1{
+  margin:4px 0;
+  line-height:0.95;
+}
+
+.hero-nombre{ margin:0; }
+
+.hero-sub{
+  margin:4px 0 6px;
+}
+
+.hero-fecha{
+  margin:6px 0;
+}
+
+.hero-stats{
+  margin-top:10px;
+}
+
+.hero-ctas{
+  margin-top:12px;
+}
 /* ELEMENTOS HERO */
 .hero h1,
 .hero-nombre,
