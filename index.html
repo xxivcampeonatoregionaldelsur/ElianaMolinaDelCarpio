@@ -80,7 +80,7 @@ body{
   box-sizing: border-box;
 
   /* animación */
-  opacity:0;
+  opacity:1;
   transform:scale(1.05);
   transition:all 1.2s ease;
 }
@@ -1465,16 +1465,14 @@ document.addEventListener("DOMContentLoaded", () => {
 /* ================================
    CONFIG
 ================================ */
-let fixtureSheetUrl = 'https://opensheet.elk.sh/1q7Z2ktW1ixLFCHJxkE80iddu29qZvwTnfsoEyTESki0/Hoja 1';
-let fixtureRefreshInterval = null;
+const fixtureSheetUrl = 'https://opensheet.elk.sh/1q7Z2ktW1ixLFCHJxkE80iddu29qZvwTnfsoEyTESki0/Hoja%201';
 
-  /* ================================
+/* ================================
    HERO ANIMACIÓN
 ================================ */
-setTimeout(()=>{
-  document.querySelector(".hero").classList.add("show");
-},300);
-
+setTimeout(() => {
+  document.querySelector(".hero")?.classList.add("show");
+}, 300);
 
 /* ================================
    MENÚ
@@ -1484,11 +1482,12 @@ window.toggleMenu = function(){
   const overlay = document.getElementById('menuOverlay');
   const btn = document.querySelector('.menu-toggle');
 
-  nav.classList.toggle('show');
-  overlay.classList.toggle('active');
-  btn.textContent = nav.classList.contains('show') ? '✖' : '☰';
+  nav?.classList.toggle('show');
+  overlay?.classList.toggle('active');
+  if(btn){
+    btn.textContent = nav.classList.contains('show') ? '✖' : '☰';
+  }
 };
-
 
 /* ================================
    FAQ
@@ -1500,32 +1499,41 @@ window.toggleFaq = function(el){
   if (!isOpen) item.classList.add('open');
 };
 
-
 /* ================================
    SCROLL TOP
 ================================ */
 const btnTop = document.getElementById("scrollTopBtn");
-window.addEventListener("scroll", () => {
-  btnTop.style.display = window.scrollY > 300 ? "block" : "none";
-});
-btnTop.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
+window.addEventListener("scroll", () => {
+  if(btnTop){
+    btnTop.style.display = window.scrollY > 300 ? "block" : "none";
+  }
+});
+
+if(btnTop){
+  btnTop.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
+}
 
 /* ================================
    NAV SCROLL
 ================================ */
 window.addEventListener("scroll", () => {
-  document.querySelector("nav").classList.toggle("scrolled", window.scrollY > 50);
+  document.querySelector("nav")?.classList.toggle("scrolled", window.scrollY > 50);
 });
-
 
 /* ================================
    COUNTDOWN
 ================================ */
 const targetDate = new Date("June 28, 2026 08:00:00").getTime();
-setInterval(()=>{
+
+setInterval(() => {
   const now = Date.now();
   const diff = targetDate - now;
+
+  if(diff <= 0){
+    document.getElementById("countdown").innerHTML = "🏁 Evento en curso";
+    return;
+  }
 
   const d = Math.floor(diff/(1000*60*60*24));
   const h = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
@@ -1533,14 +1541,13 @@ setInterval(()=>{
 
   document.getElementById("countdown").innerHTML =
     `⏳ ${d} días ${h}h ${m}m`;
-},1000);
-
+}, 1000);
 
 /* ================================
    ANIMACIÓN SCROLL
 ================================ */
-const observer = new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
     if(entry.isIntersecting){
       entry.target.classList.add("show");
     }
@@ -1548,254 +1555,127 @@ const observer = new IntersectionObserver(entries=>{
 },{threshold:0.1});
 
 document.querySelectorAll("section, .disc-card, .hotel-card, .fiesta-card")
-.forEach(el=>{
+.forEach(el => {
   el.classList.add("fade-up");
   observer.observe(el);
 });
 
-
 /* ================================
-   FIXTURE
+   FIXTURE (PRO)
 ================================ */
-function parseCSV(text){
-  return text.split('\n').map(line=>{
-    const result=[]; let cur='', inQ=false;
-    for(let i=0;i<line.length;i++){
-      const c=line[i];
-      if(c==='"'){inQ=!inQ;}
-      else if(c===',' && !inQ){ result.push(cur.trim()); cur=''; }
-      else{ cur+=c; }
-    }
-    result.push(cur.trim());
-    return result;
-  }).filter(r=>r.length>1);
-}
-
-function buildItem(row){
-  const [disc='', hora='', a='', b='', res='', lugar='', estado=''] = row;
-
-  let badge = '';
-  if(estado === 'LIVE'){
-    badge = '<span class="badge-live">EN VIVO</span>';
-  }else if(estado === 'FIN'){
-    badge = '<span class="badge-fin">FINAL</span>';
-  }else{
-    badge = '<span class="badge-prox">PRÓXIMO</span>';
-  }
-
-  const score = res
-    ? `<div class="fixture-score">${res}</div>`
-    : `<div class="fixture-vs">VS</div>`;
-
-  return `
-  <div class="fixture-item ${estado === 'LIVE' ? 'live':''}">
-    <div class="fixture-date">${hora}</div>
-
-    <div class="fixture-team">${a}</div>
-
-    <div style="text-align:center;">
-      ${score}
-      ${badge}
-      <div class="fixture-sport">${disc}</div>
-    </div>
-
-    <div class="fixture-team right">${b}</div>
-
-    <div class="fixture-lugar">${lugar.replace(/\s/g,'<br>')}</div>
-  </div>`;
-}
-
 async function fetchFixture(){
   try{
     const res = await fetch(fixtureSheetUrl);
     const data = await res.json();
 
-    const todos = [];
-    const futbol = [];
-    const baloncesto = [];
-    const voley = [];
-    const atletismo = [];
-    const tenis = [];
-    const recreativos = [];
+    const buckets = {
+      todos: [],
+      futbol: [],
+      baloncesto: [],
+      voley: [],
+      atletismo: [],
+      tenis: [],
+      recreativos: []
+    };
 
     data.forEach(row => {
+
       const estado = (row.Estado || 'PROX').toUpperCase();
 
-      // BADGE ESTADO
-      let badge = '';
-      if(estado === 'LIVE'){
-        badge = '<span class="badge-live">EN VIVO</span>';
-      }else if(estado === 'FIN'){
-        badge = '<span class="badge-fin">FINAL</span>';
-      }else{
-        badge = '<span class="badge-prox">PRÓXIMO</span>';
-      }
+      const badge =
+        estado === 'LIVE' ? '<span class="badge-live">EN VIVO</span>' :
+        estado === 'FIN'  ? '<span class="badge-fin">FINAL</span>' :
+                            '<span class="badge-prox">PRÓXIMO</span>';
 
       const item = `
-      <div class="fixture-item ${estado === 'LIVE' ? 'live' : ''}">
-        <div class="fixture-date">${row.Hora || '-'}</div>
+        <div class="fixture-item ${estado === 'LIVE' ? 'live' : ''}">
+          <div class="fixture-date">${row.Hora || '-'}</div>
 
-        <div class="fixture-team">${row.EquipoA || ''}</div>
+          <div class="fixture-team">${row.EquipoA || ''}</div>
 
-        <div style="text-align:center;">
-          ${row.Resultado 
-            ? `<div class="fixture-score">${row.Resultado}</div>`
-            : `<div class="fixture-vs">VS</div>`}
-          ${badge}
-          <div class="fixture-sport">${row.Deporte || ''}</div>
+          <div style="text-align:center;">
+            ${
+              row.Resultado
+              ? `<div class="fixture-score">${row.Resultado}</div>`
+              : `<div class="fixture-vs">VS</div>`
+            }
+            ${badge}
+            <div class="fixture-sport">${row.Deporte || ''}</div>
+          </div>
+
+          <div class="fixture-team right">${row.EquipoB || ''}</div>
+
+          <div class="fixture-lugar">
+            ${(row.Lugar || '').replace(/\s/g,'<br>')}
+          </div>
         </div>
-
-        <div class="fixture-team right">${row.EquipoB || ''}</div>
-
-        <div class="fixture-lugar">${(row.Lugar || '').replace(/\s/g,'<br>')}</div>
-      </div>`;
+      `;
 
       const dep = (row.Deporte || '').toLowerCase();
 
-      // TODOS
-      todos.push(item);
+      buckets.todos.push(item);
 
-      // FILTROS POR TAB
-      if(dep.includes('futbol') || dep.includes('fútbol')) futbol.push(item);
-
-      if(dep.includes('baloncesto')) baloncesto.push(item);
-
-      if(dep.includes('voley') || dep.includes('vóley')) voley.push(item);
-
-      if(
+      if(dep.includes('futbol') || dep.includes('fútbol')){
+        buckets.futbol.push(item);
+      }else if(dep.includes('baloncesto')){
+        buckets.baloncesto.push(item);
+      }else if(dep.includes('voley') || dep.includes('vóley')){
+        buckets.voley.push(item);
+      }else if(
         dep.includes('maraton') ||
         dep.includes('atletismo') ||
         dep.includes('100')
-      ) atletismo.push(item);
-
-      if(dep.includes('tenis')) tenis.push(item);
-
-      if(
-        dep.includes('ajedrez') ||
-        dep.includes('cubilete') ||
-        dep.includes('sapo') ||
-        dep.includes('futbolin')
       ){
-        recreativos.push(item);
+        buckets.atletismo.push(item);
+      }else if(dep.includes('tenis')){
+        buckets.tenis.push(item);
+      }else{
+        buckets.recreativos.push(item);
       }
+
     });
 
-    // INSERTAR EN LA VISTA
-    document.getElementById('fixtureListTodos').innerHTML = todos.join('');
-    document.getElementById('fixtureListFutbol').innerHTML = futbol.join('');
-    document.getElementById('fixtureListBaloncesto').innerHTML = baloncesto.join('');
-    document.getElementById('fixtureListVoley').innerHTML = voley.join('');
-    document.getElementById('fixtureListAtletismo').innerHTML = atletismo.join('');
-    document.getElementById('fixtureListTenis').innerHTML = tenis.join('');
-    document.getElementById('fixtureListRecreativos').innerHTML = recreativos.join('');
+    // render
+    Object.entries(buckets).forEach(([key, list]) => {
+      const el = document.getElementById(
+        'fixtureList' + key.charAt(0).toUpperCase() + key.slice(1)
+      );
+      if(el) el.innerHTML = list.join('');
+    });
 
   }catch(err){
-    console.error('Error cargando fixture:', err);
+    console.error('❌ Error cargando fixture:', err);
   }
 }
 
-  // FILTROS
-  if(dep.includes('futbol') || dep.includes('fútbol')) futbol.push(item);
-  else if(dep.includes('baloncesto')) baloncesto.push(item);
-  else if(dep.includes('voley') || dep.includes('vóley')) voley.push(item);
-  else if(dep.includes('maraton') || dep.includes('atletismo') || dep.includes('100')) atletismo.push(item);
-  else if(dep.includes('tenis')) tenis.push(item);
-  else recreativos.push(item);
-});
-
-// insertar en cada lista
-document.getElementById('fixtureListTodos').innerHTML = todos.join('');
-document.getElementById('fixtureListFutbol').innerHTML = futbol.join('');
-document.getElementById('fixtureListBaloncesto').innerHTML = baloncesto.join('');
-document.getElementById('fixtureListVoley').innerHTML = voley.join('');
-document.getElementById('fixtureListAtletismo').innerHTML = atletismo.join('');
-document.getElementById('fixtureListTenis').innerHTML = tenis.join('');
-document.getElementById('fixtureListRecreativos').innerHTML = recreativos.join('');
-
-    <div class="fixture-item">
-        <div class="fixture-date">${row.Hora || '-'}</div>
-        <div class="fixture-team">${row.EquipoA || ''}</div>
-        <div>
-          ${row.Resultado 
-            ? `<div class="fixture-score">${row.Resultado}</div>`
-            : `<div class="fixture-vs">VS</div>`
-          }
-          <div class="fixture-sport">${row.Deporte || ''}</div>
-        </div>
-        <div class="fixture-team right">${row.EquipoB || ''}</div>
-        <div class="fixture-lugar">${(row.Lugar || '').replace(/\s/g,'<br>')}</div>
-      </div>`;
-    }).join('');
-
-  }catch(err){
-    console.error(err);
-  }
-}
-
-/* ✔ cargar */
-// ✔ carga inicial sin delay raro
+/* INIT */
 fetchFixture();
-
-/* ✔ auto refresh */
-fixtureRefreshInterval = setInterval(fetchFixture, 60000);
-
+setInterval(fetchFixture, 60000);
 
 /* ================================
    MAPA TABS
 ================================ */
 window.switchTab = function(btn, id){
-  document.querySelectorAll('.mapa-tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.mapa-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.mapa-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.mapa-panel').forEach(p => p.classList.remove('active'));
+
   btn.classList.add('active');
-  document.getElementById(id).classList.add('active');
+  document.getElementById(id)?.classList.add('active');
 };
 
-/* ================================
-   ESTADO
-================================ */
-  const estado = (row.Estado || 'PROX').toUpperCase();
-
-let badge = '';
-if(estado === 'LIVE'){
-  badge = '<span class="badge-live">EN VIVO</span>';
-}else if(estado === 'FIN'){
-  badge = '<span class="badge-fin">FINAL</span>';
-}else{
-  badge = '<span class="badge-prox">PRÓXIMO</span>';
-}
-
-const item = `
-<div class="fixture-item ${estado === 'LIVE' ? 'live' : ''}">
-  <div class="fixture-date">${row.Hora || '-'}</div>
-
-  <div class="fixture-team">${row.EquipoA || ''}</div>
-
-  <div style="text-align:center">
-    ${row.Resultado 
-      ? `<div class="fixture-score">${row.Resultado}</div>`
-      : `<div class="fixture-vs">VS</div>`}
-    ${badge}
-    <div class="fixture-sport">${row.Deporte || ''}</div>
-  </div>
-
-  <div class="fixture-team right">${row.EquipoB || ''}</div>
-
-  <div class="fixture-lugar">${(row.Lugar || '').replace(/\s/g,'<br>')}</div>
-</div>`;
-  
 /* ================================
    FIXTURE TABS
 ================================ */
 window.switchFixtureTab = function(tab, btn){
-  document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.fpanel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.fpanel').forEach(p => p.classList.remove('active'));
 
   btn.classList.add('active');
-  document.getElementById('fp-'+tab).classList.add('active');
+  document.getElementById('fp-' + tab)?.classList.add('active');
 };
 
 });
 </script>
-<button id="scrollTopBtn">⬆</button>
+  <button id="scrollTopBtn">⬆</button>
 </body>
 </html>
