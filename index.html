@@ -1465,7 +1465,7 @@ document.addEventListener("DOMContentLoaded", () => {
 /* ================================
    CONFIG
 ================================ */
-let fixtureSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSOfJd_MnwLEk05l3RhHn1eCTlYofLBL--KS46cmh16ztDYFBkHI8f2uNuCR0-8XjWLtDWqQa8zoSJE/pub?gid=0&single=true&output=csv';
+let fixtureSheetUrl = 'https://opensheet.elk.sh/2PACX-1vSOfJd_MnwLEk05l3RhHn1eCTlYofLBL--KS46cmh16ztDYFBkHI8f2uNuCR0-8XjWLtDWqQa8zoSJE/Sheet1';
 let fixtureRefreshInterval = null;
 
   /* ================================
@@ -1603,10 +1603,33 @@ function renderFixture(rows){
 
 async function fetchFixture(){
   try{
-    const res = await fetch(fixtureSheetUrl + '&t=' + Date.now());
-    const text = await res.text();
-    const rows = parseCSV(text);
-    renderFixture(rows);
+    const res = await fetch(fixtureSheetUrl);
+    const data = await res.json();
+
+    const list = document.getElementById('fixtureListTodos');
+
+    if(!data || data.length === 0){
+      list.innerHTML = `<div style="padding:30px;text-align:center;color:#aaa;">Sin datos</div>`;
+      return;
+    }
+
+    list.innerHTML = data.map(row => {
+      return `
+      <div class="fixture-item">
+        <div class="fixture-date">${row.Hora || '-'}</div>
+        <div class="fixture-team">${row.EquipoA || ''}</div>
+        <div>
+          ${row.Resultado 
+            ? `<div class="fixture-score">${row.Resultado}</div>`
+            : `<div class="fixture-vs">VS</div>`
+          }
+          <div class="fixture-sport">${row.Deporte || ''}</div>
+        </div>
+        <div class="fixture-team right">${row.EquipoB || ''}</div>
+        <div class="fixture-lugar">${(row.Lugar || '').replace(/\s/g,'<br>')}</div>
+      </div>`;
+    }).join('');
+
   }catch(err){
     console.error(err);
   }
@@ -1643,7 +1666,6 @@ window.switchFixtureTab = function(tab, btn){
 };
 
 });
-</script>
 </script>
 <button id="scrollTopBtn">⬆</button>
 </body>
