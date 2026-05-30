@@ -1591,22 +1591,54 @@ function buildItem(row){
   </div>`;
 }
 
-function renderFixture(rows){
-  const data = rows.slice(1).filter(r=>r.some(c=>c));
-
-  const list = document.getElementById('fixtureListTodos');
-
-  list.innerHTML = data.length
-    ? data.map(buildItem).join('')
-    : `<div style="padding:30px;text-align:center;color:#aaa;">Sin datos</div>`;
-}
-
 async function fetchFixture(){
   try{
     const res = await fetch(fixtureSheetUrl);
     const data = await res.json();
 
-    const list = document.getElementById('fixtureListTodos');
+const todos = [];
+const futbol = [];
+const baloncesto = [];
+const voley = [];
+const atletismo = [];
+const tenis = [];
+const recreativos = [];
+data.forEach(row => {
+  const item = `
+  <div class="fixture-item">
+    <div class="fixture-date">${row.Hora || '-'}</div>
+    <div class="fixture-team">${row.EquipoA || ''}</div>
+    <div>
+      ${row.Resultado 
+        ? `<div class="fixture-score">${row.Resultado}</div>`
+        : `<div class="fixture-vs">VS</div>`}
+      <div class="fixture-sport">${row.Deporte || ''}</div>
+    </div>
+    <div class="fixture-team right">${row.EquipoB || ''}</div>
+    <div class="fixture-lugar">${(row.Lugar || '').replace(/\s/g,'<br>')}</div>
+  </div>`;
+
+  const dep = (row.Deporte || '').toLowerCase();
+  // TODOS siempre
+  todos.push(item);
+
+  // FILTROS
+  if(dep.includes('futbol') || dep.includes('fútbol')) futbol.push(item);
+  else if(dep.includes('baloncesto')) baloncesto.push(item);
+  else if(dep.includes('voley') || dep.includes('vóley')) voley.push(item);
+  else if(dep.includes('maraton') || dep.includes('atletismo') || dep.includes('100')) atletismo.push(item);
+  else if(dep.includes('tenis')) tenis.push(item);
+  else recreativos.push(item);
+});
+
+// insertar en cada lista
+document.getElementById('fixtureListTodos').innerHTML = todos.join('');
+document.getElementById('fixtureListFutbol').innerHTML = futbol.join('');
+document.getElementById('fixtureListBaloncesto').innerHTML = baloncesto.join('');
+document.getElementById('fixtureListVoley').innerHTML = voley.join('');
+document.getElementById('fixtureListAtletismo').innerHTML = atletismo.join('');
+document.getElementById('fixtureListTenis').innerHTML = tenis.join('');
+document.getElementById('fixtureListRecreativos').innerHTML = recreativos.join('');
 
     if(!data || data.length === 0){
       list.innerHTML = `<div style="padding:30px;text-align:center;color:#aaa;">Sin datos</div>`;
