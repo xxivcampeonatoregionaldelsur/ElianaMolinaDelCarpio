@@ -329,31 +329,70 @@
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-inner">
-    <div class="nav-logo">🏆 <span>CAMPEONATO</span> REGIONAL DE SUR</div>
+  /* NAV GENERAL */
+nav{
+  background:var(--negro);
+  position:sticky;
+  top:0;
+  z-index:100;
+  border-bottom:3px solid var(--dorado);
+}
 
-    <!-- BOTÓN HAMBURGUESA -->
-  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
-<div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+.nav-inner{
+  max-width:1200px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
+  height:64px;
+}
 
-<div class="nav-links" id="navLinks">
-  <div class="menu-header">
-    <div class="menu-logo">🏆</div>
-    <div class="menu-title">CAMPEONATO</div>
-  </div>
-  <a href="#disciplinas">🏅 Disciplinas</a>
-  <a href="#posiciones">📊 Posiciones</a>
-  <a href="#fixture">📅 Fixture</a>
-  <a href="#danzas">💃 Danzas</a>
-  <a href="#fiesta">🎉 Fiesta</a>
-  <a href="#hospedaje">🏨 Hospedaje</a>
-  <a href="#como-llegar">📍 Cómo llegar</a>
-  <a href="#registro">📝 Registro</a>
-  <a href="#faq">❓ Preguntas</a>
-</div>
-</nav>
+/* LOGO */
+.nav-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.3rem;
+  color:var(--dorado);
+  letter-spacing:2px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.nav-logo span{
+  color:var(--blanco);
+}
+
+/* LINKS DESKTOP */
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.nav-links a{
+  color:#ccc;
+  text-decoration:none;
+  font-size:0.8rem;
+  font-weight:600;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  padding:8px 12px;
+  border-radius:4px;
+  transition:all 0.25s;
+}
+
+/* EFECTO HOVER PRO */
+.nav-links a:hover{
+  color:var(--dorado);
+  background:rgba(240,165,0,0.12);
+}
+
+/* MENÚ HEADER SOLO MÓVIL */
+.menu-header{
+  display:none;
+}
+``
 
 <!-- HERO -->
 <section class="hero">
@@ -831,6 +870,16 @@ function switchTab(btn, panelId) {
   btn.classList.add('active');
   document.getElementById(panelId).classList.add('active');
 }
+
+function toggleMenu(){
+  const nav = document.getElementById('navLinks');
+  const overlay = document.getElementById('menuOverlay');
+  const btn = document.querySelector('.menu-toggle');
+  nav.classList.toggle('show');
+  overlay.classList.toggle('active');
+  btn.textContent = nav.classList.contains('show') ? '✖' : '☰';
+}
+
 /* cerrar al tocar link */
 document.querySelectorAll('.nav-links a').forEach(link=>{
   link.addEventListener('click', ()=>{
@@ -859,16 +908,19 @@ document.querySelectorAll('.nav-links a').forEach(link=>{
   const nav = document.getElementById('navLinks');
   const overlay = document.getElementById('menuOverlay');
   const btn = document.querySelector('.menu-toggle');
+
   nav.classList.toggle('show');
   overlay.classList.toggle('active');
+
   btn.classList.toggle('open');
+
   if (btn.classList.contains('open')) {
     btn.textContent = '✖';
   } else {
     btn.textContent = '☰';
   }
 }
-    /* cerrar al hacer clic */
+/* cerrar al hacer clic */
 document.querySelectorAll('.nav-links a').forEach(link=>{
   link.addEventListener('click', ()=>{
     document.getElementById('navLinks').classList.remove('show');
