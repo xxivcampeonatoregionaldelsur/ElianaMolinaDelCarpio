@@ -813,7 +813,7 @@
 </footer>
 
 <script>
-  function toggleFaq(el) {
+function toggleFaq(el) {
   const item = el.parentElement;
   const isOpen = item.classList.contains('open');
   document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
@@ -831,12 +831,14 @@ function toggleMenu(){
   const nav = document.getElementById('navLinks');
   const overlay = document.getElementById('menuOverlay');
   const btn = document.querySelector('.menu-toggle');
+
   nav.classList.toggle('show');
   overlay.classList.toggle('active');
+
   btn.textContent = nav.classList.contains('show') ? '✖' : '☰';
 }
 
-/* cerrar al tocar link */
+/* cerrar menú al hacer clic en links */
 document.querySelectorAll('.nav-links a').forEach(link=>{
   link.addEventListener('click', ()=>{
     document.getElementById('navLinks').classList.remove('show');
@@ -844,47 +846,6 @@ document.querySelectorAll('.nav-links a').forEach(link=>{
     document.querySelector('.menu-toggle').textContent='☰';
   });
 });
-
-  function switchTab(btn, panelId) {
-    document.querySelectorAll('.mapa-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.mapa-panel').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(panelId).classList.add('active');
-  }
-
-  function handleFile(input) {
-    if (input.files && input.files[0]) {
-      const name = input.files[0].name;
-      document.getElementById('file-name').textContent = '📎 Archivo seleccionado: ' + name;
-      const s = document.getElementById('upload-success');
-      s.style.display = 'block';
-      setTimeout(() => { s.style.display = 'none'; }, 4000);
-    }
-  function toggleMenu(){
-  const nav = document.getElementById('navLinks');
-  const overlay = document.getElementById('menuOverlay');
-  const btn = document.querySelector('.menu-toggle');
-
-  nav.classList.toggle('show');
-  overlay.classList.toggle('active');
-
-  btn.classList.toggle('open');
-
-  if (btn.classList.contains('open')) {
-    btn.textContent = '✖';
-  } else {
-    btn.textContent = '☰';
-  }
-}
-/* cerrar al hacer clic */
-document.querySelectorAll('.nav-links a').forEach(link=>{
-  link.addEventListener('click', ()=>{
-    document.getElementById('navLinks').classList.remove('show');
-    document.getElementById('menuOverlay').classList.remove('active');
-    document.querySelector('.menu-toggle').textContent='☰';
-  });
-});
-  }
 </script>
 </body>
 </html>
