@@ -48,44 +48,29 @@
   .nav-links a{color:#ccc;text-decoration:none;font-size:0.72rem;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;padding:5px 9px;border-radius:4px;transition:all 0.2s;}
   .nav-links a:hover{color:var(--dorado);background:rgba(240,165,0,0.1);}
 
- body{
-  overflow-x:hidden;
-}
-
-html{
-  font-size:16px;
-}
-
-/* HERO */
-.hero{
-  background:linear-gradient(135deg,#0a1628 0%,#1a0a0a 50%,#2d1b00 100%);
-  color:var(--blanco);
-  padding:60px 16px 40px;
-  position:relative;
-  overflow:hidden;
-  text-align:center;
+  /* HERO */
+  .hero{background:linear-gradient(135deg,#0a1628 0%,#1a0a0a 50%,#2d1b00 100%);color:var(--blanco);padding:80px 24px 60px;position:relative;overflow:hidden;text-align:center;}
+  .hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(240,165,0,0.02) 40px,rgba(240,165,0,0.02) 80px);pointer-events: none;}
+  .hero-badge{display:inline-block;background:var(--dorado);color:var(--negro);font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:6px 20px;border-radius:2px;margin-bottom:20px;}
+  .hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,7vw,5.5rem);line-height:1;letter-spacing:3px;margin-bottom:6px;}
+  .hero h1 span{color:var(--dorado);}
+  .hero-nombre{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1rem,2.5vw,1.5rem);letter-spacing:2px;color:#ddd;text-transform:uppercase;margin-bottom:8px;font-style:italic;}
+  .hero-sub{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;letter-spacing:4px;color:#888;text-transform:uppercase;margin-bottom:24px;}
+  .hero-fecha{display:inline-block;border:2px solid var(--dorado);padding:10px 28px;border-radius:4px;font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:3px;color:var(--dorado);margin-bottom:32px;}
+  .hero-stats{display:flex;justify-content:center;gap:36px;flex-wrap:wrap;margin-top:24px;}
+  .hero-stat{text-align:center;}
+  .hero-stat .num{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;color:var(--dorado);line-height:1;}
+  .hero-stat .lbl{font-size:0.72rem;color:#aaa;letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
+  .hero-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:32px;}
+  .btn-primary{background:var(--dorado);color:var(--negro);padding:14px 32px;font-weight:700;font-size:0.9rem;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;border-radius:4px;text-decoration:none;display:inline-block;transition:all 0.2s;}
+  .btn-primary:hover{background:var(--dorado-claro);transform:translateY(-2px);}
+  .btn-secondary{background:transparent;color:var(--blanco);padding:14px 32px;font-weight:700;font-size:0.9rem;letter-spacing:1px;text-transform:uppercase;border:2px solid rgba(255,255,255,0.3);cursor:pointer;border-radius:4px;text-decoration:none;display:inline-block;transition:all 0.2s;}
+  .btn-secondary:hover{border-color:var(--dorado);color:var(--dorado);}
+  .hero{
   min-height:100vh;
   display:flex;
   flex-direction:column;
   justify-content:center;
-
-  /* animación corregida */
-  opacity:0;
-  transform:translateY(20px);
-  transition:all 1.2s ease;
-}
-
-.hero.show{
-  opacity:1;
-  transform:translateY(0);
-}
-
-.hero h1{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(2rem,5vw,4rem); /* ✅ FIX EDGE */
-  line-height:1;
-  letter-spacing:3px;
-  margin-bottom:6px;
 }
 
    /* HERO CINEMATOGRÁFICO */
@@ -1005,18 +990,14 @@ document.addEventListener("DOMContentLoaded", () => {
   /* SCROLL TOP */
   const btnTop = document.getElementById("scrollTopBtn");
   window.addEventListener("scroll", () => {
-    if(btnTop){
-      btnTop.style.display = window.scrollY > 300 ? "block" : "none";
-    }
+    btnTop.style.display = window.scrollY > 300 ? "block" : "none";
   });
 
-  if(btnTop){
-    btnTop.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  }
+  btnTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 
-  /* LOADER */
+  /* LOADER + HERO */
   const loader = document.getElementById("loader");
 
   if(loader){
@@ -1035,18 +1016,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const targetDate = new Date("June 28, 2026 08:00:00").getTime();
   const countdown = document.getElementById("countdown");
 
-  if(countdown){
-    setInterval(()=>{
-      const now = new Date().getTime();
-      const diff = targetDate - now;
+  setInterval(()=>{
+    const now = new Date().getTime();
+    const diff = targetDate - now;
 
-      const d = Math.floor(diff/(1000*60*60*24));
-      const h = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
-      const m = Math.floor((diff%(1000*60*60))/(1000*60));
+    const d = Math.floor(diff/(1000*60*60*24));
+    const h = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+    const m = Math.floor((diff%(1000*60*60))/(1000*60));
 
-      countdown.innerHTML = `⏳ ${d} días ${h}h ${m}m`;
-    },1000);
-  }
+    countdown.innerHTML = `⏳ ${d} días ${h}h ${m}m`;
+  },1000);
 
   /* NAV SCROLL */
   window.addEventListener("scroll", ()=>{
