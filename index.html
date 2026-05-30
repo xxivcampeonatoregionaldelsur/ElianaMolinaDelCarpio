@@ -89,11 +89,11 @@ body{
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* centra vertical */
+  justify-content: flex-start;
   align-items: center;
   text-align: center;
 
-  padding: 140px 20px 60px; /* arriba, lados, abajo */
+  padding: 110px 20px 60px; /* arriba, lados, abajo */
   box-sizing: border-box;
 }
   /* animación */
@@ -531,6 +531,11 @@ button, a{
   }
 }
 ``
+  @media (max-width:768px){
+  .hero{
+    padding-top: 90px;
+  }
+}
 </style>
 </head>
 <body>
