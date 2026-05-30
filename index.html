@@ -17,7 +17,7 @@
   html{scroll-behavior:smooth;}
   body{font-family:'Barlow',sans-serif;background:var(--blanco);color:var(--texto);}
 
-  /* NAV GENERAL */
+  /* NAV */
   nav{background:var(--negro);position:sticky;top:0;z-index:100;border-bottom:3px solid var(--dorado);}
   .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:64px;flex-wrap:wrap;gap:6px;}
   .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;color:var(--dorado);letter-spacing:1px;display:flex;align-items:center;gap:8px;}
@@ -240,33 +240,6 @@
     border-bottom:1px solid rgba(255,255,255,0.1);
   }
 }
-
-/* MENU PRO */
-@media(max-width:768px){
-
-  .menu-toggle{
-    display:block;
-  }
-
-  .nav-links{
-    position:fixed;
-    top:0;
-    left:-270px;
-    width:270px;
-    height:100vh;
-    background:rgba(13,13,13,0.95);
-    backdrop-filter:blur(12px);
-    flex-direction:column;
-    padding:0;
-    transition:0.4s cubic-bezier(.77,0,.18,1);
-    z-index:300;
-    box-shadow:4px 0 20px rgba(0,0,0,0.3);
-  }
-
-  .nav-links.show{
-    left:0;
-  }
-
   /* HEADER DEL MENU */
   .menu-header{
     padding:24px 20px;
@@ -329,70 +302,31 @@
 </head>
 <body>
 
-  /* NAV GENERAL */
-nav{
-  background:var(--negro);
-  position:sticky;
-  top:0;
-  z-index:100;
-  border-bottom:3px solid var(--dorado);
-}
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">🏆 <span>CAMPEONATO</span> REGIONAL DE SUR</div>
 
-.nav-inner{
-  max-width:1200px;
-  margin:0 auto;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 24px;
-  height:64px;
-}
+    <!-- BOTÓN HAMBURGUESA -->
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+<div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
 
-/* LOGO */
-.nav-logo{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:1.3rem;
-  color:var(--dorado);
-  letter-spacing:2px;
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-.nav-logo span{
-  color:var(--blanco);
-}
-
-/* LINKS DESKTOP */
-.nav-links{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.nav-links a{
-  color:#ccc;
-  text-decoration:none;
-  font-size:0.8rem;
-  font-weight:600;
-  letter-spacing:1px;
-  text-transform:uppercase;
-  padding:8px 12px;
-  border-radius:4px;
-  transition:all 0.25s;
-}
-
-/* EFECTO HOVER PRO */
-.nav-links a:hover{
-  color:var(--dorado);
-  background:rgba(240,165,0,0.12);
-}
-
-/* MENÚ HEADER SOLO MÓVIL */
-.menu-header{
-  display:none;
-}
-``
+<div class="nav-links" id="navLinks">
+  <div class="menu-header">
+    <div class="menu-logo">🏆</div>
+    <div class="menu-title">CAMPEONATO</div>
+  </div>
+  <a href="#disciplinas">🏅 Disciplinas</a>
+  <a href="#posiciones">📊 Posiciones</a>
+  <a href="#fixture">📅 Fixture</a>
+  <a href="#danzas">💃 Danzas</a>
+  <a href="#fiesta">🎉 Fiesta</a>
+  <a href="#hospedaje">🏨 Hospedaje</a>
+  <a href="#como-llegar">📍 Cómo llegar</a>
+  <a href="#registro">📝 Registro</a>
+  <a href="#faq">❓ Preguntas</a>
+</div>
+</nav>
 
 <!-- HERO -->
 <section class="hero">
