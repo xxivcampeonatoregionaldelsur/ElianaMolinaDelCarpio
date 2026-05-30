@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>XXIV Campeonato Regional del Sur — Eliana Amparo Molina del Carpio</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
 <style>
@@ -13,9 +13,27 @@
     --negro:#0D0D0D; --gris-oscuro:#1A1A2E;
     --gris-claro:#F4F4F6; --blanco:#FFFFFF; --texto:#2A2A2A;
   }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{font-family:'Barlow',sans-serif;background:var(--blanco);color:var(--texto);}
+  
+*, *::before, *::after{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+  font-size:15px; /* 🔧 ajuste clave para Edge */
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+}
+
+body{
+  font-family:'Barlow',sans-serif;
+  background:var(--blanco);
+  color:var(--texto);
+  font-size:1rem; /* 🔧 estabilidad */
+}
+
 
   /* NAV SCROLLED */  
   nav.scrolled{
@@ -52,7 +70,7 @@
   .hero{background:linear-gradient(135deg,#0a1628 0%,#1a0a0a 50%,#2d1b00 100%);color:var(--blanco);padding:80px 24px 60px;position:relative;overflow:hidden;text-align:center;}
   .hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(240,165,0,0.02) 40px,rgba(240,165,0,0.02) 80px);pointer-events: none;}
   .hero-badge{display:inline-block;background:var(--dorado);color:var(--negro);font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:6px 20px;border-radius:2px;margin-bottom:20px;}
-  .hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,7vw,5.5rem);line-height:1;letter-spacing:3px;margin-bottom:6px;}
+  .hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,6vw,5rem);line-height:1;letter-spacing:3px;margin-bottom:6px;}
   .hero h1 span{color:var(--dorado);}
   .hero-nombre{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1rem,2.5vw,1.5rem);letter-spacing:2px;color:#ddd;text-transform:uppercase;margin-bottom:8px;font-style:italic;}
   .hero-sub{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;letter-spacing:4px;color:#888;text-transform:uppercase;margin-bottom:24px;}
@@ -1012,6 +1030,11 @@ document.addEventListener("DOMContentLoaded", () => {
     },1200);
   }
 
+  /*edge*/
+  if (navigator.userAgent.includes("Edg")) {
+  document.documentElement.style.fontSize = "14.5px";
+}
+ 
   /* CONTADOR */
   const targetDate = new Date("June 28, 2026 08:00:00").getTime();
   const countdown = document.getElementById("countdown");
