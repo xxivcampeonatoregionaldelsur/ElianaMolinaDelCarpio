@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>XXIV Campeonato Regional del Sur — Eliana Amparo Molina del Carpio</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
 <style>
@@ -22,7 +22,8 @@
 
 html{
   scroll-behavior:smooth;
-  font-size:15px; /* 🔧 ajuste clave para Edge */
+  font-size:100%;
+  font-size: clamp(14px, 1.2vw, 16px);
   -webkit-text-size-adjust:100%;
   text-size-adjust:100%;
 }
@@ -31,9 +32,9 @@ body{
   font-family:'Barlow',sans-serif;
   background:var(--blanco);
   color:var(--texto);
-  font-size:1rem; /* 🔧 estabilidad */
+  font-size:1rem;
+  line-height:1.5;
 }
-
 
   /* NAV SCROLLED */  
   nav.scrolled{
@@ -1030,12 +1031,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },1200);
   }
 
-  /*edge*/
-  if (navigator.userAgent.includes("Edg")) {
-  document.documentElement.style.fontSize = "14.5px";
-}
- 
-  /* CONTADOR */
+   /* CONTADOR */
   const targetDate = new Date("June 28, 2026 08:00:00").getTime();
   const countdown = document.getElementById("countdown");
 
