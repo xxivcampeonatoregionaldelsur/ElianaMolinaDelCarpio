@@ -85,12 +85,28 @@ body{
   .btn-primary:hover{background:var(--dorado-claro);transform:translateY(-2px);}
   .btn-secondary{background:transparent;color:var(--blanco);padding:14px 32px;font-weight:700;font-size:0.9rem;letter-spacing:1px;text-transform:uppercase;border:2px solid rgba(255,255,255,0.3);cursor:pointer;border-radius:4px;text-decoration:none;display:inline-block;transition:all 0.2s;}
   .btn-secondary:hover{border-color:var(--dorado);color:var(--dorado);}
-  .hero{
-  min-height:100dvh;
+.hero{
+  min-height: calc(100dvh - 64px);
   display:flex;
   flex-direction:column;
-  justify-content:center;
-  padding: clamp(60px, 10vw, 120px) 20px;
+  justify-content:flex-start; /* cambia esto */
+  
+  padding: 30px 20px 60px;
+  padding-top: 60px;
+
+  text-align:center;
+  position:relative;
+}
+
+/* subir aún más el contenido principal */
+.hero h1{
+  margin-top: 10px;
+  transform: translateY(-10px);
+}
+
+.hero-badge{
+  margin-top: 0;
+  transform: translateY(-5px);
 }
 
    /* HERO CINEMATOGRÁFICO */
