@@ -826,7 +826,7 @@ function switchTab(btn, panelId) {
   btn.classList.add('active');
   document.getElementById(panelId).classList.add('active');
 }
-
+  
 function toggleMenu(){
   const nav = document.getElementById('navLinks');
   const overlay = document.getElementById('menuOverlay');
@@ -844,13 +844,6 @@ document.querySelectorAll('.nav-links a').forEach(link=>{
     document.querySelector('.menu-toggle').textContent='☰';
   });
 });
-
-  function switchTab(btn, panelId) {
-    document.querySelectorAll('.mapa-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.mapa-panel').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(panelId).classList.add('active');
-  }
 
   function handleFile(input) {
     if (input.files && input.files[0]) {
