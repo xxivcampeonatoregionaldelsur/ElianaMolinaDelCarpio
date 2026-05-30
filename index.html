@@ -827,7 +827,16 @@ function switchTab(btn, panelId) {
   document.getElementById(panelId).classList.add('active');
 }
 
-  /* cerrar al tocar link */
+function toggleMenu(){
+  const nav = document.getElementById('navLinks');
+  const overlay = document.getElementById('menuOverlay');
+  const btn = document.querySelector('.menu-toggle');
+  nav.classList.toggle('show');
+  overlay.classList.toggle('active');
+  btn.textContent = nav.classList.contains('show') ? '✖' : '☰';
+}
+
+/* cerrar al tocar link */
 document.querySelectorAll('.nav-links a').forEach(link=>{
   link.addEventListener('click', ()=>{
     document.getElementById('navLinks').classList.remove('show');
@@ -835,6 +844,13 @@ document.querySelectorAll('.nav-links a').forEach(link=>{
     document.querySelector('.menu-toggle').textContent='☰';
   });
 });
+
+  function switchTab(btn, panelId) {
+    document.querySelectorAll('.mapa-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.mapa-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(panelId).classList.add('active');
+  }
 
   function handleFile(input) {
     if (input.files && input.files[0]) {
@@ -848,9 +864,12 @@ document.querySelectorAll('.nav-links a').forEach(link=>{
   const nav = document.getElementById('navLinks');
   const overlay = document.getElementById('menuOverlay');
   const btn = document.querySelector('.menu-toggle');
+
   nav.classList.toggle('show');
   overlay.classList.toggle('active');
+
   btn.classList.toggle('open');
+
   if (btn.classList.contains('open')) {
     btn.textContent = '✖';
   } else {
