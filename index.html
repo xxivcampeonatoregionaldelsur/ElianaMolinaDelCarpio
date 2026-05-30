@@ -240,6 +240,33 @@
     border-bottom:1px solid rgba(255,255,255,0.1);
   }
 }
+
+/* MENU PRO */
+@media(max-width:768px){
+
+  .menu-toggle{
+    display:block;
+  }
+
+  .nav-links{
+    position:fixed;
+    top:0;
+    left:-270px;
+    width:270px;
+    height:100vh;
+    background:rgba(13,13,13,0.95);
+    backdrop-filter:blur(12px);
+    flex-direction:column;
+    padding:0;
+    transition:0.4s cubic-bezier(.77,0,.18,1);
+    z-index:300;
+    box-shadow:4px 0 20px rgba(0,0,0,0.3);
+  }
+
+  .nav-links.show{
+    left:0;
+  }
+
   /* HEADER DEL MENU */
   .menu-header{
     padding:24px 20px;
