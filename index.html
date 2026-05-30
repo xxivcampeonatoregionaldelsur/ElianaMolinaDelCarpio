@@ -295,8 +295,6 @@
   .nav-inner{
     flex-wrap:nowrap;
   }
-}
-``
   }
 </style>
 </head>
@@ -805,15 +803,6 @@ function switchTab(btn, panelId) {
   document.getElementById(panelId).classList.add('active');
 }
 
-function toggleMenu(){
-  const nav = document.getElementById('navLinks');
-  const overlay = document.getElementById('menuOverlay');
-  const btn = document.querySelector('.menu-toggle');
-  nav.classList.toggle('show');
-  overlay.classList.toggle('active');
-  btn.textContent = nav.classList.contains('show') ? '✖' : '☰';
-}
-
 /* cerrar al tocar link */
 document.querySelectorAll('.nav-links a').forEach(link=>{
   link.addEventListener('click', ()=>{
@@ -823,21 +812,15 @@ document.querySelectorAll('.nav-links a').forEach(link=>{
   });
 });
 
-  function switchTab(btn, panelId) {
-    document.querySelectorAll('.mapa-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.mapa-panel').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(panelId).classList.add('active');
+ function handleFile(input) {
+  if (input.files && input.files[0]) {
+    const name = input.files[0].name;
+    document.getElementById('file-name').textContent = '📎 Archivo seleccionado: ' + name;
+    const s = document.getElementById('upload-success');
+    s.style.display = 'block';
+    setTimeout(() => { s.style.display = 'none'; }, 4000);
   }
-
-  function handleFile(input) {
-    if (input.files && input.files[0]) {
-      const name = input.files[0].name;
-      document.getElementById('file-name').textContent = '📎 Archivo seleccionado: ' + name;
-      const s = document.getElementById('upload-success');
-      s.style.display = 'block';
-      setTimeout(() => { s.style.display = 'none'; }, 4000);
-    }
+}
   function toggleMenu(){
   const nav = document.getElementById('navLinks');
   const overlay = document.getElementById('menuOverlay');
