@@ -85,22 +85,17 @@ body{
   .btn-primary:hover{background:var(--dorado-claro);transform:translateY(-2px);}
   .btn-secondary{background:transparent;color:var(--blanco);padding:14px 32px;font-weight:700;font-size:0.9rem;letter-spacing:1px;text-transform:uppercase;border:2px solid rgba(255,255,255,0.3);cursor:pointer;border-radius:4px;text-decoration:none;display:inline-block;transition:all 0.2s;}
   .btn-secondary:hover{border-color:var(--dorado);color:var(--dorado);}
-.hero{
-  background:linear-gradient(135deg,#0a1628 0%,#1a0a0a 50%,#2d1b00 100%);
-  color:var(--blanco);
-  
-  min-height: calc(100dvh - 64px);
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-start;
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* centra vertical */
+  align-items: center;
+  text-align: center;
 
-  padding: 10px 20px 30px; /* 🔥 clave para que todo entre */
-  gap: 6px;
-
-  text-align:center;
-  position:relative;
-  overflow:hidden;
-
+  padding: 140px 20px 60px; /* arriba, lados, abajo */
+  box-sizing: border-box;
+}
   /* animación */
   opacity:0;
   transform:scale(1.05);
