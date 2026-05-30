@@ -1574,19 +1574,33 @@ function parseCSV(text){
 function buildItem(row){
   const [disc='', hora='', a='', b='', res='', lugar='', estado=''] = row;
 
+  let badge = '';
+  if(estado === 'LIVE'){
+    badge = '<span class="badge-live">EN VIVO</span>';
+  }else if(estado === 'FIN'){
+    badge = '<span class="badge-fin">FINAL</span>';
+  }else{
+    badge = '<span class="badge-prox">PRÓXIMO</span>';
+  }
+
   const score = res
     ? `<div class="fixture-score">${res}</div>`
     : `<div class="fixture-vs">VS</div>`;
 
   return `
-  <div class="fixture-item">
+  <div class="fixture-item ${estado === 'LIVE' ? 'live':''}">
     <div class="fixture-date">${hora}</div>
+
     <div class="fixture-team">${a}</div>
-    <div>
+
+    <div style="text-align:center;">
       ${score}
+      ${badge}
       <div class="fixture-sport">${disc}</div>
     </div>
+
     <div class="fixture-team right">${b}</div>
+
     <div class="fixture-lugar">${lugar.replace(/\s/g,'<br>')}</div>
   </div>`;
 }
@@ -1604,6 +1618,7 @@ const atletismo = [];
 const tenis = [];
 const recreativos = [];
 data.forEach(row => {
+  const estado = (row.Estado || 'PROX').toUpperCase();
   const item = `
   <div class="fixture-item">
     <div class="fixture-date">${row.Hora || '-'}</div>
@@ -1685,7 +1700,39 @@ window.switchTab = function(btn, id){
   document.getElementById(id).classList.add('active');
 };
 
+/* ================================
+   ESTADO
+================================ */
+  const estado = (row.Estado || 'PROX').toUpperCase();
 
+let badge = '';
+if(estado === 'LIVE'){
+  badge = '<span class="badge-live">EN VIVO</span>';
+}else if(estado === 'FIN'){
+  badge = '<span class="badge-fin">FINAL</span>';
+}else{
+  badge = '<span class="badge-prox">PRÓXIMO</span>';
+}
+
+const item = `
+<div class="fixture-item ${estado === 'LIVE' ? 'live' : ''}">
+  <div class="fixture-date">${row.Hora || '-'}</div>
+
+  <div class="fixture-team">${row.EquipoA || ''}</div>
+
+  <div style="text-align:center">
+    ${row.Resultado 
+      ? `<div class="fixture-score">${row.Resultado}</div>`
+      : `<div class="fixture-vs">VS</div>`}
+    ${badge}
+    <div class="fixture-sport">${row.Deporte || ''}</div>
+  </div>
+
+  <div class="fixture-team right">${row.EquipoB || ''}</div>
+
+  <div class="fixture-lugar">${(row.Lugar || '').replace(/\s/g,'<br>')}</div>
+</div>`;
+  
 /* ================================
    FIXTURE TABS
 ================================ */
