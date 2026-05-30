@@ -240,6 +240,33 @@
     border-bottom:1px solid rgba(255,255,255,0.1);
   }
 }
+
+/* MENU PRO */
+@media(max-width:768px){
+
+  .menu-toggle{
+    display:block;
+  }
+
+  .nav-links{
+    position:fixed;
+    top:0;
+    left:-270px;
+    width:270px;
+    height:100vh;
+    background:rgba(13,13,13,0.95);
+    backdrop-filter:blur(12px);
+    flex-direction:column;
+    padding:0;
+    transition:0.4s cubic-bezier(.77,0,.18,1);
+    z-index:300;
+    box-shadow:4px 0 20px rgba(0,0,0,0.3);
+  }
+
+  .nav-links.show{
+    left:0;
+  }
+
   /* HEADER DEL MENU */
   .menu-header{
     padding:24px 20px;
@@ -295,6 +322,8 @@
   .nav-inner{
     flex-wrap:nowrap;
   }
+}
+``
   }
 </style>
 </head>
@@ -802,7 +831,6 @@ function switchTab(btn, panelId) {
   btn.classList.add('active');
   document.getElementById(panelId).classList.add('active');
 }
-
 /* cerrar al tocar link */
 document.querySelectorAll('.nav-links a').forEach(link=>{
   link.addEventListener('click', ()=>{
@@ -812,32 +840,35 @@ document.querySelectorAll('.nav-links a').forEach(link=>{
   });
 });
 
- function handleFile(input) {
-  if (input.files && input.files[0]) {
-    const name = input.files[0].name;
-    document.getElementById('file-name').textContent = '📎 Archivo seleccionado: ' + name;
-    const s = document.getElementById('upload-success');
-    s.style.display = 'block';
-    setTimeout(() => { s.style.display = 'none'; }, 4000);
+  function switchTab(btn, panelId) {
+    document.querySelectorAll('.mapa-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.mapa-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(panelId).classList.add('active');
   }
-}
+
+  function handleFile(input) {
+    if (input.files && input.files[0]) {
+      const name = input.files[0].name;
+      document.getElementById('file-name').textContent = '📎 Archivo seleccionado: ' + name;
+      const s = document.getElementById('upload-success');
+      s.style.display = 'block';
+      setTimeout(() => { s.style.display = 'none'; }, 4000);
+    }
   function toggleMenu(){
   const nav = document.getElementById('navLinks');
   const overlay = document.getElementById('menuOverlay');
   const btn = document.querySelector('.menu-toggle');
-
   nav.classList.toggle('show');
   overlay.classList.toggle('active');
-
   btn.classList.toggle('open');
-
   if (btn.classList.contains('open')) {
     btn.textContent = '✖';
   } else {
     btn.textContent = '☰';
   }
 }
-/* cerrar al hacer clic */
+    /* cerrar al hacer clic */
 document.querySelectorAll('.nav-links a').forEach(link=>{
   link.addEventListener('click', ()=>{
     document.getElementById('navLinks').classList.remove('show');
