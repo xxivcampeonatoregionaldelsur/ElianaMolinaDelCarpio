@@ -311,6 +311,18 @@ body{
   .contacto-info p,.contacto-info a{font-size:0.83rem;color:#ccc;line-height:1.6;text-decoration:none;display:block;word-break:break-all;}
   .contacto-info a:hover{color:var(--dorado);}
 
+  /* Loader */  
+#loader{
+  position:fixed;
+  inset:0;
+  background:#000;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  transition:opacity 0.5s;
+}
+
   /* FOOTER */
   footer{background:#050505;color:#666;padding:36px 24px;text-align:center;border-top:3px solid var(--dorado);}
   .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--dorado);letter-spacing:2px;margin-bottom:8px;}
@@ -1481,271 +1493,202 @@ button, a{
 </footer>
 
 <script>
+<script>
 document.addEventListener("DOMContentLoaded", () => {
-// ✅ Cargar automáticamente al iniciar
-setTimeout(() => {
-    fetchAndRender();
 
-    // Auto actualización cada 60 segundos
-    if (fixtureRefreshInterval) clearInterval(fixtureRefreshInterval);
-    fixtureRefreshInterval = setInterval(fetchAndRender, 60000);
-    ;
-}, 1000);
-  
-  /* FAQ */
-  function toggleFaq(el) {
-    const item = el.parentElement;
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
-  }
-  window.toggleFaq = toggleFaq;
-
-  /* TAB MAPAS */
-  function switchTab(btn, panelId) {
-    document.querySelectorAll('.mapa-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.mapa-panel').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(panelId).classList.add('active');
-  }
-  window.switchTab = switchTab;
-
-  /* MENÚ */
-  window.toggleMenu = function(){
-    const nav = document.getElementById('navLinks');
-    const overlay = document.getElementById('menuOverlay');
-    const btn = document.querySelector('.menu-toggle');
-
-    nav.classList.toggle('show');
-    overlay.classList.toggle('active');
-    btn.textContent = nav.classList.contains('show') ? '✖' : '☰';
-  };
-
-  /* cerrar menú */
-  document.querySelectorAll('.nav-links a').forEach(link=>{
-    link.addEventListener('click', ()=>{
-      document.getElementById('navLinks').classList.remove('show');
-      document.getElementById('menuOverlay').classList.remove('active');
-      document.querySelector('.menu-toggle').textContent='☰';
-    });
-  });
-
-  /* SCROLL TOP */
-  const btnTop = document.getElementById("scrollTopBtn");
-  window.addEventListener("scroll", () => {
-    btnTop.style.display = window.scrollY > 300 ? "block" : "none";
-  });
-
-  btnTop.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-
-  /* LOADER + HERO */
-  const loader = document.getElementById("loader");
-
-  if(loader){
-    setTimeout(()=>{
-      loader.style.opacity = "0";
-
-      setTimeout(()=>{
-        loader.style.display = "none";
-        document.querySelector(".hero").classList.add("show");
-      },600);
-
-    },1200);
-  }
-
-   /* CONTADOR */
-  const targetDate = new Date("June 28, 2026 08:00:00").getTime();
-  const countdown = document.getElementById("countdown");
-
-  setInterval(()=>{
-    const now = new Date().getTime();
-    const diff = targetDate - now;
-
-    const d = Math.floor(diff/(1000*60*60*24));
-    const h = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
-    const m = Math.floor((diff%(1000*60*60))/(1000*60));
-
-    countdown.innerHTML = `⏳ ${d} días ${h}h ${m}m`;
-  },1000);
-
-  /* NAV SCROLL */
-  window.addEventListener("scroll", ()=>{
-    document.querySelector("nav").classList.toggle("scrolled", window.scrollY>50);
-  });
-
-  /* ANIMACIÓN SCROLL */
-  const observer = new IntersectionObserver(entries=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        entry.target.classList.add("show");
-      }
-    });
-  },{threshold:0.1});
-
-  document.querySelectorAll("section, .disc-card, .hotel-card, .fiesta-card").forEach(el=>{
-    el.classList.add("fade-up");
-    observer.observe(el);
-  });
-
-  /* ===== FIXTURE DESDE GOOGLE SHEETS ===== */
- 
-// 👉 URL fija del Google Sheet (ya publicada como CSV)
+/* ================================
+   CONFIG
+================================ */
 let fixtureSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSOfJd_MnwLEk05l3RhHn1eCTlYofLBL--KS46cmh16ztDYFBkHI8f2uNuCR0-8XjWLtDWqQa8zoSJE/pub?gid=0&single=true&output=csv';
 let fixtureRefreshInterval = null;
 
-  // Mapeo de disciplinas (keywords en la columna Disciplina del sheet)
-  const DISC_MAP = {
-    futbol:      ['futbol','fútbol','futb','foot','soccer'],
-    baloncesto:  ['baloncesto','basket','basquet','básquet'],
-    voley:       ['voley','vóley','volei','vólei','volley','volleyball'],
-    atletismo:   ['atletismo','maraton','maratón','100m','100 m','carrera'],
-    tenis:       ['tenis','ping','mesa','ping-pong'],
-    recreativos: ['ajedrez','cubilete','futbolín','futbolin','sapo','recreati'],
-  };
+/* ================================
+   LOADER SAFE
+================================ */
+window.addEventListener("load", () => {
+  const loader = document.getElementById("loader");
+  if(loader){
+    loader.style.opacity = "0";
+    setTimeout(()=> loader.style.display="none", 500);
+  }
+});
 
-  function normStr(s){ return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+/* ================================
+   HERO ANIMACIÓN
+================================ */
+setTimeout(()=>{
+  document.querySelector(".hero").classList.add("show");
+},300);
 
-  function getDisc(disciplinaCell){
-    const n = normStr(disciplinaCell||'');
-    for(const [tab, keys] of Object.entries(DISC_MAP)){
-      if(keys.some(k=>n.includes(k))) return tab;
+
+/* ================================
+   MENÚ
+================================ */
+window.toggleMenu = function(){
+  const nav = document.getElementById('navLinks');
+  const overlay = document.getElementById('menuOverlay');
+  const btn = document.querySelector('.menu-toggle');
+
+  nav.classList.toggle('show');
+  overlay.classList.toggle('active');
+  btn.textContent = nav.classList.contains('show') ? '✖' : '☰';
+};
+
+
+/* ================================
+   FAQ
+================================ */
+window.toggleFaq = function(el){
+  const item = el.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+};
+
+
+/* ================================
+   SCROLL TOP
+================================ */
+const btnTop = document.getElementById("scrollTopBtn");
+window.addEventListener("scroll", () => {
+  btnTop.style.display = window.scrollY > 300 ? "block" : "none";
+});
+btnTop.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
+
+/* ================================
+   NAV SCROLL
+================================ */
+window.addEventListener("scroll", () => {
+  document.querySelector("nav").classList.toggle("scrolled", window.scrollY > 50);
+});
+
+
+/* ================================
+   COUNTDOWN
+================================ */
+const targetDate = new Date("June 28, 2026 08:00:00").getTime();
+setInterval(()=>{
+  const now = Date.now();
+  const diff = targetDate - now;
+
+  const d = Math.floor(diff/(1000*60*60*24));
+  const h = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+  const m = Math.floor((diff%(1000*60*60))/(1000*60));
+
+  document.getElementById("countdown").innerHTML =
+    `⏳ ${d} días ${h}h ${m}m`;
+},1000);
+
+
+/* ================================
+   ANIMACIÓN SCROLL
+================================ */
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add("show");
     }
-    return 'todos';
-  }
+  });
+},{threshold:0.1});
 
-  function estadoBadge(estado){
-    const e = normStr(estado||'');
-    if(e.includes('vivo')||e.includes('live')||e.includes('jugan')) return '<span class="badge-live">EN VIVO</span>';
-    if(e.includes('finaliz')||e.includes('fin')||e.includes('termin')) return '<span class="badge-fin">FINALIZADO</span>';
-    return '<span class="badge-prox">PRÓXIMO</span>';
-  }
+document.querySelectorAll("section, .disc-card, .hotel-card, .fiesta-card")
+.forEach(el=>{
+  el.classList.add("fade-up");
+  observer.observe(el);
+});
 
-  function buildFixtureItem(row){
-    // Columns: Disciplina | Hora | Equipo A | Equipo B | Resultado | Lugar | Estado
-    const [disciplina='', hora='', equipoA='', equipoB='', resultado='', lugar='', estado=''] = row;
-    const vsOrScore = resultado.trim()
-      ? `<div class="fixture-score">${resultado}</div>`
-      : `<div class="fixture-vs">VS</div>`;
-    const badge = estadoBadge(estado);
-    const isLive = normStr(estado).includes('vivo')||normStr(estado).includes('live');
-    return `
-      <div class="fixture-item${isLive?' live':''}">
-        <div class="fixture-date">${hora||'—'}</div>
-        <div class="fixture-team">${equipoA||'—'}${badge}</div>
-        <div>
-          ${vsOrScore}
-          <div class="fixture-sport">${disciplina}</div>
-        </div>
-        <div class="fixture-team right">${equipoB||''}</div>
-        <div class="fixture-lugar">${(lugar||'').replace(/\s/g,'<br>')}</div>
-      </div>`;
-  }
 
-  function renderFixture(rows){
-    // rows[0] = headers, skip it
-    const data = rows.slice(1).filter(r=>r.some(c=>c.trim()));
-
-    // Build panels
-    const panels = { todos:[], futbol:[], baloncesto:[], voley:[], atletismo:[], tenis:[], recreativos:[] };
-
-    data.forEach(row=>{
-      const html = buildFixtureItem(row);
-      panels.todos.push(html);
-      const tab = getDisc(row[0]||'');
-      if(tab !== 'todos') panels[tab].push(html);
-    });
-
-    Object.entries(panels).forEach(([tab, items])=>{
-      const el = document.getElementById('fixtureList' + tab.charAt(0).toUpperCase() + tab.slice(1));
-      if(!el) return;
-      el.innerHTML = items.length
-        ? items.join('')
-        : '<div style="text-align:center;padding:28px;color:#aaa;">Sin partidos para esta disciplina.</div>';
-    });
-
-    // Status
-    const dot = document.getElementById('fixtureStatusDot');
-    const txt = document.getElementById('fixtureStatusText');
-    const upd = document.getElementById('fixtureLastUpdate');
-    const statusBar = document.getElementById('fixtureStatus');
-    statusBar.style.display='flex';
-    dot.style.background='#27ae60';
-    txt.textContent = `${data.length} partidos cargados`;
-    upd.textContent = 'Última actualización: ' + new Date().toLocaleTimeString('es-PE');
-  }
-
-     // Normalize URL — accept normal sheet URL or pub CSV URL
-    let url = raw;
-    if(!url.includes('output=csv')){
-      // Try to convert edit/view URL to CSV export
-      const idMatch = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
-      if(idMatch){
-        url = `https://docs.google.com/spreadsheets/d/${idMatch[1]}/pub?output=csv`;
-      }
+/* ================================
+   FIXTURE
+================================ */
+function parseCSV(text){
+  return text.split('\n').map(line=>{
+    const result=[]; let cur='', inQ=false;
+    for(let i=0;i<line.length;i++){
+      const c=line[i];
+      if(c==='"'){inQ=!inQ;}
+      else if(c===',' && !inQ){ result.push(cur.trim()); cur=''; }
+      else{ cur+=c; }
     }
-    fixtureSheetUrl = url;
+    result.push(cur.trim());
+    return result;
+  }).filter(r=>r.length>1);
+}
 
-    await fetchAndRender();
+function buildItem(row){
+  const [disc='', hora='', a='', b='', res='', lugar='', estado=''] = row;
 
-    // Show refresh button and auto-refresh every 60s
-    document.getElementById('btnRefrescar').style.display='inline-block';
-    if(fixtureRefreshInterval) clearInterval(fixtureRefreshInterval);
-    fixtureRefreshInterval = setInterval(fetchAndRender, 60000);
+  const score = res
+    ? `<div class="fixture-score">${res}</div>`
+    : `<div class="fixture-vs">VS</div>`;
+
+  return `
+  <div class="fixture-item">
+    <div class="fixture-date">${hora}</div>
+    <div class="fixture-team">${a}</div>
+    <div>
+      ${score}
+      <div class="fixture-sport">${disc}</div>
+    </div>
+    <div class="fixture-team right">${b}</div>
+    <div class="fixture-lugar">${lugar.replace(/\s/g,'<br>')}</div>
+  </div>`;
+}
+
+function renderFixture(rows){
+  const data = rows.slice(1).filter(r=>r.some(c=>c));
+
+  const list = document.getElementById('fixtureListTodos');
+
+  list.innerHTML = data.length
+    ? data.map(buildItem).join('')
+    : `<div style="padding:30px;text-align:center;color:#aaa;">Sin datos</div>`;
+}
+
+async function fetchFixture(){
+  try{
+    const res = await fetch(fixtureSheetUrl + '&t=' + Date.now());
+    const text = await res.text();
+    const rows = parseCSV(text);
+    renderFixture(rows);
+  }catch(err){
+    console.error(err);
   }
+}
 
-  async function fetchAndRender(){
-    const statusBar = document.getElementById('fixtureStatus');
-    const dot = document.getElementById('fixtureStatusDot');
-    const txt = document.getElementById('fixtureStatusText');
-    statusBar.style.display='flex';
-    dot.style.background='#f0a500';
-    txt.textContent='Cargando datos...';
+/* ✔ cargar */
+// ✔ carga inicial sin delay raro
+fetchFixture();
 
-    try {
-     const resp = await fetch(fixtureSheetUrl + '&t=' + Date.now());
-      if(!resp.ok) throw new Error('HTTP '+resp.status);
-      const text = await resp.text();
+/* ✔ auto refresh */
+fixtureRefreshInterval = setInterval(fetchFixture, 60000);
 
-      // Parse CSV
-      const rows = text.split('\n').map(line=>{
-        // Basic CSV parse (handles quoted fields)
-        const result=[];let cur='',inQ=false;
-        for(let i=0;i<line.length;i++){
-          const c=line[i];
-          if(c==='"'){inQ=!inQ;}
-          else if(c===','&&!inQ){result.push(cur.trim());cur='';}
-          else{cur+=c;}
-        }
-        result.push(cur.trim());
-        return result;
-      }).filter(r=>r.length>1);
 
-      renderFixture(rows);
-    } catch(e){
-      dot.style.background='#e74c3c';
-      txt.textContent='Error al cargar: ' + e.message + '. Verifica que el Sheet esté publicado como CSV.';
-    }
-  }
+/* ================================
+   MAPA TABS
+================================ */
+window.switchTab = function(btn, id){
+  document.querySelectorAll('.mapa-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.mapa-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(id).classList.add('active');
+};
 
-  async function refrescarFixture(){
-    if(fixtureSheetUrl) await fetchAndRender();
-  }
 
-  window.cargarFixture = cargarFixture;
-  window.refrescarFixture = refrescarFixture;
+/* ================================
+   FIXTURE TABS
+================================ */
+window.switchFixtureTab = function(tab, btn){
+  document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.fpanel').forEach(p=>p.classList.remove('active'));
 
-  /* FIXTURE TABS */
-  function switchFixtureTab(tabId, btn){
-    document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.fpanel').forEach(p=>p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('fp-'+tabId).classList.add('active');
-  }
-  window.switchFixtureTab = switchFixtureTab;
+  btn.classList.add('active');
+  document.getElementById('fp-'+tab).classList.add('active');
+};
 
 });
+</script>
 </script>
 <button id="scrollTopBtn">⬆</button>
 </body>
