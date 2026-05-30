@@ -93,9 +93,9 @@ body{
   align-items: center;
   text-align: center;
 
-  padding: 60px 20px 60px; /* arriba, lados, abajo */
+  padding: 50px 20px 60px; /* arriba, lados, abajo */
   box-sizing: border-box;
-}
+
   /* animación */
   opacity:0;
   transform:scale(1.05);
@@ -530,7 +530,6 @@ button, a{
     flex-wrap:nowrap;
   }
 }
-``
   @media (max-width:768px){
   .hero{
     padding-top: 90px;
@@ -1677,11 +1676,7 @@ let fixtureRefreshInterval = null;
     upd.textContent = 'Última actualización: ' + new Date().toLocaleTimeString('es-PE');
   }
 
-  async function cargarFixture(){
-    const raw = document.getElementById('sheetsUrl').value.trim();
-    if(!raw){ alert('Ingresa la URL de tu Google Sheet publicada como CSV.'); return; }
-
-    // Normalize URL — accept normal sheet URL or pub CSV URL
+     // Normalize URL — accept normal sheet URL or pub CSV URL
     let url = raw;
     if(!url.includes('output=csv')){
       // Try to convert edit/view URL to CSV export
