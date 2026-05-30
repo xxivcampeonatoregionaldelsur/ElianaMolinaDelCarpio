@@ -1568,13 +1568,6 @@ async function fetchFixture(){
     const res = await fetch(fixtureSheetUrl);
     const data = await res.json();
 
-    console.log("DATA:", data); // 🔴 IMPORTANTE
-
-    if(!data || data.length === 0){
-      console.warn("No hay datos en la hoja");
-      return;
-    }
-
     const buckets = {
       todos: [],
       futbol: [],
@@ -1587,9 +1580,6 @@ async function fetchFixture(){
 
     data.forEach(row => {
 
-      const equipoA = row.EquipoA || row["Equipo A"] || row.Local || '';
-      const equipoB = row.EquipoB || row["Equipo B"] || row.Visitante || '';
-
       const estado = (row.Estado || 'PROX').toUpperCase();
 
       const badge =
@@ -1598,24 +1588,69 @@ async function fetchFixture(){
                             '<span class="badge-prox">PRÓXIMO</span>';
 
       const item = `
-        <div class="fixture-item">
+        <div class="fixture-item ${estado === 'LIVE' ? 'live' : ''}">
           <div class="fixture-date">${row.Hora || '-'}</div>
-          <div class="fixture-team">${equipoA}</div>
-          <div>${badge}</div>
-          <div class="fixture-team right">${equipoB}</div>
-          <div class="fixture-lugar">${row.Lugar || ''}</div>
+
+          <div class="fixture-team">${row.EquipoA || ''}</div>
+
+          <div style="text-align:center;">
+            ${
+              row.Resultado
+              ? `<div class="fixture-score">${row.Resultado}</div>`
+              : `<div class="fixture-vs">VS</div>`
+            }
+            ${badge}
+            <div class="fixture-sport">${row.Deporte || ''}</div>
+          </div>
+
+          <div class="fixture-team right">${row.EquipoB || ''}</div>
+
+          <div class="fixture-lugar">
+            ${(row.Lugar || '').replace(/\s/g,'<br>')}
+          </div>
         </div>
       `;
 
+      const dep = (row.Deporte || '').toLowerCase();
+
       buckets.todos.push(item);
+
+      if(dep.includes('futbol') || dep.includes('fútbol')){
+        buckets.futbol.push(item);
+      }else if(dep.includes('baloncesto')){
+        buckets.baloncesto.push(item);
+      }else if(dep.includes('voley') || dep.includes('vóley')){
+        buckets.voley.push(item);
+      }else if(
+        dep.includes('maraton') ||
+        dep.includes('atletismo') ||
+        dep.includes('100')
+      ){
+        buckets.atletismo.push(item);
+      }else if(dep.includes('tenis')){
+        buckets.tenis.push(item);
+      }else{
+        buckets.recreativos.push(item);
+      }
+
     });
 
-    document.getElementById('fixtureListTodos').innerHTML = buckets.todos.join('');
+    // render
+    Object.entries(buckets).forEach(([key, list]) => {
+      const el = document.getElementById(
+        'fixtureList' + key.charAt(0).toUpperCase() + key.slice(1)
+      );
+      if(el) el.innerHTML = list.join('');
+    });
 
   }catch(err){
-    console.error('ERROR REAL:', err);
+    console.error('❌ Error cargando fixture:', err);
   }
 }
+
+/* INIT */
+fetchFixture();
+setInterval(fetchFixture, 60000);
 
 /* ================================
    MAPA TABS
