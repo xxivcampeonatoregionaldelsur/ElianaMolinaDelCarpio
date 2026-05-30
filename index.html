@@ -997,17 +997,20 @@ document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
-  /* LOADER + HERO CINE */
-  LOADER + HERO CINE = document.getElementById("loader");
+  /* LOADER + HERO */
+  const loader = document.getElementById("loader");
+
   if(loader){
-    loader.style.opacity = "0";
     setTimeout(()=>{
-      loader.style.display = "none";
-      document.querySelector(".hero").classList.add("show");
-    },600);
+      loader.style.opacity = "0";
+
+      setTimeout(()=>{
+        loader.style.display = "none";
+        document.querySelector(".hero").classList.add("show");
+      },600);
+
+    },1200);
   }
-},1200);
-setTimeout(()=>{
 
   /* CONTADOR */
   const targetDate = new Date("June 28, 2026 08:00:00").getTime();
@@ -1029,7 +1032,7 @@ setTimeout(()=>{
     document.querySelector("nav").classList.toggle("scrolled", window.scrollY>50);
   });
 
-    /* ANIMACIÓN AL SCROLL */
+  /* ANIMACIÓN SCROLL */
   const observer = new IntersectionObserver(entries=>{
     entries.forEach(entry=>{
       if(entry.isIntersecting){
