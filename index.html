@@ -300,6 +300,46 @@
     transition:0.3s;
   }
 
+  /* ANIMACIONES SCROLL */
+.fade-up{
+  opacity:0;
+  transform:translateY(30px);
+  transition:all 0.6s ease;
+}
+.fade-up.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* BOTÓN SCROLL TOP */
+#scrollTopBtn{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:var(--dorado);
+  color:var(--negro);
+  border:none;
+  padding:12px 16px;
+  font-size:18px;
+  border-radius:50%;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(0,0,0,0.2);
+  display:none;
+  z-index:999;
+  transition:all 0.2s;
+}
+#scrollTopBtn:hover{
+  background:var(--dorado-claro);
+  transform:translateY(-3px);
+}
+
+/* HOVER PRO TARJETAS */
+.disc-card:hover,
+.hotel-card:hover,
+.fiesta-card:hover{
+  transform:translateY(-6px) scale(1.02);
+  box-shadow:0 6px 18px rgba(0,0,0,0.15);
+}
   /* ANIMACIÓN EN CASCADA */
   .nav-links.show a{
     transform:translateX(0);
@@ -813,39 +853,72 @@
 </footer>
 
 <script>
-function toggleFaq(el) {
-  const item = el.parentElement;
-  const isOpen = item.classList.contains('open');
-  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-  if (!isOpen) item.classList.add('open');
-}
+document.addEventListener("DOMContentLoaded", () => {
 
-function switchTab(btn, panelId) {
-  document.querySelectorAll('.mapa-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.mapa-panel').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById(panelId).classList.add('active');
-}
+  /* FAQ */
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+  window.toggleFaq = toggleFaq;
 
-function toggleMenu(){
-  const nav = document.getElementById('navLinks');
-  const overlay = document.getElementById('menuOverlay');
-  const btn = document.querySelector('.menu-toggle');
+  /* TAB MAPAS */
+  function switchTab(btn, panelId) {
+    document.querySelectorAll('.mapa-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.mapa-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(panelId).classList.add('active');
+  }
+  window.switchTab = switchTab;
 
-  nav.classList.toggle('show');
-  overlay.classList.toggle('active');
+  /* MENÚ */
+  window.toggleMenu = function(){
+    const nav = document.getElementById('navLinks');
+    const overlay = document.getElementById('menuOverlay');
+    const btn = document.querySelector('.menu-toggle');
 
-  btn.textContent = nav.classList.contains('show') ? '✖' : '☰';
-}
+    nav.classList.toggle('show');
+    overlay.classList.toggle('active');
+    btn.textContent = nav.classList.contains('show') ? '✖' : '☰';
+  };
 
-/* cerrar menú al hacer clic en links */
-document.querySelectorAll('.nav-links a').forEach(link=>{
-  link.addEventListener('click', ()=>{
-    document.getElementById('navLinks').classList.remove('show');
-    document.getElementById('menuOverlay').classList.remove('active');
-    document.querySelector('.menu-toggle').textContent='☰';
+  /* cerrar menú */
+  document.querySelectorAll('.nav-links a').forEach(link=>{
+    link.addEventListener('click', ()=>{
+      document.getElementById('navLinks').classList.remove('show');
+      document.getElementById('menuOverlay').classList.remove('active');
+      document.querySelector('.menu-toggle').textContent='☰';
+    });
   });
+
+  /* SCROLL TOP */
+  const btnTop = document.getElementById("scrollTopBtn");
+  window.addEventListener("scroll", () => {
+    btnTop.style.display = window.scrollY > 300 ? "block" : "none";
+  });
+
+  btnTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  /* ANIMACIÓN AL SCROLL */
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add("show");
+      }
+    });
+  },{threshold:0.1});
+
+  document.querySelectorAll("section, .disc-card, .hotel-card, .fiesta-card").forEach(el=>{
+    el.classList.add("fade-up");
+    observer.observe(el);
+  });
+
 });
 </script>
+<button id="scrollTopBtn">⬆</button>
 </body>
 </html>
