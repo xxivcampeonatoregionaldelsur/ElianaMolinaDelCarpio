@@ -67,6 +67,67 @@ setTimeout(()=>{
   .btn-primary:hover{background:var(--dorado-claro);transform:translateY(-2px);}
   .btn-secondary{background:transparent;color:var(--blanco);padding:14px 32px;font-weight:700;font-size:0.9rem;letter-spacing:1px;text-transform:uppercase;border:2px solid rgba(255,255,255,0.3);cursor:pointer;border-radius:4px;text-decoration:none;display:inline-block;transition:all 0.2s;}
   .btn-secondary:hover{border-color:var(--dorado);color:var(--dorado);}
+
+   /* HERO CINEMATOGRÁFICO */
+.hero{
+  opacity:0;
+  transform:scale(1.05);
+  transition:all 1.2s ease;
+}
+
+.hero.show{
+  opacity:1;
+  transform:scale(1);
+}
+
+/* ELEMENTOS HERO */
+.hero h1,
+.hero-nombre,
+.hero-sub,
+.hero-fecha,
+.hero-stats,
+.hero-ctas{
+  opacity:0;
+  transform:translateY(40px);
+  transition:all 0.8s ease;
+}
+
+/* ENTRADA ESCALONADA */
+.hero.show h1{
+  opacity:1;
+  transform:translateY(0);
+  transition-delay:0.3s;
+}
+
+.hero.show .hero-nombre{
+  opacity:1;
+  transform:translateY(0);
+  transition-delay:0.5s;
+}
+
+.hero.show .hero-sub{
+  opacity:1;
+  transform:translateY(0);
+  transition-delay:0.7s;
+}
+
+.hero.show .hero-fecha{
+  opacity:1;
+  transform:translateY(0);
+  transition-delay:0.9s;
+}
+
+.hero.show .hero-stats{
+  opacity:1;
+  transform:translateY(0);
+  transition-delay:1.1s;
+}
+
+.hero.show .hero-ctas{
+  opacity:1;
+  transform:translateY(0);
+  transition-delay:1.3s;
+}
   
   /* SECTIONS */
   section{padding:64px 24px;}
@@ -436,67 +497,6 @@ setTimeout(()=>{
     <a href="#disciplinas" class="btn-secondary">Ver Disciplinas →</a>
   </div>
 </section>
-
-  /* HERO CINEMATOGRÁFICO */
-.hero{
-  opacity:0;
-  transform:scale(1.05);
-  transition:all 1.2s ease;
-}
-
-.hero.show{
-  opacity:1;
-  transform:scale(1);
-}
-
-/* ELEMENTOS HERO */
-.hero h1,
-.hero-nombre,
-.hero-sub,
-.hero-fecha,
-.hero-stats,
-.hero-ctas{
-  opacity:0;
-  transform:translateY(40px);
-  transition:all 0.8s ease;
-}
-
-/* ENTRADA ESCALONADA */
-.hero.show h1{
-  opacity:1;
-  transform:translateY(0);
-  transition-delay:0.3s;
-}
-
-.hero.show .hero-nombre{
-  opacity:1;
-  transform:translateY(0);
-  transition-delay:0.5s;
-}
-
-.hero.show .hero-sub{
-  opacity:1;
-  transform:translateY(0);
-  transition-delay:0.7s;
-}
-
-.hero.show .hero-fecha{
-  opacity:1;
-  transform:translateY(0);
-  transition-delay:0.9s;
-}
-
-.hero.show .hero-stats{
-  opacity:1;
-  transform:translateY(0);
-  transition-delay:1.1s;
-}
-
-.hero.show .hero-ctas{
-  opacity:1;
-  transform:translateY(0);
-  transition-delay:1.3s;
-}
   
 <!-- DISCIPLINAS -->
 <section id="disciplinas">
