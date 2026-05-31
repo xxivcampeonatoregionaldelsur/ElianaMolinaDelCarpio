@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>XXIV Campeonato Regional del Sur — Eliana Amparo Molina del Carpio</title>
+<link rel="icon" href="data:,">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
@@ -1732,7 +1733,7 @@ async function fetchFixture() {
   const last  = document.getElementById('fixtureLastUpdate');
 
   try {
-    const res  = await fetch(FIXTURE_URL + '?t=' + Date.now());
+    const res = await fetch(FIXTURE_URL);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
 
@@ -1802,7 +1803,7 @@ async function fetchRanking() {
   const body = document.getElementById('rankingBody');
 
   try {
-    const res  = await fetch(RANKING_URL + '?t=' + Date.now());
+    const res = await fetch(FIXTURE_URL);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
 
