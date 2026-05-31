@@ -914,6 +914,552 @@ body.menu-open {
 .resultados-dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; flex-shrink: 0; transition: background 0.3s; }
 .resultados-dot.ok  { background: #27ae60; }
 .resultados-dot.err { background: #e74c3c; }
+
+/* ============================================================
+   ✨ UPGRADE VISUAL ÉPICO
+============================================================ */
+
+/* — Fuentes adicionales — */
+@import url('https://fonts.googleapis.com/css2?family=Teko:wght@600;700&display=swap');
+
+/* — Canvas de partículas — */
+#heroCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* — Hero mejorado — */
+.hero {
+  background: radial-gradient(ellipse at 20% 50%, #1a0533 0%, #0a0a0a 40%, #0d1a00 70%, #1a0800 100%) !important;
+  overflow: hidden;
+}
+.hero > * { position: relative; z-index: 1; }
+
+/* Líneas de luz diagonal animadas */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background: repeating-linear-gradient(
+    60deg,
+    transparent,
+    transparent 120px,
+    rgba(240,165,0,0.03) 120px,
+    rgba(240,165,0,0.03) 121px
+  );
+  animation: scanlines 8s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes scanlines {
+  0%   { transform: translateX(-60px) translateY(-60px); }
+  100% { transform: translateX(60px)  translateY(60px);  }
+}
+
+/* — Título hero con efecto brillo — */
+.hero h1 {
+  font-size: clamp(2.6rem, 8vw, 6.5rem) !important;
+  line-height: 0.88 !important;
+  letter-spacing: 4px !important;
+  text-shadow: 0 0 40px rgba(240,165,0,0.3), 0 2px 0 rgba(0,0,0,0.8);
+  animation: titlePulse 4s ease-in-out infinite;
+}
+@keyframes titlePulse {
+  0%, 100% { text-shadow: 0 0 40px rgba(240,165,0,0.3), 0 2px 0 rgba(0,0,0,0.8); }
+  50%       { text-shadow: 0 0 80px rgba(240,165,0,0.6), 0 0 120px rgba(200,16,46,0.2), 0 2px 0 rgba(0,0,0,0.8); }
+}
+.hero h1 span {
+  background: linear-gradient(90deg, #F0A500, #FFD166, #F0A500, #C8102E, #F0A500);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 4s ease infinite;
+}
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* — Badge edición pulsante — */
+.hero-badge {
+  background: linear-gradient(135deg, var(--dorado), #ff6b35) !important;
+  box-shadow: 0 0 20px rgba(240,165,0,0.5), 0 0 40px rgba(240,165,0,0.2);
+  animation: badgePulse 2s ease-in-out infinite;
+  border-radius: 30px !important;
+  padding: 8px 24px !important;
+}
+@keyframes badgePulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(240,165,0,0.5), 0 0 40px rgba(240,165,0,0.2); }
+  50%       { box-shadow: 0 0 35px rgba(240,165,0,0.8), 0 0 70px rgba(240,165,0,0.4); }
+}
+
+/* — Stats con contador animado — */
+.hero-stat {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(240,165,0,0.2);
+  border-radius: 12px;
+  padding: 16px 24px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s;
+}
+.hero-stat:hover {
+  border-color: var(--dorado);
+  background: rgba(240,165,0,0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(240,165,0,0.2);
+}
+.hero-stat .num {
+  font-size: 3rem !important;
+  background: linear-gradient(135deg, var(--dorado), var(--dorado-claro));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* — Botón primario con shimmer — */
+.btn-primary {
+  background: linear-gradient(135deg, #F0A500, #FFD166, #F0A500) !important;
+  background-size: 200% !important;
+  box-shadow: 0 6px 25px rgba(240,165,0,0.4) !important;
+  border-radius: 50px !important;
+  padding: 16px 40px !important;
+  font-size: 1rem !important;
+  letter-spacing: 2px !important;
+  animation: shimmer 3s linear infinite;
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -75%;
+  width: 50%;
+  height: 200%;
+  background: rgba(255,255,255,0.3);
+  transform: skewX(-20deg);
+  animation: btnShine 3s ease infinite;
+}
+@keyframes btnShine {
+  0%   { left: -75%; }
+  50%, 100% { left: 150%; }
+}
+@keyframes shimmer {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.btn-primary:hover {
+  transform: translateY(-3px) scale(1.04) !important;
+  box-shadow: 0 12px 40px rgba(240,165,0,0.6) !important;
+}
+
+/* — Fecha con efecto neon — */
+.hero-fecha {
+  border-color: var(--dorado) !important;
+  box-shadow: 0 0 15px rgba(240,165,0,0.3), inset 0 0 15px rgba(240,165,0,0.05);
+  border-radius: 50px !important;
+  padding: 12px 36px !important;
+  background: rgba(240,165,0,0.08);
+  font-size: 1.5rem !important;
+}
+
+/* — Nav con efecto glassmorphism mejorado — */
+nav {
+  border-bottom: 2px solid transparent !important;
+  background: linear-gradient(to bottom, rgba(13,13,13,0.98), rgba(13,13,13,0.95)) !important;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.4), 0 1px 0 rgba(240,165,0,0.3);
+}
+nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--dorado), var(--rojo), var(--dorado), transparent);
+  background-size: 200% 100%;
+  animation: navLine 3s linear infinite;
+}
+@keyframes navLine {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+nav { position: sticky; top: 0; }
+
+/* — Nav logo mejorado — */
+.nav-logo {
+  font-size: 1.1rem !important;
+  background: linear-gradient(135deg, var(--dorado), var(--dorado-claro));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 8px rgba(240,165,0,0.4));
+}
+.nav-logo span {
+  -webkit-text-fill-color: white !important;
+  filter: none;
+}
+
+/* — Section headers mejorados — */
+.section-tag {
+  border-radius: 30px !important;
+  padding: 6px 20px !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 4px !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+.section-title {
+  font-size: clamp(2rem, 5vw, 3.5rem) !important;
+  letter-spacing: 3px !important;
+}
+.divider {
+  width: 80px !important;
+  height: 3px !important;
+  background: linear-gradient(90deg, transparent, var(--dorado), transparent) !important;
+  border-radius: 2px;
+}
+
+/* — Disc cards mejoradas — */
+.disc-card {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+  border: 1px solid rgba(240,165,0,0.15) !important;
+  position: relative;
+  overflow: hidden;
+}
+.disc-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(240,165,0,0.05), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.disc-card:hover::before { opacity: 1; }
+.disc-card:hover {
+  border-color: var(--dorado) !important;
+  transform: translateY(-6px) scale(1.02) !important;
+  box-shadow: 0 16px 40px rgba(240,165,0,0.2) !important;
+}
+.disc-icon { font-size: 2.2rem !important; filter: drop-shadow(0 0 6px rgba(240,165,0,0.4)); }
+
+/* — Tabla de posiciones mejorada — */
+.tabla thead {
+  background: linear-gradient(135deg, #0d0d0d, #1a1a2e) !important;
+}
+.tabla tr:first-child td { 
+  background: rgba(240,165,0,0.08) !important;
+}
+.pts-cell { color: var(--dorado) !important; }
+.pos-num { color: var(--dorado) !important; }
+
+/* — Hotel cards glassmorphism — */
+.hotel-card {
+  border-radius: 16px !important;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12) !important;
+  transition: all 0.35s cubic-bezier(.25,.8,.25,1) !important;
+}
+.hotel-card:hover {
+  transform: translateY(-8px) !important;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.2) !important;
+}
+
+/* — Fiesta cards con glow — */
+.fiesta-card {
+  background: linear-gradient(135deg, #1a1a2e, #0d0d0d) !important;
+  color: white !important;
+  border: 1px solid rgba(240,165,0,0.2) !important;
+  border-radius: 16px !important;
+  transition: all 0.35s !important;
+}
+.fiesta-card:hover {
+  border-color: var(--dorado) !important;
+  box-shadow: 0 0 30px rgba(240,165,0,0.2) !important;
+  transform: translateY(-6px) !important;
+}
+.fiesta-card-icon { filter: drop-shadow(0 0 8px rgba(240,165,0,0.5)); }
+.fiesta-card-title { color: var(--dorado) !important; }
+.fiesta-card-desc  { color: #bbb !important; }
+
+/* — Tour cards — */
+.tour-card {
+  border-radius: 16px !important;
+  transition: all 0.35s !important;
+  overflow: hidden;
+}
+.tour-card:hover {
+  transform: translateY(-8px) !important;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.2) !important;
+}
+
+/* — Botón scroll top mejorado — */
+#scrollTopBtn {
+  background: linear-gradient(135deg, var(--dorado), #ff6b35) !important;
+  border-radius: 50% !important;
+  width: 52px !important;
+  height: 52px !important;
+  font-size: 1.3rem !important;
+  box-shadow: 0 6px 20px rgba(240,165,0,0.4) !important;
+  border: none !important;
+}
+#scrollTopBtn:hover {
+  transform: translateY(-4px) scale(1.1) !important;
+  box-shadow: 0 12px 30px rgba(240,165,0,0.6) !important;
+}
+
+/* — Barra inferior móvil mejorada — */
+#bottomNav {
+  background: rgba(10,10,10,0.97) !important;
+  border-top: 1px solid rgba(240,165,0,0.3) !important;
+  backdrop-filter: blur(20px) !important;
+  box-shadow: 0 -8px 30px rgba(0,0,0,0.4) !important;
+}
+#bottomNav a.active {
+  color: var(--dorado) !important;
+  background: rgba(240,165,0,0.12) !important;
+}
+#bottomNav a .bn-icon { transition: transform 0.2s; }
+#bottomNav a:active .bn-icon { transform: scale(1.3); }
+
+/* — FAQ mejorado — */
+.faq-item {
+  border-radius: 12px !important;
+  overflow: hidden;
+  transition: box-shadow 0.3s !important;
+}
+.faq-item.open {
+  box-shadow: 0 8px 30px rgba(240,165,0,0.1) !important;
+}
+
+/* — Footer mejorado — */
+footer {
+  background: linear-gradient(135deg, #060606, #0d0d18, #060606) !important;
+  border-top: 1px solid rgba(240,165,0,0.2);
+  position: relative;
+  overflow: hidden;
+}
+footer::before {
+  content: '🏆';
+  position: absolute;
+  font-size: 18rem;
+  opacity: 0.03;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* — Animación fade-up más suave — */
+.fade-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s cubic-bezier(.25,.8,.25,1), transform 0.7s cubic-bezier(.25,.8,.25,1);
+}
+.fade-up.show { opacity: 1; transform: translateY(0); }
+
+/* — Efecto "live" pulsante para fixture — */
+.fixture-item.live {
+  box-shadow: 0 0 0 2px var(--rojo), 0 0 20px rgba(200,16,46,0.3) !important;
+  animation: livePulse 2s ease-in-out infinite;
+}
+@keyframes livePulse {
+  0%, 100% { box-shadow: 0 0 0 2px var(--rojo), 0 0 20px rgba(200,16,46,0.3); }
+  50%       { box-shadow: 0 0 0 3px var(--rojo), 0 0 40px rgba(200,16,46,0.5); }
+}
+
+/* — Contacto cards — */
+.contacto-card {
+  border-radius: 16px !important;
+  transition: all 0.3s !important;
+  border: 1px solid transparent !important;
+}
+.contacto-card:hover {
+  border-color: var(--dorado) !important;
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 30px rgba(240,165,0,0.15) !important;
+}
+
+/* — NUEVO: Banner de delegaciones con scroll automático — */
+.delegaciones-banner {
+  background: linear-gradient(135deg, #0d0d0d, #1a1a2e);
+  border-top: 1px solid rgba(240,165,0,0.2);
+  border-bottom: 1px solid rgba(240,165,0,0.2);
+  padding: 14px 0;
+  overflow: hidden;
+  position: relative;
+}
+.delegaciones-banner::before,
+.delegaciones-banner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 80px;
+  z-index: 2;
+  pointer-events: none;
+}
+.delegaciones-banner::before { left: 0;  background: linear-gradient(90deg, #0d0d0d, transparent); }
+.delegaciones-banner::after  { right: 0; background: linear-gradient(-90deg, #0d0d0d, transparent); }
+
+.delegaciones-track {
+  display: flex;
+  gap: 0;
+  animation: scrollTrack 20s linear infinite;
+  width: max-content;
+}
+.delegaciones-track:hover { animation-play-state: paused; }
+.delegacion-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 32px;
+  color: #ccc;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border-right: 1px solid rgba(240,165,0,0.15);
+  transition: color 0.3s;
+}
+.delegacion-item:hover { color: var(--dorado); }
+.delegacion-item span { font-size: 1.4rem; }
+@keyframes scrollTrack {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* — NUEVO: Contador regresivo épico — */
+#countdown {
+  display: flex !important;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 16px !important;
+  font-size: 1rem !important;
+}
+.cd-block {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(240,165,0,0.3);
+  border-radius: 10px;
+  padding: 10px 16px;
+  min-width: 70px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+.cd-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.2rem;
+  color: var(--dorado);
+  line-height: 1;
+  display: block;
+}
+.cd-lbl {
+  font-size: 0.6rem;
+  color: #888;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: block;
+  margin-top: 3px;
+}
+
+/* — NUEVO: Hero scroll indicator — */
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  animation: fadeInOut 2s ease-in-out infinite;
+  z-index: 2;
+}
+.hero-scroll-hint::after {
+  content: '';
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(240,165,0,0.6), transparent);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 1; }
+}
+@keyframes scrollLine {
+  0%   { transform: scaleY(0); transform-origin: top; }
+  50%  { transform: scaleY(1); transform-origin: top; }
+  51%  { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* — NUEVO: Sección de delegaciones participantes — */
+.delegaciones-section {
+  background: linear-gradient(135deg, #0a0a0a 0%, #0d1a2a 50%, #0a0a0a 100%);
+  padding: 60px 20px;
+  text-align: center;
+}
+.delegaciones-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 36px;
+}
+.deleg-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(240,165,0,0.2);
+  border-radius: 16px;
+  padding: 28px 32px;
+  min-width: 160px;
+  text-align: center;
+  transition: all 0.35s;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+.deleg-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(240,165,0,0.08), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.deleg-card:hover { border-color: var(--dorado); transform: translateY(-6px); box-shadow: 0 16px 40px rgba(240,165,0,0.15); }
+.deleg-card:hover::before { opacity: 1; }
+.deleg-flag { font-size: 2.8rem; margin-bottom: 8px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4)); }
+.deleg-nombre {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+  color: var(--dorado);
+  display: block;
+  margin-bottom: 4px;
+}
+.deleg-region { font-size: 0.7rem; color: #666; letter-spacing: 1px; text-transform: uppercase; }
+
+/* — Responsive fixes — */
+@media (max-width: 600px) {
+  .cd-block { min-width: 58px; padding: 8px 10px; }
+  .cd-num   { font-size: 1.8rem; }
+  .delegaciones-grid { gap: 10px; }
+  .deleg-card { min-width: 130px; padding: 20px 20px; }
+}
 </style>
 </head>
 <body>
@@ -923,9 +1469,7 @@ body.menu-open {
   <div class="nav-inner">
     <div class="nav-logo">🏆 <span>CAMPEONATO</span> REGIONAL SUR</div>
     <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">☰</button>
-
     <div class="menu-overlay" id="menuOverlay"></div>
-
     <div class="nav-links" id="navLinks">
       <a href="#disciplinas" data-nav>🏅 Disciplinas</a>
       <a href="#posiciones" data-nav>📊 Posiciones</a>
@@ -942,14 +1486,33 @@ body.menu-open {
   </div>
 </nav>
 
+<!-- BANNER DELEGACIONES — scroll automático -->
+<div class="delegaciones-banner">
+  <div class="delegaciones-track" id="delegTrack">
+    <div class="delegacion-item"><span>🦁</span> Arequipa</div>
+    <div class="delegacion-item"><span>🏔️</span> Cusco</div>
+    <div class="delegacion-item"><span>🌿</span> Madre de Dios</div>
+    <div class="delegacion-item"><span>🦙</span> Puno</div>
+    <div class="delegacion-item"><span>⚓</span> Tacna</div>
+    <div class="delegacion-item"><span>🏆</span> XXIV Campeonato Regional del Sur 2026</div>
+    <div class="delegacion-item"><span>🦁</span> Arequipa</div>
+    <div class="delegacion-item"><span>🏔️</span> Cusco</div>
+    <div class="delegacion-item"><span>🌿</span> Madre de Dios</div>
+    <div class="delegacion-item"><span>🦙</span> Puno</div>
+    <div class="delegacion-item"><span>⚓</span> Tacna</div>
+    <div class="delegacion-item"><span>🏆</span> XXIV Campeonato Regional del Sur 2026</div>
+  </div>
+</div>
+
 <!-- HERO -->
 <section class="hero" id="heroSection">
+  <canvas id="heroCanvas"></canvas>
   <div class="hero-badge hero-anim">⚡ Edición 2026</div>
   <h1 class="hero-anim">XXIV CAMPEONATO<br><span>REGIONAL DEL SUR</span></h1>
   <p class="hero-nombre hero-anim">"Eliana Amparo Molina del Carpio"</p>
   <p class="hero-sub hero-anim">La gran cita del deporte regional</p>
   <div class="hero-fecha hero-anim">📅 28 de Junio, 2026</div>
-  <div id="countdown" class="hero-anim" style="margin-top:10px;font-size:1.1rem;color:var(--dorado-claro);"></div>
+  <div id="countdown" class="hero-anim"></div>
   <div class="hero-stats hero-anim">
     <div class="hero-stat"><div class="num">14</div><div class="lbl">Disciplinas</div></div>
     <div class="hero-stat"><div class="num">5</div><div class="lbl">Delegaciones</div></div>
@@ -959,6 +1522,45 @@ body.menu-open {
   <div class="hero-ctas hero-anim">
     <a href="#registro" class="btn-primary">📋 Registrarse ahora</a>
     <a href="#disciplinas" class="btn-secondary">Ver Disciplinas →</a>
+  </div>
+  <div class="hero-scroll-hint">scroll</div>
+</section>
+
+<!-- DELEGACIONES PARTICIPANTES -->
+<section class="delegaciones-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag" style="background:linear-gradient(135deg,var(--dorado),#ff6b35);color:var(--negro);">Participantes</div>
+      <h2 class="section-title" style="color:white;">Las <span style="color:var(--dorado);">5 Delegaciones</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="delegaciones-grid">
+      <div class="deleg-card fade-up">
+        <div class="deleg-flag">🦁</div>
+        <span class="deleg-nombre">Arequipa</span>
+        <span class="deleg-region">Ciudad Blanca</span>
+      </div>
+      <div class="deleg-card fade-up">
+        <div class="deleg-flag">🏔️</div>
+        <span class="deleg-nombre">Cusco</span>
+        <span class="deleg-region">Ciudad Imperial</span>
+      </div>
+      <div class="deleg-card fade-up">
+        <div class="deleg-flag">🌿</div>
+        <span class="deleg-nombre">Madre de Dios</span>
+        <span class="deleg-region">Capital de la Biodiversidad</span>
+      </div>
+      <div class="deleg-card fade-up">
+        <div class="deleg-flag">🦙</div>
+        <span class="deleg-nombre">Puno</span>
+        <span class="deleg-region">Capital del Folklore</span>
+      </div>
+      <div class="deleg-card fade-up">
+        <div class="deleg-flag">⚓</div>
+        <span class="deleg-nombre">Tacna</span>
+        <span class="deleg-region">Ciudad Heroica</span>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1758,21 +2360,30 @@ window.addEventListener('load', updateActiveBottomNav);
 /* ── HERO ANIMACIÓN ──────────────────────────── */
 setTimeout(() => document.getElementById('heroSection')?.classList.add('show'), 200);
 
-/* ── COUNTDOWN ───────────────────────────────── */
+/* ── COUNTDOWN ÉPICO ─────────────────────────── */
 const targetDate = new Date('June 28, 2026 08:00:00').getTime();
 const countdownEl = document.getElementById('countdown');
 
 function updateCountdown() {
   const diff = targetDate - Date.now();
   if (!countdownEl) return;
-  if (diff <= 0) { countdownEl.textContent = '🏁 Evento en curso'; return; }
+  if (diff <= 0) {
+    countdownEl.innerHTML = '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:2rem;color:var(--dorado);letter-spacing:3px;">🏁 ¡EVENTO EN CURSO!</div>';
+    return;
+  }
   const d = Math.floor(diff / 86400000);
   const h = Math.floor((diff % 86400000) / 3600000);
   const m = Math.floor((diff % 3600000) / 60000);
-  countdownEl.textContent = `⏳ ${d} días ${h}h ${m}m`;
+  const s = Math.floor((diff % 60000) / 1000);
+  countdownEl.innerHTML = `
+    <div class="cd-block"><span class="cd-num">${String(d).padStart(2,'0')}</span><span class="cd-lbl">Días</span></div>
+    <div class="cd-block"><span class="cd-num">${String(h).padStart(2,'0')}</span><span class="cd-lbl">Horas</span></div>
+    <div class="cd-block"><span class="cd-num">${String(m).padStart(2,'0')}</span><span class="cd-lbl">Min</span></div>
+    <div class="cd-block"><span class="cd-num">${String(s).padStart(2,'0')}</span><span class="cd-lbl">Seg</span></div>
+  `;
 }
 updateCountdown();
-setInterval(updateCountdown, 30000);
+setInterval(updateCountdown, 1000);
 
 /* ===== FIX: botón UP correcto en móvil y PC ===== */
 const scrollBtn = document.getElementById('scrollTopBtn');
@@ -1863,7 +2474,54 @@ function fmtTime(ts) {
   return ts ? new Date(ts).toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' }) : '';
 }
 
-/* ── FIXTURE (Google Sheets) ─────────────────── */
+/* ── PARTÍCULAS HERO ─────────────────────────── */
+(function() {
+  const canvas = document.getElementById('heroCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const COLORS = ['rgba(240,165,0,', 'rgba(255,209,102,', 'rgba(200,16,46,', 'rgba(255,255,255,'];
+
+  function rand(a, b) { return Math.random() * (b - a) + a; }
+
+  for (let i = 0; i < 80; i++) {
+    particles.push({
+      x: rand(0, 1), y: rand(0, 1),
+      vx: rand(-0.08, 0.08), vy: rand(-0.15, -0.04),
+      r: rand(1, 3.5),
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      alpha: rand(0.3, 0.9),
+      life: rand(0, 1)
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.life += 0.004;
+      if (p.life > 1) { p.life = 0; p.y = 1.05; p.x = rand(0,1); }
+      const a = p.alpha * Math.sin(p.life * Math.PI);
+      ctx.beginPath();
+      ctx.arc(p.x * W, p.y * H, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + a + ')';
+      ctx.fill();
+      p.x += p.vx * 0.01;
+      p.y += p.vy * 0.01;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── FETCH FIXTURE ───────────────────────────── */
 let fixtureLoaded = false;
 
 async function fetchFixture() {
