@@ -1803,7 +1803,7 @@ async function fetchRanking() {
   const body = document.getElementById('rankingBody');
 
   try {
-    const res = await fetch(FIXTURE_URL);
+    const res = await fetch(RANKING_URL)
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
 
