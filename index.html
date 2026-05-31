@@ -126,12 +126,14 @@ nav.scrolled {
   background: rgba(0,0,0,0.65);
   z-index: 600;
   opacity: 0;
-  transition: opacity 0.3s;
-  pointer-events: none; /* ✅ AGREGA ESTO */
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+  pointer-events: none;
 }
 
 .menu-overlay.active {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
 }
    
@@ -145,7 +147,7 @@ nav.scrolled {
 ============================================================ */
 @media (max-width: 900px) {
   .menu-toggle { display: block; }
-  .menu-overlay { display: block; pointer-events: none; }
+  .menu-overlay { display: block; pointer-events: none; visibility: hidden; }
 
   .nav-links {
     position: fixed;
@@ -862,7 +864,105 @@ button, a { transition: all 0.22s ease; }
 body.menu-open {
   overflow: hidden;
 }
-   
+
+/* ============================================================
+   RESULTADOS POR CATEGORÍA
+============================================================ */
+.resultados-section { margin-top: 44px; }
+.resultados-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.resultados-header h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  color: var(--negro);
+  white-space: nowrap;
+}
+.resultados-header h3 span { color: var(--rojo); }
+.resultados-header::after { content: ''; flex: 1; height: 3px; background: var(--dorado); min-width: 20px; }
+
+.res-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+
+.res-card {
+  background: var(--blanco);
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  overflow: hidden;
+  border-top: 4px solid var(--dorado);
+}
+.res-card-head {
+  background: var(--gris-oscuro);
+  color: var(--blanco);
+  padding: 11px 16px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.res-card-head .res-deporte {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.res-card-head .res-cat {
+  font-size: 0.68rem;
+  color: var(--dorado);
+  letter-spacing: 1px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-left: auto;
+  background: rgba(240,165,0,0.15);
+  padding: 2px 8px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.res-podio { padding: 10px 14px 14px; }
+.res-podio-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 8px;
+  border-radius: 6px;
+  margin-bottom: 5px;
+  font-size: 0.84rem;
+}
+.res-podio-row:last-child { margin-bottom: 0; }
+.res-podio-row.pos-1 { background: rgba(240,165,0,0.12); font-weight: 700; }
+.res-podio-row.pos-2 { background: rgba(192,192,192,0.15); }
+.res-podio-row.pos-3 { background: rgba(205,127,50,0.10); }
+.res-medal { font-size: 1.1rem; flex-shrink: 0; }
+.res-delegacion { flex: 1; font-weight: 600; }
+.res-pts-badge {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  color: var(--rojo);
+  background: rgba(200,16,46,0.08);
+  padding: 2px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.res-empty {
+  text-align: center;
+  padding: 20px;
+  color: #aaa;
+  font-size: 0.82rem;
+}
+.resultados-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: #888;
+  margin-bottom: 14px;
+}
+.resultados-dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; flex-shrink: 0; transition: background 0.3s; }
+.resultados-dot.ok  { background: #27ae60; }
+.resultados-dot.err { background: #e74c3c; }
 </style>
 </head>
 <body>
@@ -979,6 +1079,24 @@ body.menu-open {
       </table>
     </div>
     <p class="tabla-nota">* La tabla se actualiza automáticamente desde Google Sheets cada 60 segundos.</p>
+
+    <!-- RESULTADOS POR CATEGORÍA -->
+    <div class="resultados-section">
+      <div class="resultados-header">
+        <h3>Resultados por <span>Categoría</span></h3>
+      </div>
+
+      <div class="resultados-status">
+        <div class="resultados-dot" id="resultadosDot"></div>
+        <span id="resultadosStatusText">Cargando resultados…</span>
+        <span id="resultadosLastUpdate" style="margin-left:auto;color:#aaa;font-size:0.72rem;"></span>
+      </div>
+
+      <div class="res-grid" id="resultadosGrid">
+        <div style="grid-column:1/-1;text-align:center;padding:28px;color:#aaa;font-size:0.85rem;">Cargando resultados de categorías…</div>
+      </div>
+      <p class="tabla-nota">* Los resultados alimentan automáticamente la tabla de posiciones general.</p>
+    </div>
   </div>
 </section>
 
@@ -1537,13 +1655,13 @@ body.menu-open {
     <div class="mapa-panel" id="tab-isis">
       <div style="background:#f0e6ff;border:2px solid #9B59B6;border-radius:8px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:12px;">
         <span style="font-size:1.6rem;">💃</span>
-        <div><strong style="color:#6C3483;">Concurso de Danzas — 07:00 PM</strong><br><span style="font-size:0.82rem;color:#555;">Este evento se desarrolla en el local de ISIS, Puerto Maldonado</span></div>
+        <div><strong style="color:#6C3483;">Concurso de Danzas — 07:00 PM</strong><br><span style="font-size:0.82rem;color:#555;">Interoceanica Sur 705, Puerto Maldonado 17001</span></div>
       </div>
       <div class="mapa-wrap">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3820!2d-69.1878048!3d-12.5921565!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9167a96d89f9d33f%3A0x9303269e213f39c9!2sPuerto%20Maldonado%2C%20Madre%20de%20Dios!5e0!3m2!1ses!2spe!4v1700000000001" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3820!2d-69.1780000!3d-12.5950000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sInteroceanica+Sur+705%2C+Puerto+Maldonado+17001!5e0!3m2!1ses!2spe!4v1700000000002" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
       <div class="mapa-info">
-        <div class="mapa-item"><div class="mapa-item-icon">📍</div><div class="mapa-item-text"><h4>Local ISIS</h4><p>Puerto Maldonado — Confirmar dirección exacta con la organización</p></div></div>
+        <div class="mapa-item"><div class="mapa-item-icon">📍</div><div class="mapa-item-text"><h4>Local ISIS</h4><p>Interoceanica Sur 705, Puerto Maldonado 17001, Perú</p></div></div>
         <div class="mapa-item"><div class="mapa-item-icon">🕖</div><div class="mapa-item-text"><h4>Hora del evento</h4><p>07:00 PM — 28 de junio de 2026</p></div></div>
         <div class="mapa-item"><div class="mapa-item-icon">📱</div><div class="mapa-item-text"><h4>Consultas</h4><p>Cel: 997 077 837<br>xxivcampeonatoregionaldelsur@gmail.com</p></div></div>
       </div>
@@ -1578,7 +1696,7 @@ body.menu-open {
     <div class="faq-list">
       <div class="faq-item">
         <div class="faq-q" onclick="toggleFaq(this)">¿Cuándo y dónde es el campeonato?<span class="faq-icon">+</span></div>
-        <div class="faq-a">El XXIV Campeonato Regional del Sur "Eliana Amparo Molina del Carpio" se realizará el 28 de junio de 2026 en la IEBR Carlos Fermín Fitzcarrald, Madre de Dios 475, Puerto Maldonado. Las danzas serán a las 07:00 PM y la fiesta de clausura a las 08:00 PM en el local de ISIS.</div>
+        <div class="faq-a">El XXIV Campeonato Regional del Sur "Eliana Amparo Molina del Carpio" se realizará el 28 de junio de 2026 en la IEBR Carlos Fermín Fitzcarrald, Madre de Dios 475, Puerto Maldonado. Las danzas serán a las 07:00 PM y la fiesta de clausura a las 08:00 PM en el local de ISIS (Interoceanica Sur 705, Puerto Maldonado).</div>
       </div>
       <div class="faq-item">
         <div class="faq-q" onclick="toggleFaq(this)">¿Cuántas delegaciones participan y cuáles son?<span class="faq-icon">+</span></div>
@@ -1650,9 +1768,10 @@ body.menu-open {
 ============================================================ -->
 <script>
 /* ── CONFIG ─────────────────────────────────── */
-const FIXTURE_URL  = 'https://opensheet.elk.sh/1q7Z2ktW1ixLFCHJxkE80iddu29qZvwTnfsoEyTESki0/Hoja%201'; // ← Fixture
-const RANKING_URL  = 'https://opensheet.elk.sh/1q7Z2ktW1ixLFCHJxkE80iddu29qZvwTnfsoEyTESki0/Hoja%202'; // ← Ranking
-const POLL_MS      = 60000; // cada 60 seg
+const FIXTURE_URL   = 'https://opensheet.elk.sh/1q7Z2ktW1ixLFCHJxkE80iddu29qZvwTnfsoEyTESki0/Hoja%201'; // ← Fixture
+const RANKING_URL   = 'https://opensheet.elk.sh/1q7Z2ktW1ixLFCHJxkE80iddu29qZvwTnfsoEyTESki0/Hoja%202'; // ← Ranking
+const RESULTADOS_URL= 'https://opensheet.elk.sh/1q7Z2ktW1ixLFCHJxkE80iddu29qZvwTnfsoEyTESki0/Hoja%203'; // ← Resultados por categoría
+const POLL_MS       = 60000; // cada 60 seg
 
 /* ── MENÚ MOBILE ─────────────────────────────── */
 const menuToggle  = document.getElementById('menuToggle');
@@ -1785,6 +1904,22 @@ window.switchFixtureTab = function(tab, btn) {
   document.getElementById('fp-' + tab)?.classList.add('active');
 };
 
+/* ── DICCIONARIO DE DELEGACIONES ─────────────── */
+const DELEGACIONES = {
+  'AQP': 'Arequipa',
+  'CUS': 'Cusco',
+  'MDD': 'Madre de Dios',
+  'PUN': 'Puno',
+  'TAC': 'Tacna'
+};
+
+// Traduce código a nombre completo; si ya es nombre completo lo devuelve igual
+function nombreDelegacion(codigo) {
+  if (!codigo) return '';
+  const c = codigo.trim().toUpperCase();
+  return DELEGACIONES[c] || codigo.trim();
+}
+
 /* ── HELPERS ─────────────────────────────────── */
 function fmtTime(ts) {
   return ts ? new Date(ts).toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' }) : '';
@@ -1823,9 +1958,9 @@ async function fetchFixture() {
       const item = `
         <div class="fixture-item ${estado === 'LIVE' ? 'live' : ''}">
           <div class="fixture-date">${row.Hora || '—'}</div>
-          <div class="fixture-team">${row.EquipoA || ''}</div>
+          <div class="fixture-team">${nombreDelegacion(row.EquipoA || '')}</div>
           <div style="text-align:center;">${scoreHtml}${badge}<div class="fixture-sport">${row.Deporte || ''}</div></div>
-          <div class="fixture-team right">${row.EquipoB || ''}</div>
+          <div class="fixture-team right">${nombreDelegacion(row.EquipoB || '')}</div>
           <div class="fixture-lugar">${(row.Lugar || '').replace(/\s/g,'<br>')}</div>
         </div>`;
 
@@ -1902,7 +2037,7 @@ async function fetchRanking() {
 
     body.innerHTML = sorted.map((row, i) => {
       const pos        = i + 1;
-      const delegacion = row.Delegacion || row.Delegación || row.delegacion || '—';
+      const delegacion = nombreDelegacion(row.Delegacion || row.Delegación || row.delegacion || row.Codigo || row.codigo || '—');
       const grp        = row.PtsGrupales   || row['Pts Grupales']   || row.grupales   || '—';
       const ind        = row.PtsIndividuales|| row['Pts Individuales']|| row.individuales|| '—';
       const total      = row.Total || '—';
@@ -1939,6 +2074,80 @@ async function fetchRanking() {
 
 fetchRanking();
 setInterval(fetchRanking, POLL_MS);
+
+/* ── RESULTADOS POR CATEGORÍA (Google Sheets Hoja 3) ── */
+// Columnas esperadas: Deporte, Categoria, Pos1, Pos2, Pos3, Pos4, Pos5
+// Pos1..Pos5 = nombre de delegación en cada puesto
+async function fetchResultados() {
+  const dot  = document.getElementById('resultadosDot');
+  const txt  = document.getElementById('resultadosStatusText');
+  const last = document.getElementById('resultadosLastUpdate');
+  const grid = document.getElementById('resultadosGrid');
+
+  const MEDALS = ['🥇','🥈','🥉','4°','5°'];
+  const POS_CLASS = ['pos-1','pos-2','pos-3','',''];
+  const ptsGrupal = [15,12,9,6,3];
+  const ptsIndividual = [5,4,3,2,1];
+
+  try {
+    const res = await fetch(RESULTADOS_URL);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+
+    if (!Array.isArray(data) || data.length === 0) {
+      if (grid) grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:28px;color:#aaa;font-size:0.85rem;">Aún no hay resultados publicados.</div>';
+      if (dot) dot.className = 'resultados-dot';
+      if (txt) txt.textContent = 'Sin resultados aún';
+      return;
+    }
+
+    const cards = data.map(row => {
+      const deporte  = row.Deporte   || row.deporte   || '—';
+      const cat      = row.Categoria || row.categoria || row.Categoría || '';
+      const esGrupal = (row.Tipo || row.tipo || 'grupal').toLowerCase().includes('ind') ? false : true;
+      const pts      = esGrupal ? ptsGrupal : ptsIndividual;
+      const puestos  = [row.Pos1||'', row.Pos2||'', row.Pos3||'', row.Pos4||'', row.Pos5||''].map(nombreDelegacion);
+
+      const filas = puestos.map((delegacion, i) => {
+        if (!delegacion) return '';
+        return `<div class="res-podio-row ${POS_CLASS[i] || ''}">
+          <span class="res-medal">${MEDALS[i]}</span>
+          <span class="res-delegacion">${delegacion}</span>
+          <span class="res-pts-badge">+${pts[i]} pts</span>
+        </div>`;
+      }).join('');
+
+      const iconos = {'Fútbol':'⚽','Futbol':'⚽','Baloncesto':'🏀','Vóley':'🏐','Voley':'🏐','Danza':'💃','Ajedrez':'♟️','Cubilete':'🎲','Futbolín':'⚽','Maratón':'🏃','Marathon':'🏃','Tenis de Mesa':'🏓','Sapo':'🐸','100 Metros':'💨'};
+      const icono = Object.entries(iconos).find(([k]) => deporte.includes(k))?.[1] || '🏅';
+
+      return `<div class="res-card">
+        <div class="res-card-head">
+          <span style="font-size:1.2rem;">${icono}</span>
+          <span class="res-deporte">${deporte}</span>
+          ${cat ? `<span class="res-cat">${cat}</span>` : ''}
+        </div>
+        <div class="res-podio">
+          ${filas || '<div class="res-empty">Sin resultados aún</div>'}
+        </div>
+      </div>`;
+    });
+
+    if (grid) grid.innerHTML = cards.join('');
+    if (dot)  dot.className = 'resultados-dot ok';
+    if (txt)  txt.textContent = `${data.length} categorías cargadas`;
+    if (last) last.textContent = 'Actualizado: ' + new Date().toLocaleTimeString('es-PE');
+
+  } catch (err) {
+    console.error('Resultados error:', err);
+    if (grid) grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:28px;color:#aaa;font-size:0.85rem;">Aún no hay resultados publicados.</div>';
+    if (dot)  dot.className = 'resultados-dot err';
+    if (txt)  txt.textContent = 'Sin resultados publicados aún';
+    if (last) last.textContent = new Date().toLocaleTimeString('es-PE');
+  }
+}
+
+fetchResultados();
+setInterval(fetchResultados, POLL_MS);
 </script>
 </body>
 </html>
