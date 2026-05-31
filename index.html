@@ -127,10 +127,14 @@ nav.scrolled {
   z-index: 600;
   opacity: 0;
   transition: opacity 0.3s;
-
   pointer-events: none; /* ✅ AGREGA ESTO */
 }
 
+.menu-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+   
 /* ===== FIX: ocultar botón cerrar menú en desktop ===== */
 .nav-close-btn {
   display: none;
@@ -820,14 +824,6 @@ footer {
   box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
 
-
-/* ============================================================
-   OCULTAR BOTÓN CUANDO ESTE ABIERTO MENÚ
-============================================================ */
-.nav-links.show ~ #scrollTopBtn {
-  display: none !important;
-}
-   
 /* ============================================================
    RESPONSIVE UTILITIES
 ============================================================ */
@@ -854,6 +850,11 @@ footer {
 /* global tap highlight remove */
 * { -webkit-tap-highlight-color: transparent; }
 button, a { transition: all 0.22s ease; }
+
+body.menu-open {
+  overflow: hidden;
+}
+   
 </style>
 </head>
 <body>
@@ -1655,18 +1656,20 @@ function openMenu() {
   navLinks.classList.add('show');
   menuOverlay.classList.add('active');
   menuToggle.textContent = '✖';
-  document.body.style.overflow = 'hidden';
 
-  scrollBtn.style.display = 'none'; /* ✅ AGREGA */
+  document.body.classList.add('menu-open');
+  document.body.style.overflow = 'hidden';
 }
 
 function closeMenu() {
   navLinks.classList.remove('show');
   menuOverlay.classList.remove('active');
   menuToggle.textContent = '☰';
+
+  document.body.classList.remove('menu-open');
   document.body.style.overflow = '';
 
-  toggleScrollBtn(); /* ✅ AGREGA */
+  toggleScrollBtn();
 }
 
    menuToggle.addEventListener('click', () => {
@@ -1703,26 +1706,30 @@ setInterval(updateCountdown, 30000);
 /* ===== FIX: botón UP correcto en móvil y PC ===== */
 const scrollBtn = document.getElementById('scrollTopBtn');
 
-/* Función que controla cuándo se muestra */
 function toggleScrollBtn() {
-  const isMobile = window.innerWidth <= 900;
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-  if (isMobile) {
-    /* ✅ En celular aparece más rápido (mejor UX) */
-    scrollBtn.style.display = window.scrollY > 120 ? 'flex' : 'none';
+  // 🔴 Si el menú está abierto → nunca mostrar botón
+  if (document.body.classList.contains('menu-open')) {
+    scrollBtn.style.display = 'none';
+    return;
+  }
+
+  // ✅ Mostrar correctamente en todos los dispositivos
+  if (scrollTop > 150) {
+    scrollBtn.style.display = 'flex';
   } else {
-    /* ✅ En PC mantiene comportamiento original */
-    scrollBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+    scrollBtn.style.display = 'none';
   }
 }
 
-/* Detecta el scroll */
+// Detecta scroll real (vertical)
 window.addEventListener('scroll', toggleScrollBtn, { passive: true });
 
-/* Se ejecuta al cargar la página */
+// Ejecuta al cargar
 window.addEventListener('load', toggleScrollBtn);
 
-/* Acción del botón */
+// Click del botón
 scrollBtn.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
@@ -1848,13 +1855,6 @@ window.addEventListener('resize', () => {
     closeMenu();
   }
 });
-
-/* ===== FIX: cerrar menú al hacer scroll (UX mejora) ===== */
-window.addEventListener('scroll', () => {
-  if (navLinks.classList.contains('show')) {
-    closeMenu();
-  }
-}, { passive: true });
 
 /* ── RANKING (Google Sheets) ─────────────────── */
 async function fetchRanking() {
