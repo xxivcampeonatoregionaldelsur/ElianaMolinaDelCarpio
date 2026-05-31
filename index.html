@@ -785,29 +785,6 @@ footer {
 .footer-txt { font-size: 0.78rem; line-height: 2; }
 .footer-txt span { color: var(--blanco); }
 
-/* ===== FIX: botón UP consistente en móvil ===== */
-const scrollBtn = document.getElementById('scrollTopBtn');
-
-/* Mostrar solo cuando realmente bajas */
-function toggleScrollBtn() {
-  const isMobile = window.innerWidth <= 900;
-
-  if (isMobile) {
-    // En móvil aparece antes (más usable)
-    scrollBtn.style.display = window.scrollY > 120 ? 'flex' : 'none';
-  } else {
-    // En escritorio mantiene comportamiento normal
-    scrollBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
-  }
-}
-
-window.addEventListener('scroll', toggleScrollBtn, { passive: true });
-window.addEventListener('load', toggleScrollBtn);
-
-scrollBtn.addEventListener('click', () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-   
 /* ============================================================
    SCROLL ANIMATIONS
 ============================================================ */
@@ -818,6 +795,34 @@ scrollBtn.addEventListener('click', () => {
 }
 .fade-up.show { opacity: 1; transform: translateY(0); }
 
+/* ===== BOTÓN SCROLL TOP (VISUAL) ===== */
+#scrollTopBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+
+  width: 44px;
+  height: 44px;
+
+  background: var(--dorado);
+  color: var(--negro);
+
+  border: none;
+  border-radius: 50%;
+
+  display: none; /* ✅ oculto inicialmente */
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+  cursor: pointer;
+
+  z-index: 9999; /* ✅ siempre encima */
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+     
 /* ============================================================
    RESPONSIVE UTILITIES
 ============================================================ */
@@ -1686,14 +1691,32 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 30000);
 
-/* ── SCROLL TOP ──────────────────────────────── */
+/* ===== FIX: botón UP correcto en móvil y PC ===== */
 const scrollBtn = document.getElementById('scrollTopBtn');
-scrollBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
-window.addEventListener('scroll', () => {
-  scrollBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
-}, { passive: true });
-scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
+/* Función que controla cuándo se muestra */
+function toggleScrollBtn() {
+  const isMobile = window.innerWidth <= 900;
+
+  if (isMobile) {
+    /* ✅ En celular aparece más rápido (mejor UX) */
+    scrollBtn.style.display = window.scrollY > 120 ? 'flex' : 'none';
+  } else {
+    /* ✅ En PC mantiene comportamiento original */
+    scrollBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+  }
+}
+
+/* Detecta el scroll */
+window.addEventListener('scroll', toggleScrollBtn, { passive: true });
+
+/* Se ejecuta al cargar la página */
+window.addEventListener('load', toggleScrollBtn);
+
+/* Acción del botón */
+scrollBtn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
 /* ── NAV SCROLLED ────────────────────────────── */
 const mainNav = document.getElementById('mainNav');
 window.addEventListener('scroll', () => {
