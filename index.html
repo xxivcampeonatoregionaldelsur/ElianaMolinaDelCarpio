@@ -104,130 +104,81 @@ nav.scrolled {
 }
 .nav-links a:hover { color: var(--dorado); background: rgba(240,165,0,0.1); }
 
-/* Hamburger */
-.menu-toggle {
-  display: none;
-  font-size: 1.6rem;
-  color: var(--blanco);
-  cursor: pointer;
-  background: none;
-  border: none;
-  line-height: 1;
-  padding: 4px;
-  flex-shrink: 0;
-  -webkit-tap-highlight-color: transparent;
-}
+/* Hamburger — oculto siempre, no se usa más */
+.menu-toggle  { display: none !important; }
+/* Overlay — eliminado */
+.menu-overlay { display: none !important; }
+/* Botón cerrar menú — eliminado */
+.nav-close-btn { display: none !important; }
 
-/* Overlay */
-.menu-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.65);
-  z-index: 600;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s, visibility 0.3s;
-  pointer-events: none;
-}
-
-.menu-overlay.active {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-}
-   
-/* ===== FIX: ocultar botón cerrar menú en desktop ===== */
-.nav-close-btn {
-  display: none;
-}
-   
 /* ============================================================
-   MOBILE NAV
+   BARRA DE NAVEGACIÓN INFERIOR FIJA (móvil ≤ 900px)
+   Siempre visible, sin overlay, sin panel negro.
 ============================================================ */
 @media (max-width: 900px) {
-  .menu-toggle { display: block; }
-  .menu-overlay { display: block; pointer-events: none; visibility: hidden; }
 
+  /* El nav superior se mantiene con logo únicamente */
   .nav-links {
-    position: fixed;
-    top: 0;
-    right: -280px;          /* slide from right */
-    width: 270px;
-    height: 100dvh;
-    background: #111;
-    flex-direction: column;
-    align-items: stretch;
-    padding: 0;
-    gap: 0;
-    z-index: 700;
-    transition: right 0.35s cubic-bezier(.77,0,.18,1);
-    box-shadow: -4px 0 24px rgba(0,0,0,0.4);
-    overflow-y: auto;
-    flex-wrap: nowrap;
+    /* Ocultar del nav superior en móvil */
+    display: none;
   }
 
-  .nav-links.show { right: 0; }
-
-  /* header dentro del menú */
-  .nav-links::before {
-    content: '🏆 MENÚ';
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.1rem;
-    color: var(--dorado);
-    letter-spacing: 2px;
-    padding: 22px 20px 16px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    display: block;
-    flex-shrink: 0;
-  }
-
-  .nav-links a {
+  /* Barra inferior fija */
+  #bottomNav {
     display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 900;
+    background: var(--negro);
+    border-top: 2px solid var(--dorado);
+    height: 58px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 0;
+    /* Permite deslizar horizontalmente para ver todos los ítems */
+  }
+  #bottomNav::-webkit-scrollbar { display: none; }
+
+  #bottomNav a {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 10px;
-    padding: 14px 20px;
-    font-size: 0.85rem;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    color: #ddd;
-    border-radius: 0;
-    transform: translateX(20px);
-    opacity: 0;
-    transition: transform 0.3s, opacity 0.3s, background 0.2s, color 0.2s;
-  }
-  .nav-links a:hover { background: rgba(240,165,0,0.12); color: var(--dorado); }
-
-  .nav-links.show a {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  .nav-links.show a:nth-child(1)  { transition-delay: 0.04s; }
-  .nav-links.show a:nth-child(2)  { transition-delay: 0.08s; }
-  .nav-links.show a:nth-child(3)  { transition-delay: 0.12s; }
-  .nav-links.show a:nth-child(4)  { transition-delay: 0.16s; }
-  .nav-links.show a:nth-child(5)  { transition-delay: 0.20s; }
-  .nav-links.show a:nth-child(6)  { transition-delay: 0.24s; }
-  .nav-links.show a:nth-child(7)  { transition-delay: 0.28s; }
-  .nav-links.show a:nth-child(8)  { transition-delay: 0.32s; }
-  .nav-links.show a:nth-child(9)  { transition-delay: 0.36s; }
-  .nav-links.show a:nth-child(10) { transition-delay: 0.40s; }
-
-  /* botón cerrar al fondo del menú */
-  .nav-close-btn {
-    display: block;
-    margin: 16px 20px 24px;
-    padding: 12px;
-    background: rgba(240,165,0,0.15);
-    color: var(--dorado);
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1rem;
-    letter-spacing: 2px;
-    text-align: center;
-    border: 1px solid rgba(240,165,0,0.3);
-    border-radius: 6px;
-    cursor: pointer;
+    justify-content: center;
+    flex: 0 0 auto;
+    min-width: 62px;
+    padding: 0 8px;
+    color: #aaa;
+    text-decoration: none;
+    font-size: 0.52rem;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    gap: 2px;
+    transition: color 0.2s, background 0.2s;
+    white-space: nowrap;
     -webkit-tap-highlight-color: transparent;
   }
+  #bottomNav a .bn-icon {
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+  #bottomNav a:hover,
+  #bottomNav a.active {
+    color: var(--dorado);
+    background: rgba(240,165,0,0.1);
+  }
+
+  /* Empujar el contenido para que no quede tapado por la barra */
+  body { padding-bottom: 62px; }
+}
+
+/* En desktop, ocultar la barra inferior */
+@media (min-width: 901px) {
+  #bottomNav { display: none; }
 }
 
 /* ============================================================
@@ -1761,6 +1712,20 @@ body.menu-open {
   </p>
 </footer>
 
+<!-- BARRA DE NAVEGACIÓN INFERIOR MÓVIL -->
+<nav id="bottomNav" aria-label="Navegación principal">
+  <a href="#disciplinas"><span class="bn-icon">🏅</span>Disciplinas</a>
+  <a href="#posiciones"><span class="bn-icon">📊</span>Posiciones</a>
+  <a href="#fixture"><span class="bn-icon">📅</span>Fixture</a>
+  <a href="#danzas"><span class="bn-icon">💃</span>Danzas</a>
+  <a href="#fiesta"><span class="bn-icon">🎉</span>Fiesta</a>
+  <a href="#hospedaje"><span class="bn-icon">🏨</span>Hospedaje</a>
+  <a href="#tours"><span class="bn-icon">🌿</span>Tours</a>
+  <a href="#como-llegar"><span class="bn-icon">📍</span>Cómo llegar</a>
+  <a href="#registro"><span class="bn-icon">📝</span>Registro</a>
+  <a href="#faq"><span class="bn-icon">❓</span>Preguntas</a>
+</nav>
+
 <button id="scrollTopBtn" title="Volver arriba">⬆</button>
 
 <!-- ============================================================
@@ -1773,43 +1738,22 @@ const RANKING_URL   = 'https://opensheet.elk.sh/1q7Z2ktW1ixLFCHJxkE80iddu29qZvwT
 const RESULTADOS_URL= 'https://opensheet.elk.sh/1q7Z2ktW1ixLFCHJxkE80iddu29qZvwTnfsoEyTESki0/Hoja%203'; // ← Resultados por categoría
 const POLL_MS       = 60000; // cada 60 seg
 
-/* ── MENÚ MOBILE ─────────────────────────────── */
-const menuToggle  = document.getElementById('menuToggle');
-const navLinks    = document.getElementById('navLinks');
-const menuOverlay = document.getElementById('menuOverlay');
-const navCloseBtn = document.getElementById('navCloseBtn');
+/* ── MENÚ INFERIOR MÓVIL — resaltar ítem activo al scroll ── */
+const bottomNavLinks = document.querySelectorAll('#bottomNav a');
 
-function openMenu() {
-  navLinks.classList.add('show');
-  menuOverlay.classList.add('active');
-  menuToggle.textContent = '✖';
-
-  document.body.classList.add('menu-open');
-  document.body.style.overflow = 'hidden';
+function updateActiveBottomNav() {
+  const scrollY = window.scrollY + 80;
+  let current = '';
+  document.querySelectorAll('section[id], div[id]').forEach(sec => {
+    if (sec.offsetTop <= scrollY) current = sec.id;
+  });
+  bottomNavLinks.forEach(a => {
+    const href = a.getAttribute('href').replace('#', '');
+    a.classList.toggle('active', href === current);
+  });
 }
-
-function closeMenu() {
-  navLinks.classList.remove('show');
-  menuOverlay.classList.remove('active');
-  menuToggle.textContent = '☰';
-
-  document.body.classList.remove('menu-open');
-  document.body.style.overflow = '';
-
-  toggleScrollBtn();
-}
-
-   menuToggle.addEventListener('click', () => {
-  navLinks.classList.contains('show') ? closeMenu() : openMenu();
-});
-
-menuOverlay.addEventListener('click', closeMenu);
-if (navCloseBtn) navCloseBtn.addEventListener('click', closeMenu);
-
-// Cerrar al hacer click en cualquier enlace del menú
-navLinks.querySelectorAll('a[data-nav]').forEach(link => {
-  link.addEventListener('click', closeMenu);
-});
+window.addEventListener('scroll', updateActiveBottomNav, { passive: true });
+window.addEventListener('load', updateActiveBottomNav);
 
 /* ── HERO ANIMACIÓN ──────────────────────────── */
 setTimeout(() => document.getElementById('heroSection')?.classList.add('show'), 200);
@@ -1835,12 +1779,6 @@ const scrollBtn = document.getElementById('scrollTopBtn');
 
 function toggleScrollBtn() {
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-  if (document.body.classList.contains('menu-open')) {
-    scrollBtn.classList.remove('show');
-    return;
-  }
-
   if (scrollTop > 150) {
     scrollBtn.classList.add('show');
   } else {
@@ -1997,12 +1935,7 @@ fetchFixture();
 setInterval(fetchFixture, POLL_MS);
 
 
-/* ===== FIX: cerrar menú al cambiar a escritorio ===== */
-window.addEventListener('resize', () => {
-  if (window.innerWidth > 900) {
-    closeMenu();
-  }
-});
+
 
 /* ── RANKING (Google Sheets) ─────────────────── */
 async function fetchRanking() {
