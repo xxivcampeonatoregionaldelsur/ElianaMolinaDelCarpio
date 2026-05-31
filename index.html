@@ -7,9 +7,6 @@
 <link rel="icon" href="data:,">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
 <style>
-/* ============================================================
-   VARIABLES & RESET
-============================================================ */
 :root {
   --rojo:        #C8102E;
   --rojo-oscuro: #8B0A1E;
@@ -24,1441 +21,412 @@
   --texto:       #2A2A2A;
   --nav-h:       62px;
 }
-
 *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; font-size:clamp(14px,0.85vw + 0.55rem,17px); -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+body { font-family:'Barlow',sans-serif; background:var(--blanco); color:var(--texto); line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
 
-html {
-  scroll-behavior: smooth;
-  font-size: clamp(14px, 0.85vw + 0.55rem, 17px);
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
+/* NAV */
+nav { background:var(--negro); position:sticky; top:0; z-index:500; border-bottom:3px solid var(--dorado); transition:background 0.3s; }
+nav.scrolled { background:rgba(13,13,13,0.92); backdrop-filter:blur(10px); }
+.nav-inner { max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:0 20px; height:var(--nav-h); gap:8px; }
+.nav-logo { font-family:'Bebas Neue',sans-serif; font-size:1rem; color:var(--dorado); letter-spacing:1px; display:flex; align-items:center; gap:8px; white-space:nowrap; flex-shrink:0; }
+.nav-logo span { color:var(--blanco); }
+.nav-links { display:flex; gap:2px; flex-wrap:nowrap; align-items:center; }
+.nav-links a { color:#ccc; text-decoration:none; font-size:0.72rem; font-weight:600; letter-spacing:0.6px; text-transform:uppercase; padding:5px 7px; border-radius:4px; transition:all 0.2s; white-space:nowrap; }
+.nav-links a:hover { color:var(--dorado); background:rgba(240,165,0,0.1); }
+.menu-toggle { display:none !important; }
+.menu-overlay { display:none !important; }
+.nav-close-btn { display:none !important; }
 
-body {
-  font-family: 'Barlow', sans-serif;
-  background: var(--blanco);
-  color: var(--texto);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+/* BOTTOM NAV MÓVIL */
+@media (max-width:900px) {
+  .nav-links { display:none; }
+  #bottomNav { display:flex; position:fixed; bottom:0; left:0; right:0; z-index:900; background:var(--negro); border-top:2px solid var(--dorado); height:58px; overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch; scrollbar-width:none; gap:0; }
+  #bottomNav::-webkit-scrollbar { display:none; }
+  #bottomNav a { display:flex; flex-direction:column; align-items:center; justify-content:center; flex:0 0 auto; min-width:62px; padding:0 8px; color:#aaa; text-decoration:none; font-size:0.52rem; font-weight:700; letter-spacing:0.4px; text-transform:uppercase; gap:2px; transition:color 0.2s,background 0.2s; white-space:nowrap; -webkit-tap-highlight-color:transparent; }
+  #bottomNav a .bn-icon { font-size:1.25rem; line-height:1; }
+  #bottomNav a:hover, #bottomNav a.active { color:var(--dorado); background:rgba(240,165,0,0.1); }
+  body { padding-bottom:62px; }
 }
+@media (min-width:901px) { #bottomNav { display:none; } }
 
-/* ============================================================
-   NAV
-============================================================ */
-nav {
-  background: var(--negro);
-  position: sticky;
-  top: 0;
-  z-index: 500;
-  border-bottom: 3px solid var(--dorado);
-  transition: background 0.3s;
-}
-nav.scrolled {
-  background: rgba(13,13,13,0.92);
-  backdrop-filter: blur(10px);
-}
+/* HERO */
+.hero { background:linear-gradient(135deg,#0a1628 0%,#1a0a0a 50%,#2d1b00 100%); color:var(--blanco); min-height:100svh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:45px 20px 60px; position:relative; overflow:hidden; }
+.hero::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(240,165,0,0.02) 40px,rgba(240,165,0,0.02) 80px); pointer-events:none; }
+.hero-badge { display:inline-block; background:var(--dorado); color:var(--negro); font-family:'Barlow Condensed',sans-serif; font-size:0.75rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; padding:5px 16px; border-radius:2px; margin-bottom:12px; }
+/* ── HERO H1 REDUCIDO para móvil ── */
+.hero h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.5rem,4.5vw,5rem); line-height:0.95; letter-spacing:3px; margin-bottom:8px; }
+.hero h1 span { color:var(--dorado); }
+.hero-nombre { font-family:'Barlow Condensed',sans-serif; font-size:clamp(0.78rem,2vw,1.2rem); letter-spacing:2px; color:#ddd; text-transform:uppercase; font-style:italic; margin-bottom:4px; }
+.hero-sub { font-family:'Barlow Condensed',sans-serif; font-size:0.88rem; letter-spacing:3px; color:#888; text-transform:uppercase; margin-bottom:10px; }
+.hero-fecha { display:inline-block; border:2px solid var(--dorado); padding:7px 20px; border-radius:4px; font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:3px; color:var(--dorado); margin-bottom:10px; }
+.hero-stats { display:flex; justify-content:center; gap:18px; flex-wrap:wrap; margin-top:8px; }
+.hero-stat .num { font-family:'Bebas Neue',sans-serif; font-size:2rem; color:var(--dorado); line-height:1; }
+.hero-stat .lbl { font-size:0.65rem; color:#aaa; letter-spacing:2px; text-transform:uppercase; margin-top:2px; }
+.hero-ctas { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:16px; }
+.btn-primary { background:var(--dorado); color:var(--negro); padding:12px 28px; font-weight:700; font-size:0.85rem; letter-spacing:1px; text-transform:uppercase; border:none; cursor:pointer; border-radius:6px; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-primary:hover { background:var(--dorado-claro); transform:translateY(-2px); }
+.btn-secondary { background:transparent; color:var(--blanco); padding:10px 22px; font-weight:700; font-size:0.82rem; letter-spacing:1px; text-transform:uppercase; border:2px solid rgba(255,255,255,0.3); cursor:pointer; border-radius:4px; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-secondary:hover { border-color:var(--dorado); color:var(--dorado); }
+.hero-anim { opacity:0; transform:translateY(30px); transition:opacity 0.7s ease,transform 0.7s ease; }
+.hero.show .hero-anim { opacity:1; transform:translateY(0); }
+.hero.show .hero-anim:nth-child(1) { transition-delay:0.15s; }
+.hero.show .hero-anim:nth-child(2) { transition-delay:0.30s; }
+.hero.show .hero-anim:nth-child(3) { transition-delay:0.45s; }
+.hero.show .hero-anim:nth-child(4) { transition-delay:0.58s; }
+.hero.show .hero-anim:nth-child(5) { transition-delay:0.70s; }
+.hero.show .hero-anim:nth-child(6) { transition-delay:0.82s; }
+.hero.show .hero-anim:nth-child(7) { transition-delay:0.94s; }
 
-.nav-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  height: var(--nav-h);
-  gap: 8px;
-}
+/* SECTIONS */
+section { padding:60px 20px; }
+.container { width:min(1200px,94%); margin:0 auto; }
+.section-header { text-align:center; margin-bottom:44px; }
+.section-tag { display:inline-block; background:var(--rojo); color:var(--blanco); font-size:0.68rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; padding:4px 14px; border-radius:2px; margin-bottom:10px; }
+.section-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.8rem,4vw,2.8rem); letter-spacing:2px; color:var(--negro); }
+.section-title span { color:var(--rojo); }
+.divider { width:60px; height:4px; background:var(--dorado); margin:10px auto 0; }
 
-.nav-logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1rem;
-  color: var(--dorado);
-  letter-spacing: 1px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.nav-logo span { color: var(--blanco); }
+/* DISCIPLINAS */
+.disc-block { margin-bottom:36px; }
+.disc-block-title { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; letter-spacing:2px; color:var(--negro); margin-bottom:6px; display:flex; align-items:center; gap:10px; }
+.disc-block-title::after { content:''; flex:1; height:2px; background:var(--dorado); }
+.disc-pts { font-size:0.78rem; color:#666; font-weight:600; margin-bottom:14px; background:var(--gris-claro); padding:7px 14px; border-radius:4px; display:inline-block; }
+.disc-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:12px; }
+.disc-card { background:var(--gris-oscuro); color:var(--blanco); border-radius:8px; padding:20px 14px; text-align:center; border:1px solid rgba(240,165,0,0.15); transition:all 0.25s; }
+.disc-card:hover { border-color:var(--dorado); transform:translateY(-4px); box-shadow:0 6px 18px rgba(0,0,0,0.2); }
+.disc-icon { font-size:1.8rem; margin-bottom:6px; }
+.disc-name { font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; line-height:1.3; }
+.disc-sub { font-size:0.7rem; color:#aaa; margin-top:4px; }
 
-/* Desktop links */
-.nav-links {
-  display: flex;
-  gap: 2px;
-  flex-wrap: nowrap;
-  align-items: center;
-}
-.nav-links a {
-  color: #ccc;
-  text-decoration: none;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
-  padding: 5px 7px;
-  border-radius: 4px;
-  transition: all 0.2s;
-  white-space: nowrap;
-}
-.nav-links a:hover { color: var(--dorado); background: rgba(240,165,0,0.1); }
+/* TABLA */
+.bg-gris { background:var(--gris-claro); }
+.tabla-wrap { overflow-x:auto; }
+.tabla { width:100%; border-collapse:collapse; background:var(--blanco); border-radius:8px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.07); }
+.tabla thead { background:var(--gris-oscuro); color:var(--blanco); }
+.tabla th { padding:13px 12px; font-size:0.7rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; text-align:center; }
+.tabla th:nth-child(2) { text-align:left; padding-left:18px; }
+.tabla td { padding:11px 10px; text-align:center; font-size:0.85rem; border-bottom:1px solid #eee; }
+.tabla td:nth-child(2) { text-align:left; padding-left:18px; font-weight:700; }
+.tabla tr:last-child td { border-bottom:none; }
+.tabla tr:hover td { background:rgba(240,165,0,0.05); }
+.pos-num { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; color:#bbb; }
+.pts-cell { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; color:var(--rojo); }
+.tabla-nota { text-align:center; margin-top:12px; font-size:0.78rem; color:#888; }
+.ranking-status { display:flex; align-items:center; gap:8px; font-size:0.75rem; color:#888; margin-bottom:10px; }
+.ranking-dot { width:8px; height:8px; border-radius:50%; background:#ccc; flex-shrink:0; transition:background 0.3s; }
+.ranking-dot.ok  { background:#27ae60; }
+.ranking-dot.err { background:#e74c3c; }
 
-/* Hamburger — oculto siempre, no se usa más */
-.menu-toggle  { display: none !important; }
-/* Overlay — eliminado */
-.menu-overlay { display: none !important; }
-/* Botón cerrar menú — eliminado */
-.nav-close-btn { display: none !important; }
-
-/* ============================================================
-   BARRA DE NAVEGACIÓN INFERIOR FIJA (móvil ≤ 900px)
-   Siempre visible, sin overlay, sin panel negro.
-============================================================ */
-@media (max-width: 900px) {
-
-  /* El nav superior se mantiene con logo únicamente */
-  .nav-links {
-    /* Ocultar del nav superior en móvil */
-    display: none;
-  }
-
-  /* Barra inferior fija */
-  #bottomNav {
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 900;
-    background: var(--negro);
-    border-top: 2px solid var(--dorado);
-    height: 58px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    gap: 0;
-    /* Permite deslizar horizontalmente para ver todos los ítems */
-  }
-  #bottomNav::-webkit-scrollbar { display: none; }
-
-  #bottomNav a {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex: 0 0 auto;
-    min-width: 62px;
-    padding: 0 8px;
-    color: #aaa;
-    text-decoration: none;
-    font-size: 0.52rem;
-    font-weight: 700;
-    letter-spacing: 0.4px;
-    text-transform: uppercase;
-    gap: 2px;
-    transition: color 0.2s, background 0.2s;
-    white-space: nowrap;
-    -webkit-tap-highlight-color: transparent;
-  }
-  #bottomNav a .bn-icon {
-    font-size: 1.25rem;
-    line-height: 1;
-  }
-  #bottomNav a:hover,
-  #bottomNav a.active {
-    color: var(--dorado);
-    background: rgba(240,165,0,0.1);
-  }
-
-  /* Empujar el contenido para que no quede tapado por la barra */
-  body { padding-bottom: 62px; }
-}
-
-/* En desktop, ocultar la barra inferior */
-@media (min-width: 901px) {
-  #bottomNav { display: none; }
-}
-
-/* ============================================================
-   HERO
-============================================================ */
-.hero {
-  background: linear-gradient(135deg,#0a1628 0%,#1a0a0a 50%,#2d1b00 100%);
-  color: var(--blanco);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 45px 20px 60px;
-  position: relative;
-  overflow: hidden;
-}
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(240,165,0,0.02) 40px,rgba(240,165,0,0.02) 80px);
-  pointer-events: none;
-}
-
-.hero-badge {
-  display: inline-block;
-  background: var(--dorado);
-  color: var(--negro);
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  padding: 6px 20px;
-  border-radius: 2px;
-  margin-bottom: 16px;
-}
-.hero h1 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(2.2rem,6vw,5rem);
-  line-height: 0.95;
-  letter-spacing: 3px;
-  margin-bottom: 8px;
-}
-.hero h1 span { color: var(--dorado); }
-.hero-nombre {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: clamp(0.95rem,2.5vw,1.4rem);
-  letter-spacing: 2px;
-  color: #ddd;
-  text-transform: uppercase;
-  font-style: italic;
-  margin-bottom: 6px;
-}
-.hero-sub {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1rem;
-  letter-spacing: 4px;
-  color: #888;
-  text-transform: uppercase;
-  margin-bottom: 14px;
-}
-.hero-fecha {
-  display: inline-block;
-  border: 2px solid var(--dorado);
-  padding: 9px 26px;
-  border-radius: 4px;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.3rem;
-  letter-spacing: 3px;
-  color: var(--dorado);
-  margin-bottom: 12px;
-}
-.hero-stats {
-  display: flex;
-  justify-content: center;
-  gap: 32px;
-  flex-wrap: wrap;
-  margin-top: 10px;
-}
-.hero-stat .num {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 2.4rem;
-  color: var(--dorado);
-  line-height: 1;
-}
-.hero-stat .lbl {
-  font-size: 0.7rem;
-  color: #aaa;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-top: 3px;
-}
-.hero-ctas {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 20px;
-}
-.btn-primary {
-  background: var(--dorado);
-  color: var(--negro);
-  padding: 14px 32px;
-  font-weight: 700;
-  font-size: 0.9rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  border: none;
-  cursor: pointer;
-  border-radius: 6px;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
-}
-.btn-primary:hover { background: var(--dorado-claro); transform: translateY(-2px); }
-.btn-secondary {
-  background: transparent;
-  color: var(--blanco);
-  padding: 12px 28px;
-  font-weight: 700;
-  font-size: 0.85rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  border: 2px solid rgba(255,255,255,0.3);
-  cursor: pointer;
-  border-radius: 4px;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
-}
-.btn-secondary:hover { border-color: var(--dorado); color: var(--dorado); }
-
-/* Hero animation */
-.hero-anim {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.hero.show .hero-anim { opacity: 1; transform: translateY(0); }
-.hero.show .hero-anim:nth-child(1) { transition-delay: 0.15s; }
-.hero.show .hero-anim:nth-child(2) { transition-delay: 0.30s; }
-.hero.show .hero-anim:nth-child(3) { transition-delay: 0.45s; }
-.hero.show .hero-anim:nth-child(4) { transition-delay: 0.58s; }
-.hero.show .hero-anim:nth-child(5) { transition-delay: 0.70s; }
-.hero.show .hero-anim:nth-child(6) { transition-delay: 0.82s; }
-.hero.show .hero-anim:nth-child(7) { transition-delay: 0.94s; }
-
-/* ============================================================
-   SECTIONS
-============================================================ */
-section { padding: 60px 20px; }
-.container { width: min(1200px, 94%); margin: 0 auto; }
-.section-header { text-align: center; margin-bottom: 44px; }
-.section-tag {
-  display: inline-block;
-  background: var(--rojo);
-  color: var(--blanco);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  padding: 4px 14px;
-  border-radius: 2px;
-  margin-bottom: 10px;
-}
-.section-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(1.8rem,4vw,2.8rem);
-  letter-spacing: 2px;
-  color: var(--negro);
-}
-.section-title span { color: var(--rojo); }
-.divider { width: 60px; height: 4px; background: var(--dorado); margin: 10px auto 0; }
-
-/* ============================================================
-   DISCIPLINAS
-============================================================ */
-.disc-block { margin-bottom: 36px; }
-.disc-block-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.4rem;
-  letter-spacing: 2px;
-  color: var(--negro);
-  margin-bottom: 6px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.disc-block-title::after { content: ''; flex: 1; height: 2px; background: var(--dorado); }
-.disc-pts {
-  font-size: 0.78rem;
-  color: #666;
-  font-weight: 600;
-  margin-bottom: 14px;
-  background: var(--gris-claro);
-  padding: 7px 14px;
-  border-radius: 4px;
-  display: inline-block;
-}
-.disc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-.disc-card {
-  background: var(--gris-oscuro);
-  color: var(--blanco);
-  border-radius: 8px;
-  padding: 20px 14px;
-  text-align: center;
-  border: 1px solid rgba(240,165,0,0.15);
-  transition: all 0.25s;
-}
-.disc-card:hover { border-color: var(--dorado); transform: translateY(-4px); box-shadow: 0 6px 18px rgba(0,0,0,0.2); }
-.disc-icon { font-size: 1.8rem; margin-bottom: 6px; }
-.disc-name {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  line-height: 1.3;
-}
-.disc-sub { font-size: 0.7rem; color: #aaa; margin-top: 4px; }
-
-/* ============================================================
-   TABLA DE POSICIONES
-============================================================ */
-.bg-gris { background: var(--gris-claro); }
-.tabla-wrap { overflow-x: auto; }
-.tabla {
-  width: 100%;
-  border-collapse: collapse;
-  background: var(--blanco);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-}
-.tabla thead { background: var(--gris-oscuro); color: var(--blanco); }
-.tabla th {
-  padding: 13px 12px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  text-align: center;
-}
-.tabla th:nth-child(2) { text-align: left; padding-left: 18px; }
-.tabla td { padding: 11px 10px; text-align: center; font-size: 0.85rem; border-bottom: 1px solid #eee; }
-.tabla td:nth-child(2) { text-align: left; padding-left: 18px; font-weight: 700; }
-.tabla tr:last-child td { border-bottom: none; }
-.tabla tr:hover td { background: rgba(240,165,0,0.05); }
-.pos-num { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: #bbb; }
-.pts-cell { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: var(--rojo); }
-.tabla-nota { text-align: center; margin-top: 12px; font-size: 0.78rem; color: #888; }
-
-/* Ranking loading indicator */
-.ranking-status {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.75rem;
-  color: #888;
-  margin-bottom: 10px;
-}
-.ranking-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: #ccc;
-  flex-shrink: 0;
-  transition: background 0.3s;
-}
-.ranking-dot.ok  { background: #27ae60; }
-.ranking-dot.err { background: #e74c3c; }
-
-/* ============================================================
-   FIXTURE
-============================================================ */
-.fixture-list { display: flex; flex-direction: column; gap: 8px; }
-.fixture-item {
-  background: var(--blanco);
-  border-radius: 8px;
-  padding: 12px 16px;
-  display: grid;
-  grid-template-columns: 80px 1fr auto 1fr 100px;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  border-left: 4px solid var(--dorado);
-}
-.fixture-date { font-size: 0.72rem; font-weight: 700; color: #888; text-align: center; line-height: 1.4; }
-.fixture-team { font-weight: 700; font-size: 0.85rem; }
-.fixture-team.right { text-align: right; }
-.fixture-vs {
-  text-align: center;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.2rem;
-  color: var(--rojo);
-  letter-spacing: 2px;
-}
-.fixture-sport {
-  font-size: 0.65rem;
-  text-align: center;
-  color: var(--blanco);
-  background: var(--gris-oscuro);
-  padding: 3px 7px;
-  border-radius: 20px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-.fixture-lugar { font-size: 0.7rem; color: #888; text-align: center; line-height: 1.4; }
-.fixture-score {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.5rem;
-  color: var(--negro);
-  text-align: center;
-  letter-spacing: 2px;
-  line-height: 1;
-}
-
-/* Live states */
-.fixture-item.live { border-left-color: #e74c3c; animation: pulseLive 1.5s infinite; }
+/* FIXTURE */
+.fixture-list { display:flex; flex-direction:column; gap:8px; }
+.fixture-item { background:var(--blanco); border-radius:8px; padding:12px 16px; display:grid; grid-template-columns:80px 1fr auto 1fr 100px; align-items:center; gap:8px; box-shadow:0 2px 8px rgba(0,0,0,0.06); border-left:4px solid var(--dorado); }
+.fixture-date { font-size:0.72rem; font-weight:700; color:#888; text-align:center; line-height:1.4; }
+.fixture-team { font-weight:700; font-size:0.85rem; }
+.fixture-team.right { text-align:right; }
+.fixture-vs { text-align:center; font-family:'Bebas Neue',sans-serif; font-size:1.2rem; color:var(--rojo); letter-spacing:2px; }
+.fixture-sport { font-size:0.65rem; text-align:center; color:var(--blanco); background:var(--gris-oscuro); padding:3px 7px; border-radius:20px; font-weight:600; letter-spacing:1px; text-transform:uppercase; }
+.fixture-lugar { font-size:0.7rem; color:#888; text-align:center; line-height:1.4; }
+.fixture-score { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:var(--negro); text-align:center; letter-spacing:2px; line-height:1; }
+.fixture-item.live { border-left-color:#e74c3c; animation:pulseLive 1.5s infinite; }
 @keyframes pulseLive { 0%,100%{border-left-color:#e74c3c;} 50%{border-left-color:#ff8a80;} }
-.badge-live {
-  display: inline-block; background: #e74c3c; color: white;
-  font-size: 0.6rem; font-weight: 700; padding: 2px 6px;
-  border-radius: 3px; letter-spacing: 1px; animation: pulseLive 1s infinite; margin-left: 4px;
+.badge-live { display:inline-block; background:#e74c3c; color:white; font-size:0.6rem; font-weight:700; padding:2px 6px; border-radius:3px; letter-spacing:1px; animation:pulseLive 1s infinite; margin-left:4px; }
+.badge-fin  { display:inline-block; background:#27ae60; color:white; font-size:0.6rem; font-weight:700; padding:2px 6px; border-radius:3px; letter-spacing:1px; margin-left:4px; }
+.badge-prox { display:inline-block; background:#95a5a6; color:white; font-size:0.6rem; font-weight:700; padding:2px 6px; border-radius:3px; letter-spacing:1px; margin-left:4px; }
+.fixture-tabs-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:4px; margin-bottom:16px; }
+.fixture-tabs-inner { display:flex; gap:6px; width:max-content; }
+.ftab { padding:8px 14px; font-weight:700; font-size:0.72rem; letter-spacing:0.7px; text-transform:uppercase; border:2px solid #ddd; border-radius:20px; cursor:pointer; transition:all 0.2s; background:var(--blanco); color:#666; white-space:nowrap; -webkit-tap-highlight-color:transparent; }
+.ftab.active { background:var(--gris-oscuro); color:var(--dorado); border-color:var(--gris-oscuro); }
+.ftab:hover:not(.active) { border-color:var(--dorado); color:var(--negro); }
+/* Tab especial Final */
+.ftab.final-tab { border-color:var(--dorado); color:var(--dorado); }
+.ftab.final-tab.active { background:linear-gradient(135deg,#1a1200,#2a1d00); border-color:var(--dorado); }
+.fpanel { display:none; }
+.fpanel.active { display:block; }
+.fixture-status { display:flex; align-items:center; gap:8px; background:var(--gris-claro); border-radius:6px; padding:7px 14px; margin-bottom:12px; font-size:0.75rem; color:#666; }
+.fixture-status-dot { width:8px; height:8px; border-radius:50%; background:#ccc; flex-shrink:0; transition:background 0.3s; }
+.fixture-status-dot.ok  { background:#27ae60; }
+.fixture-status-dot.err { background:#e74c3c; }
+
+/* DANZAS / FIESTA */
+.fiesta-bg { background:linear-gradient(135deg,#2D6A4F 0%,#1B4332 40%,#0a2018 100%); color:var(--blanco); }
+.fiesta-bg .section-title { color:var(--blanco); }
+.fiesta-bg .section-tag { background:var(--dorado); color:var(--negro); }
+.fiesta-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:18px; }
+.fiesta-card { background:rgba(255,255,255,0.08); border:1px solid rgba(240,165,0,0.25); border-radius:10px; padding:24px 20px; }
+.fiesta-card-icon { font-size:2.4rem; margin-bottom:10px; }
+.fiesta-card-title { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:2px; color:var(--dorado); margin-bottom:6px; }
+.fiesta-card-desc { font-size:0.85rem; color:#ccc; line-height:1.7; }
+.fiesta-badge { display:inline-block; background:var(--dorado); color:var(--negro); font-size:0.66rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:3px 10px; border-radius:2px; margin-top:10px; }
+.criterios-wrap { background:rgba(255,255,255,0.06); border:1px solid rgba(240,165,0,0.2); border-radius:10px; padding:24px; margin-bottom:28px; }
+.criterios-title { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; letter-spacing:2px; color:var(--dorado); margin-bottom:16px; }
+.criterio-row { display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px solid rgba(255,255,255,0.08); }
+.criterio-row:last-child { border-bottom:none; }
+.criterio-nombre { font-size:0.88rem; font-weight:600; letter-spacing:1px; text-transform:uppercase; }
+.criterio-pts { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:var(--dorado); }
+.criterio-row.total { background:rgba(240,165,0,0.1); border-radius:6px; padding:11px 10px; margin-top:6px; }
+.criterio-row.total .criterio-nombre { color:var(--dorado); }
+.criterio-row.total .criterio-pts { color:var(--blanco); font-size:1.8rem; }
+
+/* MAPAS */
+.mapa-tabs { display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap; }
+.mapa-tab { padding:9px 20px; font-weight:700; font-size:0.78rem; letter-spacing:1px; text-transform:uppercase; border:2px solid #ddd; border-radius:4px; cursor:pointer; transition:all 0.2s; background:var(--blanco); color:#666; }
+.mapa-tab.active { background:var(--negro); color:var(--dorado); border-color:var(--negro); }
+.mapa-panel { display:none; }
+.mapa-panel.active { display:block; }
+.mapa-wrap { border-radius:12px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,0.15); }
+.mapa-wrap iframe { width:100%; height:360px; border:none; display:block; }
+.mapa-info { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; margin-top:16px; }
+.mapa-item { background:var(--gris-claro); border-radius:8px; padding:12px 16px; display:flex; gap:10px; align-items:flex-start; }
+.mapa-item-icon { font-size:1.2rem; }
+.mapa-item-text h4 { font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:3px; }
+.mapa-item-text p { font-size:0.77rem; color:#666; line-height:1.5; }
+
+/* HOSPEDAJE */
+.hotel-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:20px; }
+.hotel-card { background:var(--blanco); border-radius:10px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.08); transition:transform 0.2s; }
+.hotel-card:hover { transform:translateY(-4px); }
+.hotel-header { padding:20px; color:var(--blanco); }
+.hotel-header.h1 { background:linear-gradient(135deg,#C8102E,#8B0A1E); }
+.hotel-header.h2 { background:linear-gradient(135deg,#1A1A2E,#2C2C3E); }
+.hotel-header.h3 { background:linear-gradient(135deg,#2D6A4F,#1B4332); }
+.hotel-name { font-family:'Barlow Condensed',sans-serif; font-size:1.2rem; font-weight:700; }
+.hotel-body { padding:16px 18px; }
+.hotel-feature { display:flex; align-items:center; gap:7px; font-size:0.8rem; margin-bottom:5px; color:#555; }
+.btn-reservar { background:var(--negro); color:var(--blanco); padding:8px 13px; font-size:0.72rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; border:none; cursor:pointer; border-radius:4px; text-decoration:none; display:inline-block; transition:background 0.2s; -webkit-tap-highlight-color:transparent; }
+.btn-reservar:hover { background:var(--rojo); }
+
+/* TOURS */
+.tour-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:22px; }
+.tour-card { background:white; border-radius:12px; overflow:hidden; box-shadow:0 3px 16px rgba(0,0,0,0.10); }
+.tour-header { padding:20px 22px; color:white; }
+.tour-pkg { border-radius:4px; padding:10px 13px; margin-bottom:10px; }
+.tour-pkg-title { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:0.85rem; letter-spacing:1px; margin-bottom:5px; }
+.tour-pkg-detail { font-size:0.75rem; color:#555; display:flex; flex-direction:column; gap:2px; }
+.tour-footer { padding:12px 20px 16px; display:flex; gap:8px; flex-wrap:wrap; border-top:1px solid #eee; margin-top:8px; }
+
+/* REGISTRO */
+.registro-link-bg { background:linear-gradient(135deg,var(--rojo-oscuro),var(--negro)); }
+.registro-link-box { max-width:600px; margin:0 auto; text-align:center; padding:16px; }
+.registro-link-box .section-title { color:var(--blanco); }
+.registro-link-box p { color:#bbb; font-size:0.9rem; margin:14px 0 28px; line-height:1.7; }
+.btn-registro-ext { background:var(--dorado); color:var(--negro); padding:16px 44px; font-weight:700; font-size:0.95rem; letter-spacing:2px; text-transform:uppercase; border:none; cursor:pointer; border-radius:6px; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-registro-ext:hover { background:var(--dorado-claro); transform:translateY(-2px); }
+
+/* FAQ */
+.faq-list { max-width:760px; margin:0 auto; }
+.faq-item { border-bottom:1px solid #e5e5e5; padding:16px 0; }
+.faq-q { display:flex; justify-content:space-between; align-items:center; font-family:'Barlow Condensed',sans-serif; font-size:1rem; font-weight:700; cursor:pointer; letter-spacing:0.5px; user-select:none; -webkit-tap-highlight-color:transparent; }
+.faq-q:hover { color:var(--rojo); }
+.faq-icon { font-size:1.2rem; color:var(--dorado); transition:transform 0.3s; flex-shrink:0; margin-left:12px; }
+.faq-a { display:none; margin-top:9px; font-size:0.87rem; color:#555; line-height:1.7; }
+.faq-item.open .faq-a { display:block; }
+.faq-item.open .faq-icon { transform:rotate(45deg); }
+
+/* CONTACTO */
+.contacto-bg { background:var(--negro); color:var(--blanco); }
+.contacto-bg .section-title { color:var(--blanco); }
+.contacto-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:16px; max-width:880px; margin:0 auto; }
+.contacto-card { background:rgba(255,255,255,0.05); border:1px solid rgba(240,165,0,0.2); border-radius:10px; padding:20px; display:flex; gap:12px; align-items:flex-start; }
+.contacto-icon { font-size:1.7rem; flex-shrink:0; }
+.contacto-info h4 { font-family:'Barlow Condensed',sans-serif; font-size:0.9rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--dorado); margin-bottom:4px; }
+.contacto-info p, .contacto-info a { font-size:0.8rem; color:#ccc; line-height:1.6; text-decoration:none; display:block; word-break:break-all; }
+.contacto-info a:hover { color:var(--dorado); }
+
+/* FOOTER */
+footer { background:#050505; color:#666; padding:32px 20px; text-align:center; border-top:3px solid var(--dorado); }
+.footer-logo { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; color:var(--dorado); letter-spacing:2px; margin-bottom:8px; }
+.footer-txt { font-size:0.78rem; line-height:2; }
+.footer-txt span { color:var(--blanco); }
+
+/* SCROLL ANIMATIONS */
+.fade-up { opacity:0; transform:translateY(28px); transition:opacity 0.55s ease,transform 0.55s ease; }
+.fade-up.show { opacity:1; transform:translateY(0); }
+
+/* SCROLL TOP BTN */
+#scrollTopBtn { position:fixed; bottom:20px; right:20px; width:44px; height:44px; background:var(--dorado); color:var(--negro); border:none; border-radius:50%; display:flex; opacity:0; pointer-events:none; align-items:center; justify-content:center; font-size:18px; cursor:pointer; z-index:1000; transform:translateZ(0); transition:opacity 0.25s ease; }
+#scrollTopBtn.show { opacity:1; pointer-events:auto; }
+
+/* RESPONSIVE */
+@media (max-width:640px) {
+  section { padding:48px 16px; }
+  .disc-grid { grid-template-columns:1fr 1fr; }
+  .fiesta-grid, .hotel-grid, .tour-grid { grid-template-columns:1fr; }
+  .fixture-item { grid-template-columns:1fr; gap:4px; }
+  .fixture-team.right { text-align:left; }
+  .fixture-lugar { text-align:left; }
+  .hero { padding-top:90px; }
+  .hero-stats { gap:12px; }
 }
-.badge-fin {
-  display: inline-block; background: #27ae60; color: white;
-  font-size: 0.6rem; font-weight: 700; padding: 2px 6px;
-  border-radius: 3px; letter-spacing: 1px; margin-left: 4px;
-}
-.badge-prox {
-  display: inline-block; background: #95a5a6; color: white;
-  font-size: 0.6rem; font-weight: 700; padding: 2px 6px;
-  border-radius: 3px; letter-spacing: 1px; margin-left: 4px;
+@media (max-width:480px) {
+  .hero h1 { font-size:1.5rem; }
+  .hero-stat .num { font-size:1.7rem; }
+  .hero-sub { letter-spacing:2px; font-size:0.8rem; }
 }
 
-/* Fixture tabs */
-.fixture-tabs-wrap {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 4px;
-  margin-bottom: 16px;
-}
-.fixture-tabs-inner { display: flex; gap: 6px; width: max-content; }
-.ftab {
-  padding: 8px 14px;
-  font-weight: 700;
-  font-size: 0.72rem;
-  letter-spacing: 0.7px;
-  text-transform: uppercase;
-  border: 2px solid #ddd;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.2s;
-  background: var(--blanco);
-  color: #666;
-  white-space: nowrap;
-  -webkit-tap-highlight-color: transparent;
-}
-.ftab.active { background: var(--gris-oscuro); color: var(--dorado); border-color: var(--gris-oscuro); }
-.ftab:hover:not(.active) { border-color: var(--dorado); color: var(--negro); }
-.fpanel { display: none; }
-.fpanel.active { display: block; }
+* { -webkit-tap-highlight-color:transparent; }
+button, a { transition:all 0.22s ease; }
 
-/* Fixture status bar */
-.fixture-status {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--gris-claro);
-  border-radius: 6px;
-  padding: 7px 14px;
-  margin-bottom: 12px;
-  font-size: 0.75rem;
-  color: #666;
-}
-.fixture-status-dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; flex-shrink: 0; transition: background 0.3s; }
-.fixture-status-dot.ok  { background: #27ae60; }
-.fixture-status-dot.err { background: #e74c3c; }
+/* RESULTADOS */
+.resultados-section { margin-top:44px; }
+.resultados-header { display:flex; align-items:center; gap:12px; margin-bottom:20px; }
+.resultados-header h3 { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:2px; color:var(--negro); white-space:nowrap; }
+.resultados-header h3 span { color:var(--rojo); }
+.resultados-header::after { content:''; flex:1; height:3px; background:var(--dorado); min-width:20px; }
+.res-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px; }
+.res-card { background:var(--blanco); border-radius:10px; box-shadow:0 2px 12px rgba(0,0,0,0.08); overflow:hidden; border-top:4px solid var(--dorado); }
+.res-card-head { background:var(--gris-oscuro); color:var(--blanco); padding:11px 16px; display:flex; align-items:center; gap:9px; }
+.res-card-head .res-deporte { font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
+.res-card-head .res-cat { font-size:0.68rem; color:var(--dorado); letter-spacing:1px; font-weight:600; text-transform:uppercase; margin-left:auto; background:rgba(240,165,0,0.15); padding:2px 8px; border-radius:3px; flex-shrink:0; }
+.res-podio { padding:10px 14px 14px; }
+.res-podio-row { display:flex; align-items:center; gap:10px; padding:7px 8px; border-radius:6px; margin-bottom:5px; font-size:0.84rem; }
+.res-podio-row:last-child { margin-bottom:0; }
+.res-podio-row.pos-1 { background:rgba(240,165,0,0.12); font-weight:700; }
+.res-podio-row.pos-2 { background:rgba(192,192,192,0.15); }
+.res-podio-row.pos-3 { background:rgba(205,127,50,0.10); }
+.res-medal { font-size:1.1rem; flex-shrink:0; }
+.res-delegacion { flex:1; font-weight:600; }
+.res-pts-badge { font-family:'Bebas Neue',sans-serif; font-size:1rem; color:var(--rojo); background:rgba(200,16,46,0.08); padding:2px 8px; border-radius:4px; flex-shrink:0; }
+.res-empty { text-align:center; padding:20px; color:#aaa; font-size:0.82rem; }
+.resultados-status { display:flex; align-items:center; gap:8px; font-size:0.75rem; color:#888; margin-bottom:14px; }
+.resultados-dot { width:8px; height:8px; border-radius:50%; background:#ccc; flex-shrink:0; transition:background 0.3s; }
+.resultados-dot.ok  { background:#27ae60; }
+.resultados-dot.err { background:#e74c3c; }
 
-/* ============================================================
-   DANZAS / FIESTA
-============================================================ */
-.fiesta-bg {
-  background: linear-gradient(135deg,#2D6A4F 0%,#1B4332 40%,#0a2018 100%);
-  color: var(--blanco);
-}
-.fiesta-bg .section-title { color: var(--blanco); }
-.fiesta-bg .section-tag { background: var(--dorado); color: var(--negro); }
-.fiesta-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
-.fiesta-card {
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(240,165,0,0.25);
-  border-radius: 10px;
-  padding: 24px 20px;
-}
-.fiesta-card-icon { font-size: 2.4rem; margin-bottom: 10px; }
-.fiesta-card-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 2px; color: var(--dorado); margin-bottom: 6px; }
-.fiesta-card-desc { font-size: 0.85rem; color: #ccc; line-height: 1.7; }
-.fiesta-badge {
-  display: inline-block; background: var(--dorado); color: var(--negro);
-  font-size: 0.66rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-  padding: 3px 10px; border-radius: 2px; margin-top: 10px;
-}
-
-/* Criterios danza */
-.criterios-wrap {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(240,165,0,0.2);
-  border-radius: 10px;
-  padding: 24px;
-  margin-bottom: 28px;
-}
-.criterios-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 2px; color: var(--dorado); margin-bottom: 16px; }
-.criterio-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
-.criterio-row:last-child { border-bottom: none; }
-.criterio-nombre { font-size: 0.88rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
-.criterio-pts { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--dorado); }
-.criterio-row.total { background: rgba(240,165,0,0.1); border-radius: 6px; padding: 11px 10px; margin-top: 6px; }
-.criterio-row.total .criterio-nombre { color: var(--dorado); }
-.criterio-row.total .criterio-pts { color: var(--blanco); font-size: 1.8rem; }
-
-/* ============================================================
-   MAPAS
-============================================================ */
-.mapa-tabs { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
-.mapa-tab {
-  padding: 9px 20px; font-weight: 700; font-size: 0.78rem; letter-spacing: 1px;
-  text-transform: uppercase; border: 2px solid #ddd; border-radius: 4px;
-  cursor: pointer; transition: all 0.2s; background: var(--blanco); color: #666;
-}
-.mapa-tab.active { background: var(--negro); color: var(--dorado); border-color: var(--negro); }
-.mapa-panel { display: none; }
-.mapa-panel.active { display: block; }
-.mapa-wrap { border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
-.mapa-wrap iframe { width: 100%; height: 360px; border: none; display: block; }
-.mapa-info { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 16px; }
-.mapa-item { background: var(--gris-claro); border-radius: 8px; padding: 12px 16px; display: flex; gap: 10px; align-items: flex-start; }
-.mapa-item-icon { font-size: 1.2rem; }
-.mapa-item-text h4 { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
-.mapa-item-text p { font-size: 0.77rem; color: #666; line-height: 1.5; }
-
-/* ============================================================
-   HOSPEDAJE
-============================================================ */
-.hotel-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 20px; }
-.hotel-card { background: var(--blanco); border-radius: 10px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); transition: transform 0.2s; }
-.hotel-card:hover { transform: translateY(-4px); }
-.hotel-header { padding: 20px; color: var(--blanco); }
-.hotel-header.h1 { background: linear-gradient(135deg,#C8102E,#8B0A1E); }
-.hotel-header.h2 { background: linear-gradient(135deg,#1A1A2E,#2C2C3E); }
-.hotel-header.h3 { background: linear-gradient(135deg,#2D6A4F,#1B4332); }
-.hotel-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; font-weight: 700; }
-.hotel-body { padding: 16px 18px; }
-.hotel-feature { display: flex; align-items: center; gap: 7px; font-size: 0.8rem; margin-bottom: 5px; color: #555; }
-.btn-reservar {
-  background: var(--negro); color: var(--blanco);
-  padding: 8px 13px; font-size: 0.72rem; font-weight: 700; letter-spacing: 1px;
-  text-transform: uppercase; border: none; cursor: pointer; border-radius: 4px;
-  text-decoration: none; display: inline-block;
-  transition: background 0.2s;
-  -webkit-tap-highlight-color: transparent;
-}
-.btn-reservar:hover { background: var(--rojo); }
-
-/* ============================================================
-   TOURS — agencias
-============================================================ */
-.tour-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 22px; }
-.tour-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 3px 16px rgba(0,0,0,0.10); }
-.tour-header { padding: 20px 22px; color: white; }
-.tour-pkg {
-  border-radius: 4px;
-  padding: 10px 13px;
-  margin-bottom: 10px;
-}
-.tour-pkg-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 700;
-  font-size: 0.85rem;
-  letter-spacing: 1px;
-  margin-bottom: 5px;
-}
-.tour-pkg-detail { font-size: 0.75rem; color: #555; display: flex; flex-direction: column; gap: 2px; }
-.tour-footer {
-  padding: 12px 20px 16px;
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  border-top: 1px solid #eee;
-  margin-top: 8px;
-}
-
-/* ============================================================
-   REGISTRO
-============================================================ */
-.registro-link-bg { background: linear-gradient(135deg,var(--rojo-oscuro),var(--negro)); }
-.registro-link-box { max-width: 600px; margin: 0 auto; text-align: center; padding: 16px; }
-.registro-link-box .section-title { color: var(--blanco); }
-.registro-link-box p { color: #bbb; font-size: 0.9rem; margin: 14px 0 28px; line-height: 1.7; }
-.btn-registro-ext {
-  background: var(--dorado); color: var(--negro); padding: 16px 44px;
-  font-weight: 700; font-size: 0.95rem; letter-spacing: 2px; text-transform: uppercase;
-  border: none; cursor: pointer; border-radius: 6px; text-decoration: none;
-  display: inline-block; transition: all 0.2s;
-}
-.btn-registro-ext:hover { background: var(--dorado-claro); transform: translateY(-2px); }
-
-/* ============================================================
-   FAQ
-============================================================ */
-.faq-list { max-width: 760px; margin: 0 auto; }
-.faq-item { border-bottom: 1px solid #e5e5e5; padding: 16px 0; }
-.faq-q {
-  display: flex; justify-content: space-between; align-items: center;
-  font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700;
-  cursor: pointer; letter-spacing: 0.5px; user-select: none;
-  -webkit-tap-highlight-color: transparent;
-}
-.faq-q:hover { color: var(--rojo); }
-.faq-icon { font-size: 1.2rem; color: var(--dorado); transition: transform 0.3s; flex-shrink: 0; margin-left: 12px; }
-.faq-a { display: none; margin-top: 9px; font-size: 0.87rem; color: #555; line-height: 1.7; }
-.faq-item.open .faq-a { display: block; }
-.faq-item.open .faq-icon { transform: rotate(45deg); }
-
-/* ============================================================
-   CONTACTO
-============================================================ */
-.contacto-bg { background: var(--negro); color: var(--blanco); }
-.contacto-bg .section-title { color: var(--blanco); }
-.contacto-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; max-width: 880px; margin: 0 auto; }
-.contacto-card {
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(240,165,0,0.2);
-  border-radius: 10px; padding: 20px; display: flex; gap: 12px; align-items: flex-start;
-}
-.contacto-icon { font-size: 1.7rem; flex-shrink: 0; }
-.contacto-info h4 {
-  font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; font-weight: 700;
-  letter-spacing: 1px; text-transform: uppercase; color: var(--dorado); margin-bottom: 4px;
-}
-.contacto-info p, .contacto-info a {
-  font-size: 0.8rem; color: #ccc; line-height: 1.6;
-  text-decoration: none; display: block; word-break: break-all;
-}
-.contacto-info a:hover { color: var(--dorado); }
-
-/* ============================================================
-   FOOTER
-============================================================ */
-footer {
-  background: #050505; color: #666; padding: 32px 20px;
-  text-align: center; border-top: 3px solid var(--dorado);
-}
-.footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: var(--dorado); letter-spacing: 2px; margin-bottom: 8px; }
-.footer-txt { font-size: 0.78rem; line-height: 2; }
-.footer-txt span { color: var(--blanco); }
-
-/* ============================================================
-   SCROLL ANIMATIONS
-============================================================ */
-.fade-up {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.55s ease, transform 0.55s ease;
-}
-.fade-up.show { opacity: 1; transform: translateY(0); }
-
-/* ===== BOTÓN SCROLL TOP (VISUAL) ===== */
-#scrollTopBtn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-
-  width: 44px;
-  height: 44px;
-
-  background: var(--dorado);
-  color: var(--negro);
-
-  border: none;
-  border-radius: 50%;
-
-  display: flex;           /* ✅ SIEMPRE visible estructuralmente */
-  opacity: 0;              /* ✅ oculto visualmente */
-  pointer-events: none;    /* ✅ no interactivo */
-
-  align-items: center;
-  justify-content: center;
-
-  font-size: 18px;
-  cursor: pointer;
-
-  z-index: 1000;           /* ✅ más bajo pero estable */
-
-  transform: translateZ(0); /* ✅ FIX MÓVILES (clave) */
-  transition: opacity 0.25s ease;
-}
-
-#scrollTopBtn.show {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* ============================================================
-   RESPONSIVE UTILITIES
-============================================================ */
-@media (max-width: 640px) {
-  section { padding: 48px 16px; }
-  .disc-grid { grid-template-columns: 1fr 1fr; }
-  .fiesta-grid, .hotel-grid, .tour-grid { grid-template-columns: 1fr; }
-  .fixture-item {
-    grid-template-columns: 1fr;
-    gap: 4px;
-  }
-  .fixture-team.right { text-align: left; }
-  .fixture-lugar { text-align: left; }
-  .hero { padding-top: 90px; }
-  .hero-stats { gap: 20px; }
-}
-
-@media (max-width: 480px) {
-  .hero h1 { font-size: 2rem; }
-  .hero-stat .num { font-size: 2rem; }
-  .hero-sub { letter-spacing: 2px; font-size: 0.88rem; }
-}
-
-/* global tap highlight remove */
-* { -webkit-tap-highlight-color: transparent; }
-button, a { transition: all 0.22s ease; }
-
-body.menu-open {
-  overflow: hidden;
-}
-
-/* ============================================================
-   RESULTADOS POR CATEGORÍA
-============================================================ */
-.resultados-section { margin-top: 44px; }
-.resultados-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-.resultados-header h3 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.5rem;
-  letter-spacing: 2px;
-  color: var(--negro);
-  white-space: nowrap;
-}
-.resultados-header h3 span { color: var(--rojo); }
-.resultados-header::after { content: ''; flex: 1; height: 3px; background: var(--dorado); min-width: 20px; }
-
-.res-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
-
-.res-card {
-  background: var(--blanco);
-  border-radius: 10px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-  overflow: hidden;
-  border-top: 4px solid var(--dorado);
-}
-.res-card-head {
-  background: var(--gris-oscuro);
-  color: var(--blanco);
-  padding: 11px 16px;
-  display: flex;
-  align-items: center;
-  gap: 9px;
-}
-.res-card-head .res-deporte {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-.res-card-head .res-cat {
-  font-size: 0.68rem;
-  color: var(--dorado);
-  letter-spacing: 1px;
-  font-weight: 600;
-  text-transform: uppercase;
-  margin-left: auto;
-  background: rgba(240,165,0,0.15);
-  padding: 2px 8px;
-  border-radius: 3px;
-  flex-shrink: 0;
-}
-.res-podio { padding: 10px 14px 14px; }
-.res-podio-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 7px 8px;
-  border-radius: 6px;
-  margin-bottom: 5px;
-  font-size: 0.84rem;
-}
-.res-podio-row:last-child { margin-bottom: 0; }
-.res-podio-row.pos-1 { background: rgba(240,165,0,0.12); font-weight: 700; }
-.res-podio-row.pos-2 { background: rgba(192,192,192,0.15); }
-.res-podio-row.pos-3 { background: rgba(205,127,50,0.10); }
-.res-medal { font-size: 1.1rem; flex-shrink: 0; }
-.res-delegacion { flex: 1; font-weight: 600; }
-.res-pts-badge {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1rem;
-  color: var(--rojo);
-  background: rgba(200,16,46,0.08);
-  padding: 2px 8px;
-  border-radius: 4px;
-  flex-shrink: 0;
-}
-.res-empty {
-  text-align: center;
-  padding: 20px;
-  color: #aaa;
-  font-size: 0.82rem;
-}
-.resultados-status {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.75rem;
-  color: #888;
-  margin-bottom: 14px;
-}
-.resultados-dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; flex-shrink: 0; transition: background 0.3s; }
-.resultados-dot.ok  { background: #27ae60; }
-.resultados-dot.err { background: #e74c3c; }
-
-/* ============================================================
-   ✨ UPGRADE VISUAL ÉPICO
-============================================================ */
-
-/* — Fuentes adicionales — */
+/* ── UPGRADE VISUAL ÉPICO ── */
 @import url('https://fonts.googleapis.com/css2?family=Teko:wght@600;700&display=swap');
 
-/* — Canvas de partículas — */
-#heroCanvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
+#heroCanvas { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:0; }
 
-/* — Hero mejorado — */
-.hero {
-  background: radial-gradient(ellipse at 20% 50%, #1a0533 0%, #0a0a0a 40%, #0d1a00 70%, #1a0800 100%) !important;
-  overflow: hidden;
-}
-.hero > * { position: relative; z-index: 1; }
+.hero { background:radial-gradient(ellipse at 20% 50%,#1a0533 0%,#0a0a0a 40%,#0d1a00 70%,#1a0800 100%) !important; overflow:hidden; }
+.hero > * { position:relative; z-index:1; }
 
-/* Líneas de luz diagonal animadas */
-.hero::after {
-  content: '';
-  position: absolute;
-  inset: -50%;
-  background: repeating-linear-gradient(
-    60deg,
-    transparent,
-    transparent 120px,
-    rgba(240,165,0,0.03) 120px,
-    rgba(240,165,0,0.03) 121px
-  );
-  animation: scanlines 8s linear infinite;
-  pointer-events: none;
-  z-index: 0;
-}
-@keyframes scanlines {
-  0%   { transform: translateX(-60px) translateY(-60px); }
-  100% { transform: translateX(60px)  translateY(60px);  }
-}
+.hero::after { content:''; position:absolute; inset:-50%; background:repeating-linear-gradient(60deg,transparent,transparent 120px,rgba(240,165,0,0.03) 120px,rgba(240,165,0,0.03) 121px); animation:scanlines 8s linear infinite; pointer-events:none; z-index:0; }
+@keyframes scanlines { 0%{transform:translateX(-60px) translateY(-60px);} 100%{transform:translateX(60px) translateY(60px);} }
 
-/* — Título hero con efecto brillo — */
-.hero h1 {
-  font-size: clamp(2.6rem, 8vw, 6.5rem) !important;
-  line-height: 0.88 !important;
-  letter-spacing: 4px !important;
-  text-shadow: 0 0 40px rgba(240,165,0,0.3), 0 2px 0 rgba(0,0,0,0.8);
-  animation: titlePulse 4s ease-in-out infinite;
-}
-@keyframes titlePulse {
-  0%, 100% { text-shadow: 0 0 40px rgba(240,165,0,0.3), 0 2px 0 rgba(0,0,0,0.8); }
-  50%       { text-shadow: 0 0 80px rgba(240,165,0,0.6), 0 0 120px rgba(200,16,46,0.2), 0 2px 0 rgba(0,0,0,0.8); }
-}
-.hero h1 span {
-  background: linear-gradient(90deg, #F0A500, #FFD166, #F0A500, #C8102E, #F0A500);
-  background-size: 300% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradientShift 4s ease infinite;
-}
-@keyframes gradientShift {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+/* HERO H1 override épico — REDUCIDO */
+.hero h1 { font-size:clamp(1.7rem,5.5vw,6.5rem) !important; line-height:0.88 !important; letter-spacing:4px !important; text-shadow:0 0 40px rgba(240,165,0,0.3),0 2px 0 rgba(0,0,0,0.8); animation:titlePulse 4s ease-in-out infinite; }
+@keyframes titlePulse { 0%,100%{text-shadow:0 0 40px rgba(240,165,0,0.3),0 2px 0 rgba(0,0,0,0.8);} 50%{text-shadow:0 0 80px rgba(240,165,0,0.6),0 0 120px rgba(200,16,46,0.2),0 2px 0 rgba(0,0,0,0.8);} }
+.hero h1 span { background:linear-gradient(90deg,#F0A500,#FFD166,#F0A500,#C8102E,#F0A500); background-size:300% 100%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; animation:gradientShift 4s ease infinite; }
+@keyframes gradientShift { 0%{background-position:0% 50%;} 50%{background-position:100% 50%;} 100%{background-position:0% 50%;} }
 
-/* — Badge edición pulsante — */
-.hero-badge {
-  background: linear-gradient(135deg, var(--dorado), #ff6b35) !important;
-  box-shadow: 0 0 20px rgba(240,165,0,0.5), 0 0 40px rgba(240,165,0,0.2);
-  animation: badgePulse 2s ease-in-out infinite;
-  border-radius: 30px !important;
-  padding: 8px 24px !important;
-}
-@keyframes badgePulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(240,165,0,0.5), 0 0 40px rgba(240,165,0,0.2); }
-  50%       { box-shadow: 0 0 35px rgba(240,165,0,0.8), 0 0 70px rgba(240,165,0,0.4); }
-}
+.hero-badge { background:linear-gradient(135deg,var(--dorado),#ff6b35) !important; box-shadow:0 0 20px rgba(240,165,0,0.5),0 0 40px rgba(240,165,0,0.2); animation:badgePulse 2s ease-in-out infinite; border-radius:30px !important; padding:6px 18px !important; }
+@keyframes badgePulse { 0%,100%{box-shadow:0 0 20px rgba(240,165,0,0.5),0 0 40px rgba(240,165,0,0.2);} 50%{box-shadow:0 0 35px rgba(240,165,0,0.8),0 0 70px rgba(240,165,0,0.4);} }
 
-/* — Stats con contador animado — */
-.hero-stat {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(240,165,0,0.2);
-  border-radius: 12px;
-  padding: 16px 24px;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s;
-}
-.hero-stat:hover {
-  border-color: var(--dorado);
-  background: rgba(240,165,0,0.1);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(240,165,0,0.2);
-}
-.hero-stat .num {
-  font-size: 3rem !important;
-  background: linear-gradient(135deg, var(--dorado), var(--dorado-claro));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+.hero-stat { background:rgba(255,255,255,0.05); border:1px solid rgba(240,165,0,0.2); border-radius:12px; padding:12px 18px; backdrop-filter:blur(10px); transition:all 0.3s; }
+.hero-stat:hover { border-color:var(--dorado); background:rgba(240,165,0,0.1); transform:translateY(-4px); box-shadow:0 12px 30px rgba(240,165,0,0.2); }
+/* STAT NUM REDUCIDO */
+.hero-stat .num { font-size:2.2rem !important; background:linear-gradient(135deg,var(--dorado),var(--dorado-claro)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 
-/* — Botón primario con shimmer — */
-.btn-primary {
-  background: linear-gradient(135deg, #F0A500, #FFD166, #F0A500) !important;
-  background-size: 200% !important;
-  box-shadow: 0 6px 25px rgba(240,165,0,0.4) !important;
-  border-radius: 50px !important;
-  padding: 16px 40px !important;
-  font-size: 1rem !important;
-  letter-spacing: 2px !important;
-  animation: shimmer 3s linear infinite;
-  position: relative;
-  overflow: hidden;
-}
-.btn-primary::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -75%;
-  width: 50%;
-  height: 200%;
-  background: rgba(255,255,255,0.3);
-  transform: skewX(-20deg);
-  animation: btnShine 3s ease infinite;
-}
-@keyframes btnShine {
-  0%   { left: -75%; }
-  50%, 100% { left: 150%; }
-}
-@keyframes shimmer {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-.btn-primary:hover {
-  transform: translateY(-3px) scale(1.04) !important;
-  box-shadow: 0 12px 40px rgba(240,165,0,0.6) !important;
-}
+.btn-primary { background:linear-gradient(135deg,#F0A500,#FFD166,#F0A500) !important; background-size:200% !important; box-shadow:0 6px 25px rgba(240,165,0,0.4) !important; border-radius:50px !important; padding:14px 36px !important; font-size:0.9rem !important; letter-spacing:2px !important; animation:shimmer 3s linear infinite; position:relative; overflow:hidden; }
+.btn-primary::after { content:''; position:absolute; top:-50%; left:-75%; width:50%; height:200%; background:rgba(255,255,255,0.3); transform:skewX(-20deg); animation:btnShine 3s ease infinite; }
+@keyframes btnShine { 0%{left:-75%;} 50%,100%{left:150%;} }
+@keyframes shimmer { 0%{background-position:0% 50%;} 50%{background-position:100% 50%;} 100%{background-position:0% 50%;} }
+.btn-primary:hover { transform:translateY(-3px) scale(1.04) !important; box-shadow:0 12px 40px rgba(240,165,0,0.6) !important; }
 
-/* — Fecha con efecto neon — */
-.hero-fecha {
-  border-color: var(--dorado) !important;
-  box-shadow: 0 0 15px rgba(240,165,0,0.3), inset 0 0 15px rgba(240,165,0,0.05);
-  border-radius: 50px !important;
-  padding: 12px 36px !important;
-  background: rgba(240,165,0,0.08);
-  font-size: 1.5rem !important;
-}
+/* FECHA REDUCIDA */
+.hero-fecha { border-color:var(--dorado) !important; box-shadow:0 0 15px rgba(240,165,0,0.3),inset 0 0 15px rgba(240,165,0,0.05); border-radius:50px !important; padding:8px 28px !important; background:rgba(240,165,0,0.08); font-size:1.1rem !important; }
 
-/* — Nav con efecto glassmorphism mejorado — */
-nav {
-  border-bottom: 2px solid transparent !important;
-  background: linear-gradient(to bottom, rgba(13,13,13,0.98), rgba(13,13,13,0.95)) !important;
-  box-shadow: 0 4px 30px rgba(0,0,0,0.4), 0 1px 0 rgba(240,165,0,0.3);
-}
-nav::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--dorado), var(--rojo), var(--dorado), transparent);
-  background-size: 200% 100%;
-  animation: navLine 3s linear infinite;
-}
-@keyframes navLine {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-nav { position: sticky; top: 0; }
+nav { border-bottom:2px solid transparent !important; background:linear-gradient(to bottom,rgba(13,13,13,0.98),rgba(13,13,13,0.95)) !important; box-shadow:0 4px 30px rgba(0,0,0,0.4),0 1px 0 rgba(240,165,0,0.3); }
+nav::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--dorado),var(--rojo),var(--dorado),transparent); background-size:200% 100%; animation:navLine 3s linear infinite; }
+@keyframes navLine { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
+nav { position:sticky; top:0; }
 
-/* — Nav logo mejorado — */
-.nav-logo {
-  font-size: 1.1rem !important;
-  background: linear-gradient(135deg, var(--dorado), var(--dorado-claro));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 8px rgba(240,165,0,0.4));
-}
-.nav-logo span {
-  -webkit-text-fill-color: white !important;
-  filter: none;
-}
+.nav-logo { font-size:1.1rem !important; background:linear-gradient(135deg,var(--dorado),var(--dorado-claro)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; filter:drop-shadow(0 0 8px rgba(240,165,0,0.4)); }
+.nav-logo span { -webkit-text-fill-color:white !important; filter:none; }
 
-/* — Section headers mejorados — */
-.section-tag {
-  border-radius: 30px !important;
-  padding: 6px 20px !important;
-  font-size: 0.72rem !important;
-  letter-spacing: 4px !important;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}
-.section-title {
-  font-size: clamp(2rem, 5vw, 3.5rem) !important;
-  letter-spacing: 3px !important;
-}
-.divider {
-  width: 80px !important;
-  height: 3px !important;
-  background: linear-gradient(90deg, transparent, var(--dorado), transparent) !important;
-  border-radius: 2px;
-}
+.section-tag { border-radius:30px !important; padding:6px 20px !important; font-size:0.72rem !important; letter-spacing:4px !important; box-shadow:0 4px 15px rgba(0,0,0,0.2); }
+.section-title { font-size:clamp(2rem,5vw,3.5rem) !important; letter-spacing:3px !important; }
+.divider { width:80px !important; height:3px !important; background:linear-gradient(90deg,transparent,var(--dorado),transparent) !important; border-radius:2px; }
 
-/* — Disc cards mejoradas — */
-.disc-card {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
-  border: 1px solid rgba(240,165,0,0.15) !important;
-  position: relative;
-  overflow: hidden;
-}
-.disc-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(240,165,0,0.05), transparent);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.disc-card:hover::before { opacity: 1; }
-.disc-card:hover {
-  border-color: var(--dorado) !important;
-  transform: translateY(-6px) scale(1.02) !important;
-  box-shadow: 0 16px 40px rgba(240,165,0,0.2) !important;
-}
-.disc-icon { font-size: 2.2rem !important; filter: drop-shadow(0 0 6px rgba(240,165,0,0.4)); }
+.disc-card { background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%) !important; border:1px solid rgba(240,165,0,0.15) !important; position:relative; overflow:hidden; }
+.disc-card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(240,165,0,0.05),transparent); opacity:0; transition:opacity 0.3s; }
+.disc-card:hover::before { opacity:1; }
+.disc-card:hover { border-color:var(--dorado) !important; transform:translateY(-6px) scale(1.02) !important; box-shadow:0 16px 40px rgba(240,165,0,0.2) !important; }
+.disc-icon { font-size:2.2rem !important; filter:drop-shadow(0 0 6px rgba(240,165,0,0.4)); }
 
-/* — Tabla de posiciones mejorada — */
-.tabla thead {
-  background: linear-gradient(135deg, #0d0d0d, #1a1a2e) !important;
-}
-.tabla tr:first-child td { 
-  background: rgba(240,165,0,0.08) !important;
-}
-.pts-cell { color: var(--dorado) !important; }
-.pos-num { color: var(--dorado) !important; }
+.tabla thead { background:linear-gradient(135deg,#0d0d0d,#1a1a2e) !important; }
+.pts-cell { color:var(--dorado) !important; }
+.pos-num { color:var(--dorado) !important; }
 
-/* — Hotel cards glassmorphism — */
-.hotel-card {
-  border-radius: 16px !important;
-  overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.12) !important;
-  transition: all 0.35s cubic-bezier(.25,.8,.25,1) !important;
-}
-.hotel-card:hover {
-  transform: translateY(-8px) !important;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.2) !important;
-}
+.hotel-card { border-radius:16px !important; box-shadow:0 8px 32px rgba(0,0,0,0.12) !important; transition:all 0.35s cubic-bezier(.25,.8,.25,1) !important; }
+.hotel-card:hover { transform:translateY(-8px) !important; box-shadow:0 24px 60px rgba(0,0,0,0.2) !important; }
 
-/* — Fiesta cards con glow — */
-.fiesta-card {
-  background: linear-gradient(135deg, #1a1a2e, #0d0d0d) !important;
-  color: white !important;
-  border: 1px solid rgba(240,165,0,0.2) !important;
-  border-radius: 16px !important;
-  transition: all 0.35s !important;
-}
-.fiesta-card:hover {
-  border-color: var(--dorado) !important;
-  box-shadow: 0 0 30px rgba(240,165,0,0.2) !important;
-  transform: translateY(-6px) !important;
-}
-.fiesta-card-icon { filter: drop-shadow(0 0 8px rgba(240,165,0,0.5)); }
-.fiesta-card-title { color: var(--dorado) !important; }
-.fiesta-card-desc  { color: #bbb !important; }
+.fiesta-card { background:linear-gradient(135deg,#1a1a2e,#0d0d0d) !important; color:white !important; border:1px solid rgba(240,165,0,0.2) !important; border-radius:16px !important; transition:all 0.35s !important; }
+.fiesta-card:hover { border-color:var(--dorado) !important; box-shadow:0 0 30px rgba(240,165,0,0.2) !important; transform:translateY(-6px) !important; }
+.fiesta-card-icon { filter:drop-shadow(0 0 8px rgba(240,165,0,0.5)); }
+.fiesta-card-title { color:var(--dorado) !important; }
+.fiesta-card-desc  { color:#bbb !important; }
 
-/* — Tour cards — */
-.tour-card {
-  border-radius: 16px !important;
-  transition: all 0.35s !important;
-  overflow: hidden;
-}
-.tour-card:hover {
-  transform: translateY(-8px) !important;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.2) !important;
-}
+.tour-card { border-radius:16px !important; transition:all 0.35s !important; overflow:hidden; }
+.tour-card:hover { transform:translateY(-8px) !important; box-shadow:0 24px 60px rgba(0,0,0,0.2) !important; }
 
-/* — Botón scroll top mejorado — */
-#scrollTopBtn {
-  background: linear-gradient(135deg, var(--dorado), #ff6b35) !important;
-  border-radius: 50% !important;
-  width: 52px !important;
-  height: 52px !important;
-  font-size: 1.3rem !important;
-  box-shadow: 0 6px 20px rgba(240,165,0,0.4) !important;
-  border: none !important;
-}
-#scrollTopBtn:hover {
-  transform: translateY(-4px) scale(1.1) !important;
-  box-shadow: 0 12px 30px rgba(240,165,0,0.6) !important;
-}
+#scrollTopBtn { background:linear-gradient(135deg,var(--dorado),#ff6b35) !important; border-radius:50% !important; width:52px !important; height:52px !important; font-size:1.3rem !important; box-shadow:0 6px 20px rgba(240,165,0,0.4) !important; border:none !important; }
+#scrollTopBtn:hover { transform:translateY(-4px) scale(1.1) !important; box-shadow:0 12px 30px rgba(240,165,0,0.6) !important; }
 
-/* — Barra inferior móvil mejorada — */
-#bottomNav {
-  background: rgba(10,10,10,0.97) !important;
-  border-top: 1px solid rgba(240,165,0,0.3) !important;
-  backdrop-filter: blur(20px) !important;
-  box-shadow: 0 -8px 30px rgba(0,0,0,0.4) !important;
-}
-#bottomNav a.active {
-  color: var(--dorado) !important;
-  background: rgba(240,165,0,0.12) !important;
-}
-#bottomNav a .bn-icon { transition: transform 0.2s; }
-#bottomNav a:active .bn-icon { transform: scale(1.3); }
+#bottomNav { background:rgba(10,10,10,0.97) !important; border-top:1px solid rgba(240,165,0,0.3) !important; backdrop-filter:blur(20px) !important; box-shadow:0 -8px 30px rgba(0,0,0,0.4) !important; }
+#bottomNav a.active { color:var(--dorado) !important; background:rgba(240,165,0,0.12) !important; }
+#bottomNav a .bn-icon { transition:transform 0.2s; }
+#bottomNav a:active .bn-icon { transform:scale(1.3); }
 
-/* — FAQ mejorado — */
-.faq-item {
-  border-radius: 12px !important;
-  overflow: hidden;
-  transition: box-shadow 0.3s !important;
-}
-.faq-item.open {
-  box-shadow: 0 8px 30px rgba(240,165,0,0.1) !important;
-}
+.faq-item { border-radius:12px !important; overflow:hidden; transition:box-shadow 0.3s !important; }
+.faq-item.open { box-shadow:0 8px 30px rgba(240,165,0,0.1) !important; }
 
-/* — Footer mejorado — */
-footer {
-  background: linear-gradient(135deg, #060606, #0d0d18, #060606) !important;
-  border-top: 1px solid rgba(240,165,0,0.2);
-  position: relative;
-  overflow: hidden;
-}
-footer::before {
-  content: '🏆';
-  position: absolute;
-  font-size: 18rem;
-  opacity: 0.03;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  user-select: none;
-}
+footer { background:linear-gradient(135deg,#060606,#0d0d18,#060606) !important; border-top:1px solid rgba(240,165,0,0.2); position:relative; overflow:hidden; }
+footer::before { content:'🏆'; position:absolute; font-size:18rem; opacity:0.03; top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none; user-select:none; }
 
-/* — Animación fade-up más suave — */
-.fade-up {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.7s cubic-bezier(.25,.8,.25,1), transform 0.7s cubic-bezier(.25,.8,.25,1);
-}
-.fade-up.show { opacity: 1; transform: translateY(0); }
+.fade-up { opacity:0; transform:translateY(40px); transition:opacity 0.7s cubic-bezier(.25,.8,.25,1),transform 0.7s cubic-bezier(.25,.8,.25,1); }
+.fade-up.show { opacity:1; transform:translateY(0); }
 
-/* — Efecto "live" pulsante para fixture — */
-.fixture-item.live {
-  box-shadow: 0 0 0 2px var(--rojo), 0 0 20px rgba(200,16,46,0.3) !important;
-  animation: livePulse 2s ease-in-out infinite;
-}
-@keyframes livePulse {
-  0%, 100% { box-shadow: 0 0 0 2px var(--rojo), 0 0 20px rgba(200,16,46,0.3); }
-  50%       { box-shadow: 0 0 0 3px var(--rojo), 0 0 40px rgba(200,16,46,0.5); }
-}
+.fixture-item.live { box-shadow:0 0 0 2px var(--rojo),0 0 20px rgba(200,16,46,0.3) !important; animation:livePulse 2s ease-in-out infinite; }
+@keyframes livePulse { 0%,100%{box-shadow:0 0 0 2px var(--rojo),0 0 20px rgba(200,16,46,0.3);} 50%{box-shadow:0 0 0 3px var(--rojo),0 0 40px rgba(200,16,46,0.5);} }
 
-/* — Contacto cards — */
-.contacto-card {
-  border-radius: 16px !important;
-  transition: all 0.3s !important;
-  border: 1px solid transparent !important;
-}
-.contacto-card:hover {
-  border-color: var(--dorado) !important;
-  transform: translateY(-4px) !important;
-  box-shadow: 0 12px 30px rgba(240,165,0,0.15) !important;
-}
+.contacto-card { border-radius:16px !important; transition:all 0.3s !important; border:1px solid transparent !important; }
+.contacto-card:hover { border-color:var(--dorado) !important; transform:translateY(-4px) !important; box-shadow:0 12px 30px rgba(240,165,0,0.15) !important; }
 
-/* — NUEVO: Banner de delegaciones con scroll automático — */
-.delegaciones-banner {
-  background: linear-gradient(135deg, #0d0d0d, #1a1a2e);
-  border-top: 1px solid rgba(240,165,0,0.2);
-  border-bottom: 1px solid rgba(240,165,0,0.2);
-  padding: 14px 0;
-  overflow: hidden;
-  position: relative;
-}
-.delegaciones-banner::before,
-.delegaciones-banner::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 80px;
-  z-index: 2;
-  pointer-events: none;
-}
-.delegaciones-banner::before { left: 0;  background: linear-gradient(90deg, #0d0d0d, transparent); }
-.delegaciones-banner::after  { right: 0; background: linear-gradient(-90deg, #0d0d0d, transparent); }
+/* BANNER DELEGACIONES */
+.delegaciones-banner { background:linear-gradient(135deg,#0d0d0d,#1a1a2e); border-top:1px solid rgba(240,165,0,0.2); border-bottom:1px solid rgba(240,165,0,0.2); padding:14px 0; overflow:hidden; position:relative; }
+.delegaciones-banner::before, .delegaciones-banner::after { content:''; position:absolute; top:0; bottom:0; width:80px; z-index:2; pointer-events:none; }
+.delegaciones-banner::before { left:0; background:linear-gradient(90deg,#0d0d0d,transparent); }
+.delegaciones-banner::after  { right:0; background:linear-gradient(-90deg,#0d0d0d,transparent); }
+.delegaciones-track { display:flex; gap:0; animation:scrollTrack 20s linear infinite; width:max-content; }
+.delegaciones-track:hover { animation-play-state:paused; }
+.delegacion-item { display:flex; align-items:center; gap:10px; padding:8px 32px; color:#ccc; font-family:'Barlow Condensed',sans-serif; font-size:1rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; white-space:nowrap; border-right:1px solid rgba(240,165,0,0.15); transition:color 0.3s; }
+.delegacion-item:hover { color:var(--dorado); }
+.delegacion-item span { font-size:1.4rem; }
+@keyframes scrollTrack { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
 
-.delegaciones-track {
-  display: flex;
-  gap: 0;
-  animation: scrollTrack 20s linear infinite;
-  width: max-content;
-}
-.delegaciones-track:hover { animation-play-state: paused; }
-.delegacion-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 32px;
-  color: #ccc;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  white-space: nowrap;
-  border-right: 1px solid rgba(240,165,0,0.15);
-  transition: color 0.3s;
-}
-.delegacion-item:hover { color: var(--dorado); }
-.delegacion-item span { font-size: 1.4rem; }
-@keyframes scrollTrack {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
+/* COUNTDOWN */
+#countdown { display:flex !important; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:12px !important; }
+.cd-block { background:rgba(255,255,255,0.06); border:1px solid rgba(240,165,0,0.3); border-radius:10px; padding:8px 12px; min-width:62px; text-align:center; backdrop-filter:blur(10px); }
+.cd-num { font-family:'Bebas Neue',sans-serif; font-size:1.9rem; color:var(--dorado); line-height:1; display:block; }
+.cd-lbl { font-size:0.58rem; color:#888; letter-spacing:2px; text-transform:uppercase; display:block; margin-top:2px; }
 
-/* — NUEVO: Contador regresivo épico — */
-#countdown {
-  display: flex !important;
-  gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 16px !important;
-  font-size: 1rem !important;
-}
-.cd-block {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(240,165,0,0.3);
-  border-radius: 10px;
-  padding: 10px 16px;
-  min-width: 70px;
-  text-align: center;
-  backdrop-filter: blur(10px);
-}
-.cd-num {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 2.2rem;
-  color: var(--dorado);
-  line-height: 1;
-  display: block;
-}
-.cd-lbl {
-  font-size: 0.6rem;
-  color: #888;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  display: block;
-  margin-top: 3px;
-}
+/* SCROLL HINT */
+.hero-scroll-hint { position:absolute; bottom:24px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:6px; color:rgba(255,255,255,0.4); font-size:0.65rem; letter-spacing:3px; text-transform:uppercase; animation:fadeInOut 2s ease-in-out infinite; z-index:2; }
+.hero-scroll-hint::after { content:''; width:1px; height:40px; background:linear-gradient(to bottom,rgba(240,165,0,0.6),transparent); animation:scrollLine 2s ease-in-out infinite; }
+@keyframes fadeInOut { 0%,100%{opacity:0.4;} 50%{opacity:1;} }
+@keyframes scrollLine { 0%{transform:scaleY(0);transform-origin:top;} 50%{transform:scaleY(1);transform-origin:top;} 51%{transform:scaleY(1);transform-origin:bottom;} 100%{transform:scaleY(0);transform-origin:bottom;} }
 
-/* — NUEVO: Hero scroll indicator — */
-.hero-scroll-hint {
-  position: absolute;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  color: rgba(255,255,255,0.4);
-  font-size: 0.65rem;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  animation: fadeInOut 2s ease-in-out infinite;
-  z-index: 2;
-}
-.hero-scroll-hint::after {
-  content: '';
-  width: 1px;
-  height: 40px;
-  background: linear-gradient(to bottom, rgba(240,165,0,0.6), transparent);
-  animation: scrollLine 2s ease-in-out infinite;
-}
-@keyframes fadeInOut {
-  0%, 100% { opacity: 0.4; }
-  50%       { opacity: 1; }
-}
-@keyframes scrollLine {
-  0%   { transform: scaleY(0); transform-origin: top; }
-  50%  { transform: scaleY(1); transform-origin: top; }
-  51%  { transform: scaleY(1); transform-origin: bottom; }
-  100% { transform: scaleY(0); transform-origin: bottom; }
-}
+/* ── DELEGACIONES PARTICIPANTES — SIEMPRE VISIBLES ── */
+.delegaciones-section { background:linear-gradient(135deg,#0a0a0a 0%,#0d1a2a 50%,#0a0a0a 100%); padding:40px 20px; text-align:center; }
+.delegaciones-grid { display:flex; justify-content:center; flex-wrap:wrap; gap:12px; margin-top:30px; }
+.deleg-card { background:rgba(255,255,255,0.04); border:1px solid rgba(240,165,0,0.2); border-radius:16px; padding:24px 28px; min-width:140px; text-align:center; transition:all 0.35s; cursor:default; position:relative; overflow:hidden;
+  /* SIEMPRE VISIBLE — sin fade-up */
+  opacity:1 !important; transform:none !important; }
+.deleg-card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(240,165,0,0.08),transparent); opacity:0; transition:opacity 0.3s; }
+.deleg-card:hover { border-color:var(--dorado); transform:translateY(-6px) !important; box-shadow:0 16px 40px rgba(240,165,0,0.15); }
+.deleg-card:hover::before { opacity:1; }
+.deleg-flag { font-size:2.5rem; margin-bottom:6px; filter:drop-shadow(0 4px 8px rgba(0,0,0,0.4)); }
+.deleg-nombre { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; letter-spacing:2px; color:var(--dorado); display:block; margin-bottom:3px; }
+.deleg-region { font-size:0.68rem; color:#666; letter-spacing:1px; text-transform:uppercase; }
 
-/* — NUEVO: Sección de delegaciones participantes — */
-.delegaciones-section {
-  background: linear-gradient(135deg, #0a0a0a 0%, #0d1a2a 50%, #0a0a0a 100%);
-  padding: 60px 20px;
-  text-align: center;
-}
-.delegaciones-grid {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-top: 36px;
-}
-.deleg-card {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(240,165,0,0.2);
-  border-radius: 16px;
-  padding: 28px 32px;
-  min-width: 160px;
-  text-align: center;
-  transition: all 0.35s;
-  cursor: default;
-  position: relative;
-  overflow: hidden;
-}
-.deleg-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(240,165,0,0.08), transparent);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.deleg-card:hover { border-color: var(--dorado); transform: translateY(-6px); box-shadow: 0 16px 40px rgba(240,165,0,0.15); }
-.deleg-card:hover::before { opacity: 1; }
-.deleg-flag { font-size: 2.8rem; margin-bottom: 8px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4)); }
-.deleg-nombre {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.3rem;
-  letter-spacing: 2px;
-  color: var(--dorado);
-  display: block;
-  margin-bottom: 4px;
-}
-.deleg-region { font-size: 0.7rem; color: #666; letter-spacing: 1px; text-transform: uppercase; }
-
-/* — Responsive fixes — */
-@media (max-width: 600px) {
-  .cd-block { min-width: 58px; padding: 8px 10px; }
-  .cd-num   { font-size: 1.8rem; }
-  .delegaciones-grid { gap: 10px; }
-  .deleg-card { min-width: 130px; padding: 20px 20px; }
+/* RESPONSIVE */
+@media (max-width:600px) {
+  .cd-block { min-width:52px; padding:6px 8px; }
+  .cd-num   { font-size:1.6rem; }
+  .delegaciones-grid { gap:8px; }
+  .deleg-card { min-width:120px; padding:16px 16px; }
 }
 </style>
 </head>
@@ -1486,7 +454,7 @@ footer::before {
   </div>
 </nav>
 
-<!-- BANNER DELEGACIONES — scroll automático -->
+<!-- BANNER DELEGACIONES -->
 <div class="delegaciones-banner">
   <div class="delegaciones-track" id="delegTrack">
     <div class="delegacion-item"><span>🦁</span> Arequipa</div>
@@ -1535,27 +503,27 @@ footer::before {
       <div class="divider"></div>
     </div>
     <div class="delegaciones-grid">
-      <div class="deleg-card fade-up">
+      <div class="deleg-card">
         <div class="deleg-flag">🦁</div>
         <span class="deleg-nombre">Arequipa</span>
         <span class="deleg-region">Ciudad Blanca</span>
       </div>
-      <div class="deleg-card fade-up">
+      <div class="deleg-card">
         <div class="deleg-flag">🏔️</div>
         <span class="deleg-nombre">Cusco</span>
         <span class="deleg-region">Ciudad Imperial</span>
       </div>
-      <div class="deleg-card fade-up">
+      <div class="deleg-card">
         <div class="deleg-flag">🌿</div>
         <span class="deleg-nombre">Madre de Dios</span>
         <span class="deleg-region">Capital de la Biodiversidad</span>
       </div>
-      <div class="deleg-card fade-up">
+      <div class="deleg-card">
         <div class="deleg-flag">🦙</div>
         <span class="deleg-nombre">Puno</span>
         <span class="deleg-region">Capital del Folklore</span>
       </div>
-      <div class="deleg-card fade-up">
+      <div class="deleg-card">
         <div class="deleg-flag">⚓</div>
         <span class="deleg-nombre">Tacna</span>
         <span class="deleg-region">Ciudad Heroica</span>
@@ -1572,7 +540,6 @@ footer::before {
       <h2 class="section-title">Disciplinas <span>Oficiales</span></h2>
       <div class="divider"></div>
     </div>
-
     <div class="disc-block">
       <div class="disc-block-title">🏅 Disciplinas Grupales</div>
       <div class="disc-pts">Puntaje: 1° = 15 pts &nbsp;|&nbsp; 2° = 12 pts &nbsp;|&nbsp; 3° = 9 pts &nbsp;|&nbsp; 4° = 6 pts &nbsp;|&nbsp; 5° = 3 pts</div>
@@ -1584,7 +551,6 @@ footer::before {
         <div class="disc-card"><div class="disc-icon">🏐</div><div class="disc-name">Vóley Mixto</div><div class="disc-sub">Equipos mixtos</div></div>
       </div>
     </div>
-
     <div class="disc-block">
       <div class="disc-block-title">🎯 Disciplinas Individuales</div>
       <div class="disc-pts">Puntaje: 1° = 5 pts &nbsp;|&nbsp; 2° = 4 pts &nbsp;|&nbsp; 3° = 3 pts &nbsp;|&nbsp; 4° = 2 pts &nbsp;|&nbsp; 5° = 1 pt</div>
@@ -1608,22 +574,16 @@ footer::before {
       <h2 class="section-title">Tabla de <span>Posiciones</span></h2>
       <div class="divider"></div>
     </div>
-
     <div class="ranking-status">
       <div class="ranking-dot" id="rankingDot"></div>
       <span id="rankingStatusText">Cargando datos…</span>
       <span id="rankingLastUpdate" style="margin-left:auto;color:#aaa;font-size:0.72rem;"></span>
     </div>
-
     <div class="tabla-wrap">
       <table class="tabla">
         <thead>
           <tr>
-            <th>#</th>
-            <th>Delegación</th>
-            <th>Pts Grupales</th>
-            <th>Pts Individuales</th>
-            <th>Total</th>
+            <th>#</th><th>Delegación</th><th>Pts Grupales</th><th>Pts Individuales</th><th>Total</th>
           </tr>
         </thead>
         <tbody id="rankingBody">
@@ -1638,13 +598,11 @@ footer::before {
       <div class="resultados-header">
         <h3>Resultados por <span>Categoría</span></h3>
       </div>
-
       <div class="resultados-status">
         <div class="resultados-dot" id="resultadosDot"></div>
         <span id="resultadosStatusText">Cargando resultados…</span>
         <span id="resultadosLastUpdate" style="margin-left:auto;color:#aaa;font-size:0.72rem;"></span>
       </div>
-
       <div class="res-grid" id="resultadosGrid">
         <div style="grid-column:1/-1;text-align:center;padding:28px;color:#aaa;font-size:0.85rem;">Cargando resultados de categorías…</div>
       </div>
@@ -1663,7 +621,7 @@ footer::before {
       <p style="margin-top:10px;color:#888;font-size:0.85rem;">📅 Todos los eventos se realizan el 28 de junio de 2026</p>
     </div>
 
-    <!-- Tabs scroll horizontal en mobile -->
+    <!-- Tabs -->
     <div class="fixture-tabs-wrap">
       <div class="fixture-tabs-inner">
         <button class="ftab active" onclick="switchFixtureTab('todos',this)">📋 Todos</button>
@@ -1673,6 +631,7 @@ footer::before {
         <button class="ftab" onclick="switchFixtureTab('atletismo',this)">🏃 Atletismo</button>
         <button class="ftab" onclick="switchFixtureTab('tenis',this)">🏓 Tenis de Mesa</button>
         <button class="ftab" onclick="switchFixtureTab('recreativos',this)">🎯 Recreativos</button>
+        <button class="ftab final-tab" onclick="switchFixtureTab('semifinal',this)">🏆 Semifinal / Final</button>
       </div>
     </div>
 
@@ -1687,7 +646,6 @@ footer::before {
     <div>
       <div id="fp-todos" class="fpanel active">
         <div class="fixture-list" id="fixtureListTodos">
-          <!-- contenido estático de respaldo -->
           <div class="fixture-item">
             <div class="fixture-date">08:00 AM</div>
             <div class="fixture-team">Todas las delegaciones</div>
@@ -1746,12 +704,110 @@ footer::before {
           </div>
         </div>
       </div>
+
       <div id="fp-futbol"      class="fpanel"><div class="fixture-list" id="fixtureListFutbol"><div style="text-align:center;padding:32px;color:#aaa;">Cargando datos de Google Sheets…</div></div></div>
       <div id="fp-baloncesto"  class="fpanel"><div class="fixture-list" id="fixtureListBaloncesto"><div style="text-align:center;padding:32px;color:#aaa;">Cargando datos de Google Sheets…</div></div></div>
       <div id="fp-voley"       class="fpanel"><div class="fixture-list" id="fixtureListVoley"><div style="text-align:center;padding:32px;color:#aaa;">Cargando datos de Google Sheets…</div></div></div>
       <div id="fp-atletismo"   class="fpanel"><div class="fixture-list" id="fixtureListAtletismo"><div style="text-align:center;padding:32px;color:#aaa;">Cargando datos de Google Sheets…</div></div></div>
       <div id="fp-tenis"       class="fpanel"><div class="fixture-list" id="fixtureListTenis"><div style="text-align:center;padding:32px;color:#aaa;">Cargando datos de Google Sheets…</div></div></div>
       <div id="fp-recreativos" class="fpanel"><div class="fixture-list" id="fixtureListRecreativos"><div style="text-align:center;padding:32px;color:#aaa;">Cargando datos de Google Sheets…</div></div></div>
+
+      <!-- ══════════════════════════════════════════
+           PANEL SEMIFINAL / FINAL
+      ══════════════════════════════════════════ -->
+      <div id="fp-semifinal" class="fpanel">
+        <div style="margin-bottom:14px;background:linear-gradient(135deg,rgba(240,165,0,0.08),rgba(200,16,46,0.06));border:1px solid rgba(240,165,0,0.25);border-radius:8px;padding:12px 16px;font-size:0.8rem;color:#aaa;line-height:1.6;">
+          ⚡ <strong style="color:var(--dorado);">Sistema de eliminación directa</strong> — Las etapas Semifinal y Final se programan automáticamente según los resultados de Fase 1. Los enfrentamientos se actualizarán en tiempo real desde Google Sheets.
+        </div>
+
+        <!-- FASE 1 -->
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:2px;color:#aaa;margin:16px 0 8px;padding-left:2px;display:flex;align-items:center;gap:10px;">
+          <span style="background:#444;color:#fff;padding:2px 10px;border-radius:3px;font-size:0.8rem;">FASE 1</span>
+          Eliminación directa
+        </div>
+        <div class="fixture-list">
+          <div class="fixture-item" style="border-left-color:#607d8b;">
+            <div class="fixture-date" style="color:#607d8b;">Mañana</div>
+            <div class="fixture-team">Equipo 1</div>
+            <div style="text-align:center;"><div class="fixture-vs">VS</div><span class="badge-prox">PRÓXIMO</span><div class="fixture-sport">Partido 1</div></div>
+            <div class="fixture-team right">Equipo 2</div>
+            <div class="fixture-lugar" style="color:#607d8b;">→ <strong>Ganador A</strong></div>
+          </div>
+          <div class="fixture-item" style="border-left-color:#607d8b;">
+            <div class="fixture-date" style="color:#607d8b;">Mañana</div>
+            <div class="fixture-team">Equipo 3</div>
+            <div style="text-align:center;"><div class="fixture-vs">VS</div><span class="badge-prox">PRÓXIMO</span><div class="fixture-sport">Partido 2</div></div>
+            <div class="fixture-team right">Equipo 4</div>
+            <div class="fixture-lugar" style="color:#607d8b;">→ <strong>Ganador B</strong></div>
+          </div>
+          <div class="fixture-item" style="border-left-color:var(--dorado);background:rgba(240,165,0,0.03);">
+            <div class="fixture-date" style="color:var(--dorado);font-size:0.65rem;">SORTEO<br>DIRECTO</div>
+            <div class="fixture-team" style="color:var(--dorado);">Equipo 5</div>
+            <div style="text-align:center;"><div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--dorado);">BYE</div><span class="badge-prox" style="background:var(--dorado);color:var(--negro);">PASE DIRECTO</span><div class="fixture-sport">Sorteo</div></div>
+            <div class="fixture-team right" style="color:#aaa;font-size:0.78rem;text-align:left;">Avanza automát.<br>a Fase 2</div>
+            <div class="fixture-lugar" style="color:var(--dorado);">→ <strong>Ganador C</strong></div>
+          </div>
+        </div>
+
+        <!-- SEMIFINAL (Fase 2) -->
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:2px;color:var(--rojo);margin:22px 0 8px;padding-left:2px;display:flex;align-items:center;gap:10px;">
+          <span style="background:var(--rojo);color:#fff;padding:2px 10px;border-radius:3px;font-size:0.8rem;">FASE 2</span>
+          🔥 Semifinal
+        </div>
+        <div class="fixture-list">
+          <div class="fixture-item" style="border-left-color:var(--rojo);">
+            <div class="fixture-date" style="color:var(--rojo);">Tarde</div>
+            <div class="fixture-team">Ganador C</div>
+            <div style="text-align:center;"><div class="fixture-vs">VS</div><span class="badge-prox">PRÓXIMO</span><div class="fixture-sport" style="background:var(--rojo);">Semifinal</div></div>
+            <div class="fixture-team right">Ganador A <em style="font-size:0.7rem;color:#aaa;">o B *</em></div>
+            <div class="fixture-lugar" style="font-size:0.65rem;color:#888;">* El de peor<br>resultado F1<br>→ <strong style="color:var(--negro);">Ganador 1</strong></div>
+          </div>
+          <div class="fixture-item" style="border-left-color:#27ae60;background:rgba(39,174,96,0.03);">
+            <div class="fixture-date" style="color:#27ae60;font-size:0.65rem;">PASE<br>DIRECTO</div>
+            <div class="fixture-team">Mejor de Fase 1</div>
+            <div style="text-align:center;"><div style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:#27ae60;">✓</div><span class="badge-fin">CLASIFICADO</span><div class="fixture-sport" style="background:#27ae60;">Mejor F1</div></div>
+            <div class="fixture-team right" style="font-size:0.75rem;color:#aaa;text-align:left;">(mejor diferencia<br>de goles/pts F1)</div>
+            <div class="fixture-lugar" style="color:#27ae60;">→ <strong>Ganador 2</strong></div>
+          </div>
+        </div>
+
+        <!-- FINAL (Fase 3) -->
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:3px;margin:22px 0 8px;padding-left:2px;display:flex;align-items:center;gap:10px;">
+          <span style="background:linear-gradient(135deg,#F0A500,#FFD166);color:var(--negro);padding:2px 10px;border-radius:3px;font-size:0.8rem;">FASE 3</span>
+          <span style="background:linear-gradient(90deg,#F0A500,#FFD166,#F0A500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">🏆 Gran Final</span>
+        </div>
+        <div class="fixture-list">
+          <div class="fixture-item" style="border-left-color:#FFD166;box-shadow:0 0 24px rgba(240,165,0,0.18);background:rgba(240,165,0,0.05);">
+            <div class="fixture-date" style="color:var(--dorado);font-weight:900;font-size:0.75rem;">GRAN<br>FINAL</div>
+            <div class="fixture-team" style="color:var(--dorado);font-size:0.9rem;">Ganador 1</div>
+            <div style="text-align:center;">
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--dorado);letter-spacing:3px;">VS</div>
+              <span class="badge-prox" style="background:linear-gradient(135deg,#F0A500,#ff6b35);color:var(--negro);font-weight:800;">🏆 FINAL</span>
+            </div>
+            <div class="fixture-team right" style="color:var(--dorado);font-size:0.9rem;">Ganador 2</div>
+            <div class="fixture-lugar" style="font-weight:700;line-height:1.8;">
+              <span style="color:#FFD166;">🥇 Campeón</span><br>
+              <span style="color:#aaa;">🥈 Subcampeón</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Leyenda posiciones -->
+        <div style="margin-top:20px;background:var(--gris-claro);border-radius:10px;padding:16px 18px;border:1px solid rgba(240,165,0,0.15);">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:2px;color:var(--negro);margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+            <span style="width:4px;height:18px;background:var(--dorado);border-radius:2px;display:inline-block;"></span>
+            Cómo se determinan las 5 posiciones
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;font-size:0.77rem;color:#555;">
+            <div style="display:flex;align-items:flex-start;gap:8px;padding:6px 8px;background:rgba(240,165,0,0.07);border-radius:6px;"><span style="font-size:1.1rem;flex-shrink:0;">🥇</span><span><strong>1° Campeón</strong><br>Gana la Final (Fase 3)</span></div>
+            <div style="display:flex;align-items:flex-start;gap:8px;padding:6px 8px;background:rgba(192,192,192,0.1);border-radius:6px;"><span style="font-size:1.1rem;flex-shrink:0;">🥈</span><span><strong>2° Subcampeón</strong><br>Pierde la Final (Fase 3)</span></div>
+            <div style="display:flex;align-items:flex-start;gap:8px;padding:6px 8px;background:rgba(205,127,50,0.08);border-radius:6px;"><span style="font-size:1.1rem;flex-shrink:0;">🥉</span><span><strong>3°</strong><br>Equipo BYE o pierde Semifinal</span></div>
+            <div style="display:flex;align-items:flex-start;gap:8px;padding:6px 8px;background:#f8f8f8;border-radius:6px;"><span style="font-size:1.1rem;flex-shrink:0;">4️⃣</span><span><strong>4°</strong><br>Perdedor F1 con mejor diferencia goles/puntos</span></div>
+            <div style="display:flex;align-items:flex-start;gap:8px;padding:6px 8px;background:#f8f8f8;border-radius:6px;"><span style="font-size:1.1rem;flex-shrink:0;">5️⃣</span><span><strong>5°</strong><br>Perdedor F1 con peor diferencia goles/puntos</span></div>
+          </div>
+          <div style="margin-top:10px;font-size:0.72rem;color:#999;font-style:italic;">* En caso de empate: goles anotados → tarjetas (menos = mejor) → sorteo</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1764,11 +820,9 @@ footer::before {
       <h2 class="section-title">Danzas y <span style="color:var(--dorado)">Fiesta</span></h2>
       <div class="divider"></div>
     </div>
-
     <div style="margin-bottom:48px;">
       <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:2px;color:var(--dorado);margin-bottom:4px;">💃 Concurso de Danzas</h3>
       <p style="color:#bbb;font-size:0.85rem;margin-bottom:22px;">📍 Local de ISIS &nbsp;·&nbsp; 🕖 07:00 PM</p>
-
       <div class="criterios-wrap">
         <div class="criterios-title">📋 Criterios de Evaluación</div>
         <div class="criterio-row"><span class="criterio-nombre">Coreografía</span><span class="criterio-pts">25</span></div>
@@ -1777,7 +831,6 @@ footer::before {
         <div class="criterio-row"><span class="criterio-nombre">Interpretación Artística</span><span class="criterio-pts">25</span></div>
         <div class="criterio-row total"><span class="criterio-nombre">Total</span><span class="criterio-pts">100</span></div>
       </div>
-
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;">
         <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(240,165,0,0.2);border-radius:8px;padding:18px;display:flex;align-items:center;gap:14px;">
           <div style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--dorado);line-height:1;min-width:40px;text-align:center;">01</div>
@@ -1789,35 +842,14 @@ footer::before {
         </div>
       </div>
     </div>
-
     <div id="fiesta">
       <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:2px;color:var(--dorado);margin-bottom:4px;">🤠 Gran Fiesta: Vaqueros Amazónicos</h3>
       <p style="color:#bbb;font-size:0.85rem;margin-bottom:22px;">📍 Local de ISIS &nbsp;·&nbsp; 🕗 08:00 PM &nbsp;·&nbsp; Temática Amazonía Peruano-Brasileña</p>
       <div class="fiesta-grid">
-        <div class="fiesta-card">
-          <div class="fiesta-card-icon">🤠</div>
-          <div class="fiesta-card-title">Temática Amazónica</div>
-          <div class="fiesta-card-desc">Celebración de la auténtica cultura vaquera de la Amazonía Peruano-Brasileña. Vaqueiros, pantaneiros y la tradición ganadera amazónica.</div>
-          <span class="fiesta-badge">Dresscode: Vaquero/a Amazónico</span>
-        </div>
-        <div class="fiesta-card">
-          <div class="fiesta-card-icon">🐂</div>
-          <div class="fiesta-card-title">Toro Loco</div>
-          <div class="fiesta-card-desc">Concurso especial donde los participantes demuestran habilidad, valentía y destreza en una de las tradiciones más emocionantes de la región.</div>
-          <span class="fiesta-badge">Inscripción en el evento</span>
-        </div>
-        <div class="fiesta-card">
-          <div class="fiesta-card-icon">🍺</div>
-          <div class="fiesta-card-title">Toro Chelero</div>
-          <div class="fiesta-card-desc">El divertido concurso del Toro Chelero promete risas y animación para todos los asistentes.</div>
-          <span class="fiesta-badge">Para todos</span>
-        </div>
-        <div class="fiesta-card">
-          <div class="fiesta-card-icon">🎶</div>
-          <div class="fiesta-card-title">Música y Baile</div>
-          <div class="fiesta-card-desc">Ritmos amazónicos, música regional y el sabor de la selva peruano-brasileña para cerrar con broche de oro el XXIV Campeonato.</div>
-          <span class="fiesta-badge">Noche completa</span>
-        </div>
+        <div class="fiesta-card"><div class="fiesta-card-icon">🤠</div><div class="fiesta-card-title">Temática Amazónica</div><div class="fiesta-card-desc">Celebración de la auténtica cultura vaquera de la Amazonía Peruano-Brasileña. Vaqueiros, pantaneiros y la tradición ganadera amazónica.</div><span class="fiesta-badge">Dresscode: Vaquero/a Amazónico</span></div>
+        <div class="fiesta-card"><div class="fiesta-card-icon">🐂</div><div class="fiesta-card-title">Toro Loco</div><div class="fiesta-card-desc">Concurso especial donde los participantes demuestran habilidad, valentía y destreza en una de las tradiciones más emocionantes de la región.</div><span class="fiesta-badge">Inscripción en el evento</span></div>
+        <div class="fiesta-card"><div class="fiesta-card-icon">🍺</div><div class="fiesta-card-title">Toro Chelero</div><div class="fiesta-card-desc">El divertido concurso del Toro Chelero promete risas y animación para todos los asistentes.</div><span class="fiesta-badge">Para todos</span></div>
+        <div class="fiesta-card"><div class="fiesta-card-icon">🎶</div><div class="fiesta-card-title">Música y Baile</div><div class="fiesta-card-desc">Ritmos amazónicos, música regional y el sabor de la selva peruano-brasileña para cerrar con broche de oro el XXIV Campeonato.</div><span class="fiesta-badge">Noche completa</span></div>
       </div>
     </div>
   </div>
@@ -1836,29 +868,18 @@ footer::before {
 
     <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:2px;color:var(--negro);margin-bottom:16px;padding-bottom:7px;border-bottom:3px solid var(--dorado);">🏨 Grupo 1 de Hospedajes</h3>
     <div class="hotel-grid" style="margin-bottom:40px;">
-
-      <!-- Hotel Libélula -->
       <div class="hotel-card">
-        <div class="hotel-header h1">
-          <div style="font-size:1.5rem;">🌿</div>
-          <div class="hotel-name">Hotel Libélula</div>
-          <div style="font-size:0.7rem;opacity:0.85;margin-top:3px;">Jr. Puno 429, Puerto Maldonado</div>
-        </div>
+        <div class="hotel-header h1"><div style="font-size:1.5rem;">🌿</div><div class="hotel-name">Hotel Libélula</div><div style="font-size:0.7rem;opacity:0.85;margin-top:3px;">Jr. Puno 429, Puerto Maldonado</div></div>
         <div class="hotel-body">
           <div class="hotel-feature">📍 11 cdras. Colegio Fitzcarrald · 2 de la plaza</div>
           <div class="hotel-feature">❄️ A/C · 🚿 Baño pvdo · 📺 Smart TV · 📶 Wi-Fi · 🚗 Garaje gratis</div>
           <div style="margin-top:10px;border-top:1px solid #eee;padding-top:9px;">
-            <table style="width:100%;font-size:0.73rem;border-collapse:collapse;">
-              <thead><tr style="background:#f5f5f5;"><th style="padding:4px 6px;text-align:left;font-weight:700;">Hab.</th><th style="padding:4px;text-align:center;font-weight:700;">Cap.</th><th style="padding:4px 6px;text-align:right;font-weight:700;">S/</th></tr></thead>
-              <tbody>
-                <tr><td style="padding:3px 6px;">Estándar</td><td style="text-align:center;">1 p</td><td style="text-align:right;color:var(--rojo);font-weight:700;">100</td></tr>
-                <tr style="background:#fafafa;"><td style="padding:3px 6px;">Matrimonial / Doble</td><td style="text-align:center;">2 p</td><td style="text-align:right;color:var(--rojo);font-weight:700;">120</td></tr>
-                <tr><td style="padding:3px 6px;">Doble Familiar</td><td style="text-align:center;">2+2n</td><td style="text-align:right;color:var(--rojo);font-weight:700;">150</td></tr>
-                <tr style="background:#fafafa;"><td style="padding:3px 6px;">Triple</td><td style="text-align:center;">3 p</td><td style="text-align:right;color:var(--rojo);font-weight:700;">150</td></tr>
-                <tr><td style="padding:3px 6px;">Triple Familiar</td><td style="text-align:center;">3+1n</td><td style="text-align:right;color:var(--rojo);font-weight:700;">180</td></tr>
-                <tr style="background:#fafafa;"><td style="padding:3px 6px;">King</td><td style="text-align:center;">2 p</td><td style="text-align:right;color:var(--rojo);font-weight:700;">180</td></tr>
-              </tbody>
-            </table>
+            <table style="width:100%;font-size:0.73rem;border-collapse:collapse;"><thead><tr style="background:#f5f5f5;"><th style="padding:4px 6px;text-align:left;font-weight:700;">Hab.</th><th style="padding:4px;text-align:center;font-weight:700;">Cap.</th><th style="padding:4px 6px;text-align:right;font-weight:700;">S/</th></tr></thead><tbody>
+              <tr><td style="padding:3px 6px;">Estándar</td><td style="text-align:center;">1 p</td><td style="text-align:right;color:var(--rojo);font-weight:700;">100</td></tr>
+              <tr style="background:#fafafa;"><td style="padding:3px 6px;">Matrimonial/Doble</td><td style="text-align:center;">2 p</td><td style="text-align:right;color:var(--rojo);font-weight:700;">120</td></tr>
+              <tr><td style="padding:3px 6px;">Triple</td><td style="text-align:center;">3 p</td><td style="text-align:right;color:var(--rojo);font-weight:700;">150</td></tr>
+              <tr style="background:#fafafa;"><td style="padding:3px 6px;">King</td><td style="text-align:center;">2 p</td><td style="text-align:right;color:var(--rojo);font-weight:700;">180</td></tr>
+            </tbody></table>
           </div>
           <div style="margin-top:8px;font-size:0.71rem;color:#888;">ℹ️ 50% adelanto · No incluye desayuno</div>
           <div style="margin-top:9px;display:flex;gap:7px;flex-wrap:wrap;">
@@ -1867,72 +888,43 @@ footer::before {
           </div>
         </div>
       </div>
-
-      <!-- Royal Inn Puerto -->
       <div class="hotel-card">
-        <div class="hotel-header h2">
-          <div style="font-size:1.5rem;">👑</div>
-          <div class="hotel-name">Royal Inn Puerto</div>
-          <div style="font-size:0.7rem;opacity:0.85;margin-top:3px;">Av. 2 de Mayo 333, Puerto Maldonado</div>
-        </div>
+        <div class="hotel-header h2"><div style="font-size:1.5rem;">👑</div><div class="hotel-name">Royal Inn Puerto</div><div style="font-size:0.7rem;opacity:0.85;margin-top:3px;">Av. 2 de Mayo 333, Puerto Maldonado</div></div>
         <div class="hotel-body">
-          <div class="hotel-feature">📍 11 cdras. Colegio Fitzcarrald · 2 de la plaza</div>
           <div class="hotel-feature">🚗 Garaje previa reserva · 50% adelanto · Sin desayuno</div>
           <div style="margin-top:10px;border-top:1px solid #eee;padding-top:9px;">
-            <div style="font-size:0.68rem;font-weight:700;background:var(--gris-oscuro);color:white;padding:3px 8px;border-radius:3px;margin-bottom:5px;letter-spacing:1px;">❄️ AIRE ACONDICIONADO</div>
-            <table style="width:100%;font-size:0.73rem;border-collapse:collapse;margin-bottom:7px;">
-              <tbody>
-                <tr><td style="padding:3px 6px;">Individual</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 100</td></tr>
-                <tr style="background:#fafafa;"><td style="padding:3px 6px;">Doble</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 120</td></tr>
-                <tr><td style="padding:3px 6px;">Triple</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 140</td></tr>
-              </tbody>
-            </table>
-            <div style="font-size:0.68rem;font-weight:700;background:#4a7c59;color:white;padding:3px 8px;border-radius:3px;margin-bottom:5px;letter-spacing:1px;">🌀 CON VENTILADOR</div>
-            <table style="width:100%;font-size:0.73rem;border-collapse:collapse;">
-              <tbody>
-                <tr><td style="padding:3px 6px;">Individual</td><td style="text-align:right;color:var(--verde);font-weight:700;">S/ 70</td></tr>
-                <tr style="background:#fafafa;"><td style="padding:3px 6px;">Doble</td><td style="text-align:right;color:var(--verde);font-weight:700;">S/ 80</td></tr>
-                <tr><td style="padding:3px 6px;">Triple</td><td style="text-align:right;color:var(--verde);font-weight:700;">S/ 110</td></tr>
-              </tbody>
-            </table>
+            <div style="font-size:0.68rem;font-weight:700;background:var(--gris-oscuro);color:white;padding:3px 8px;border-radius:3px;margin-bottom:5px;">❄️ AIRE ACONDICIONADO</div>
+            <table style="width:100%;font-size:0.73rem;border-collapse:collapse;margin-bottom:7px;"><tbody>
+              <tr><td style="padding:3px 6px;">Individual</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 100</td></tr>
+              <tr style="background:#fafafa;"><td style="padding:3px 6px;">Doble</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 120</td></tr>
+              <tr><td style="padding:3px 6px;">Triple</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 140</td></tr>
+            </tbody></table>
+            <div style="font-size:0.68rem;font-weight:700;background:#4a7c59;color:white;padding:3px 8px;border-radius:3px;margin-bottom:5px;">🌀 CON VENTILADOR</div>
+            <table style="width:100%;font-size:0.73rem;border-collapse:collapse;"><tbody>
+              <tr><td style="padding:3px 6px;">Individual</td><td style="text-align:right;color:var(--verde);font-weight:700;">S/ 70</td></tr>
+              <tr style="background:#fafafa;"><td style="padding:3px 6px;">Doble</td><td style="text-align:right;color:var(--verde);font-weight:700;">S/ 80</td></tr>
+              <tr><td style="padding:3px 6px;">Triple</td><td style="text-align:right;color:var(--verde);font-weight:700;">S/ 110</td></tr>
+            </tbody></table>
           </div>
-          <div style="margin-top:9px;display:flex;gap:7px;flex-wrap:wrap;">
+          <div style="margin-top:9px;display:flex;gap:7px;">
             <a href="https://maps.app.goo.gl/wd9HwmikDYiYKKJt8" target="_blank" class="btn-reservar" style="font-size:0.68rem;padding:7px 10px;background:var(--verde);">📍 Maps</a>
             <a href="tel:986764892" class="btn-reservar" style="font-size:0.68rem;padding:7px 10px;background:#1a73e8;">📞 Llamar</a>
           </div>
         </div>
       </div>
-
-      <!-- Hotel Príncipe I -->
       <div class="hotel-card">
-        <div class="hotel-header h3">
-          <div style="font-size:1.5rem;">⭐</div>
-          <div class="hotel-name">Hotel Príncipe I</div>
-          <div style="font-size:0.7rem;opacity:0.85;margin-top:3px;">Jr. Gonzales Prada 335, Puerto Maldonado</div>
-        </div>
+        <div class="hotel-header h3"><div style="font-size:1.5rem;">⭐</div><div class="hotel-name">Hotel Príncipe I</div><div style="font-size:0.7rem;opacity:0.85;margin-top:3px;">Jr. Gonzales Prada 335, Puerto Maldonado</div></div>
         <div class="hotel-body">
-          <div class="hotel-feature">📍 10 cdras. Colegio Fitzcarrald · 1 de la plaza</div>
           <div class="hotel-feature">🍳 Incluye Desayuno · 50% adelanto</div>
           <div style="margin-top:10px;border-top:1px solid #eee;padding-top:9px;">
-            <div style="font-size:0.68rem;font-weight:700;background:var(--gris-oscuro);color:white;padding:3px 8px;border-radius:3px;margin-bottom:5px;letter-spacing:1px;">❄️ AIRE ACONDICIONADO</div>
-            <table style="width:100%;font-size:0.73rem;border-collapse:collapse;margin-bottom:7px;">
-              <tbody>
-                <tr><td style="padding:3px 6px;">King</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 290</td></tr>
-                <tr style="background:#fafafa;"><td style="padding:3px 6px;">Triple</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 250</td></tr>
-                <tr><td style="padding:3px 6px;">Doble</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 190</td></tr>
-                <tr style="background:#fafafa;"><td style="padding:3px 6px;">Individual</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 150</td></tr>
-              </tbody>
-            </table>
-            <div style="font-size:0.68rem;font-weight:700;background:#4a7c59;color:white;padding:3px 8px;border-radius:3px;margin-bottom:5px;letter-spacing:1px;">🌀 CON VENTILADOR</div>
-            <table style="width:100%;font-size:0.73rem;border-collapse:collapse;">
-              <tbody>
-                <tr><td style="padding:3px 6px;">Triple</td><td style="text-align:right;color:var(--verde);font-weight:700;">S/ 170</td></tr>
-                <tr style="background:#fafafa;"><td style="padding:3px 6px;">Doble</td><td style="text-align:right;color:var(--verde);font-weight:700;">S/ 140</td></tr>
-                <tr><td style="padding:3px 6px;">Individual</td><td style="text-align:right;color:var(--verde);font-weight:700;">S/ 90</td></tr>
-              </tbody>
-            </table>
+            <div style="font-size:0.68rem;font-weight:700;background:var(--gris-oscuro);color:white;padding:3px 8px;border-radius:3px;margin-bottom:5px;">❄️ AIRE ACONDICIONADO</div>
+            <table style="width:100%;font-size:0.73rem;border-collapse:collapse;margin-bottom:7px;"><tbody>
+              <tr><td style="padding:3px 6px;">King</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 290</td></tr>
+              <tr style="background:#fafafa;"><td style="padding:3px 6px;">Triple</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 250</td></tr>
+              <tr><td style="padding:3px 6px;">Individual</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 150</td></tr>
+            </tbody></table>
           </div>
-          <div style="margin-top:9px;display:flex;gap:7px;flex-wrap:wrap;">
+          <div style="margin-top:9px;display:flex;gap:7px;">
             <a href="https://maps.app.goo.gl/mecJ1f87tXEPog2X7" target="_blank" class="btn-reservar" style="font-size:0.68rem;padding:7px 10px;background:var(--verde);">📍 Maps</a>
             <a href="tel:984110013" class="btn-reservar" style="font-size:0.68rem;padding:7px 10px;background:#1a73e8;">📞 Llamar</a>
           </div>
@@ -1940,110 +932,58 @@ footer::before {
       </div>
     </div>
 
-    <!-- GRUPO 2 -->
     <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:2px;color:var(--negro);margin-bottom:16px;padding-bottom:7px;border-bottom:3px solid var(--dorado);">🏨 Grupo 2 de Hospedajes</h3>
     <div class="hotel-grid">
-
-      <!-- Hotel Centenario -->
       <div class="hotel-card">
-        <div class="hotel-header" style="background:linear-gradient(135deg,#1a3a5c,#0d2137);padding:20px;color:white;">
-          <div style="font-size:1.5rem;">🏛️</div>
-          <div class="hotel-name">Hotel Centenario</div>
-          <div style="font-size:0.7rem;opacity:0.85;margin-top:3px;">Av. 2 de Mayo 744, Puerto Maldonado 17001</div>
-        </div>
+        <div class="hotel-header" style="background:linear-gradient(135deg,#1a3a5c,#0d2137);padding:20px;color:white;"><div style="font-size:1.5rem;">🏛️</div><div class="hotel-name">Hotel Centenario</div><div style="font-size:0.7rem;opacity:0.85;margin-top:3px;">Av. 2 de Mayo 744, Puerto Maldonado 17001</div></div>
         <div class="hotel-body">
-          <div class="hotel-feature">📍 6 cdras. Colegio Fitzcarrald · 6 de la plaza</div>
-          <div class="hotel-feature">📞 962 214 300</div>
           <div class="hotel-feature">❄️ A/C · 🍳 Desayuno · 🏊 Piscina · 📶 Wi-Fi · 🚗 Cochera</div>
           <div style="margin-top:10px;border-top:1px solid #eee;padding-top:9px;">
-            <table style="width:100%;font-size:0.73rem;border-collapse:collapse;">
-              <thead><tr style="background:#f5f5f5;"><th style="padding:4px 6px;text-align:left;font-weight:700;">Habitación</th><th style="padding:4px 6px;text-align:right;font-weight:700;">S/</th></tr></thead>
-              <tbody>
-                <tr><td style="padding:3px 6px;">Individual</td><td style="text-align:right;color:var(--rojo);font-weight:700;">171</td></tr>
-                <tr style="background:#fafafa;"><td style="padding:3px 6px;">Doble estándar</td><td style="text-align:right;color:var(--rojo);font-weight:700;">188</td></tr>
-                <tr><td style="padding:3px 6px;">Doble — 2 camas</td><td style="text-align:right;color:var(--rojo);font-weight:700;">198</td></tr>
-                <tr style="background:#fafafa;"><td style="padding:3px 6px;">Suite Junior</td><td style="text-align:right;color:var(--rojo);font-weight:700;">246</td></tr>
-                <tr><td style="padding:3px 6px;">Doble Familiar</td><td style="text-align:right;color:var(--rojo);font-weight:700;">246</td></tr>
-                <tr style="background:#fafafa;"><td style="padding:3px 6px;">Triple</td><td style="text-align:right;color:var(--rojo);font-weight:700;">246</td></tr>
-              </tbody>
-            </table>
+            <table style="width:100%;font-size:0.73rem;border-collapse:collapse;"><thead><tr style="background:#f5f5f5;"><th style="padding:4px 6px;text-align:left;font-weight:700;">Habitación</th><th style="padding:4px 6px;text-align:right;font-weight:700;">S/</th></tr></thead><tbody>
+              <tr><td style="padding:3px 6px;">Individual</td><td style="text-align:right;color:var(--rojo);font-weight:700;">171</td></tr>
+              <tr style="background:#fafafa;"><td style="padding:3px 6px;">Doble estándar</td><td style="text-align:right;color:var(--rojo);font-weight:700;">188</td></tr>
+              <tr><td style="padding:3px 6px;">Suite Junior</td><td style="text-align:right;color:var(--rojo);font-weight:700;">246</td></tr>
+              <tr style="background:#fafafa;"><td style="padding:3px 6px;">Triple</td><td style="text-align:right;color:var(--rojo);font-weight:700;">246</td></tr>
+            </tbody></table>
           </div>
-          <div style="margin-top:9px;display:flex;gap:7px;flex-wrap:wrap;">
+          <div style="margin-top:9px;display:flex;gap:7px;">
             <a href="https://maps.app.goo.gl/Ti2hFughzGXkzF6U7" target="_blank" class="btn-reservar" style="font-size:0.68rem;padding:7px 10px;background:var(--verde);">📍 Maps</a>
             <a href="tel:962214300" class="btn-reservar" style="font-size:0.68rem;padding:7px 10px;background:#1a73e8;">📞 Llamar</a>
           </div>
         </div>
       </div>
-
-      <!-- Cabaña Quinta Hotel -->
       <div class="hotel-card">
-        <div class="hotel-header" style="background:linear-gradient(135deg,#1b5e20,#388e3c);padding:20px;color:white;">
-          <div style="font-size:1.5rem;">🌴</div>
-          <div class="hotel-name">Cabaña Quinta Hotel</div>
-          <div style="font-size:0.7rem;opacity:0.85;margin-top:3px;">Jr. Moquegua 422, Puerto Maldonado</div>
-        </div>
+        <div class="hotel-header" style="background:linear-gradient(135deg,#1b5e20,#388e3c);padding:20px;color:white;"><div style="font-size:1.5rem;">🌴</div><div class="hotel-name">Cabaña Quinta Hotel</div><div style="font-size:0.7rem;opacity:0.85;margin-top:3px;">Jr. Moquegua 422, Puerto Maldonado</div></div>
         <div class="hotel-body">
-          <div class="hotel-feature">📍 9 cdras. Colegio Fitzcarrald · 3 de la plaza</div>
-          <div class="hotel-feature">📞 946 693 181</div>
           <div class="hotel-feature">🚿 Baño pvdo · 🍳 Desayuno buffet · 🏊 Piscina · 🚗 Garaje · ✈️ Transfer</div>
           <div style="margin-top:10px;border-top:1px solid #eee;padding-top:8px;">
-            <div style="font-size:0.68rem;font-weight:700;background:#4a7c59;color:white;padding:3px 8px;border-radius:3px;margin-bottom:5px;">🌀 CON VENTILADOR</div>
-            <table style="width:100%;font-size:0.73rem;border-collapse:collapse;margin-bottom:7px;">
-              <tbody>
-                <tr><td style="padding:2px 5px;">Simple</td><td style="text-align:right;color:var(--verde);font-weight:700;">S/ 110</td></tr>
-                <tr style="background:#fafafa;"><td style="padding:2px 5px;">Matrimonial</td><td style="text-align:right;color:var(--verde);font-weight:700;">S/ 170</td></tr>
-                <tr><td style="padding:2px 5px;">Doble (2 camas)</td><td style="text-align:right;color:var(--verde);font-weight:700;">S/ 170</td></tr>
-              </tbody>
-            </table>
             <div style="font-size:0.68rem;font-weight:700;background:var(--gris-oscuro);color:white;padding:3px 8px;border-radius:3px;margin-bottom:5px;">❄️ CON AIRE ACONDICIONADO</div>
-            <table style="width:100%;font-size:0.73rem;border-collapse:collapse;">
-              <tbody>
-                <tr><td style="padding:2px 5px;">Confort Simple</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 170</td></tr>
-                <tr style="background:#fafafa;"><td style="padding:2px 5px;">Confort Matrimonial</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 200</td></tr>
-                <tr><td style="padding:2px 5px;">Confort Doble</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 210</td></tr>
-                <tr style="background:#fafafa;"><td style="padding:2px 5px;">Triple</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 280</td></tr>
-                <tr><td style="padding:2px 5px;">Suite Ejecutiva</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 280</td></tr>
-                <tr style="background:#fafafa;"><td style="padding:2px 5px;">Suite Tambopata</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 380</td></tr>
-                <tr><td style="padding:2px 5px;">Departamento</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 500</td></tr>
-              </tbody>
-            </table>
+            <table style="width:100%;font-size:0.73rem;border-collapse:collapse;"><tbody>
+              <tr><td style="padding:2px 5px;">Confort Simple</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 170</td></tr>
+              <tr style="background:#fafafa;"><td style="padding:2px 5px;">Confort Doble</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 210</td></tr>
+              <tr><td style="padding:2px 5px;">Suite Tambopata</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 380</td></tr>
+            </tbody></table>
           </div>
-          <div style="margin-top:9px;display:flex;gap:7px;flex-wrap:wrap;">
+          <div style="margin-top:9px;display:flex;gap:7px;">
             <a href="https://maps.app.goo.gl/ZGL6u4cwuHHBk4Fg6" target="_blank" class="btn-reservar" style="font-size:0.68rem;padding:7px 10px;background:var(--verde);">📍 Maps</a>
             <a href="tel:946693181" class="btn-reservar" style="font-size:0.68rem;padding:7px 10px;background:#1a73e8;">📞 Llamar</a>
           </div>
         </div>
       </div>
-
-      <!-- Wasaí Lodge -->
       <div class="hotel-card">
-        <div class="hotel-header" style="background:linear-gradient(135deg,#33691e,#558b2f);padding:20px;color:white;">
-          <div style="font-size:1.5rem;">🌱</div>
-          <div class="hotel-name">Wasaí Lodge Expeditions</div>
-          <div style="font-size:0.7rem;opacity:0.85;margin-top:3px;">Jr. Billinghurst s/n, Puerto Maldonado</div>
-        </div>
+        <div class="hotel-header" style="background:linear-gradient(135deg,#33691e,#558b2f);padding:20px;color:white;"><div style="font-size:1.5rem;">🌱</div><div class="hotel-name">Wasaí Lodge Expeditions</div><div style="font-size:0.7rem;opacity:0.85;margin-top:3px;">Jr. Billinghurst s/n, Puerto Maldonado</div></div>
         <div class="hotel-body">
-          <div class="hotel-feature">📍 14 cdras. Colegio · 1 de la plaza · Frente al río</div>
-          <div class="hotel-feature">📞 997 516 351 / 997 516 352</div>
           <div class="hotel-feature">🏊 Piscina · 🚿 Baño privado · Sin desayuno</div>
           <div style="margin-top:10px;border-top:1px solid #eee;padding-top:8px;">
-            <table style="width:100%;font-size:0.71rem;border-collapse:collapse;">
-              <thead><tr style="background:#f5f5f5;"><th style="padding:3px 5px;text-align:left;">Tipo</th><th style="padding:3px;text-align:center;">Vent.</th><th style="padding:3px;text-align:center;">A/C</th></tr></thead>
-              <tbody>
-                <tr><td colspan="3" style="padding:3px 5px;font-weight:700;font-size:0.67rem;color:var(--rojo);background:#fff8f8;">SUPERIOR — EDIFICIO</td></tr>
-                <tr><td style="padding:2px 5px;">Individual</td><td style="text-align:center;color:var(--verde);font-weight:700;">S/200</td><td style="text-align:center;color:var(--rojo);font-weight:700;">S/230</td></tr>
-                <tr style="background:#fafafa;"><td style="padding:2px 5px;">Doble / Matrimonial</td><td style="text-align:center;color:var(--verde);font-weight:700;">S/220</td><td style="text-align:center;color:var(--rojo);font-weight:700;">S/260</td></tr>
-                <tr><td style="padding:2px 5px;">Triple</td><td style="text-align:center;color:var(--verde);font-weight:700;">S/190</td><td style="text-align:center;color:var(--rojo);font-weight:700;">S/260</td></tr>
-                <tr><td colspan="3" style="padding:3px 5px;font-weight:700;font-size:0.67rem;color:var(--rojo);background:#fff8f8;">STANDARD — BUNGALOW</td></tr>
-                <tr><td style="padding:2px 5px;">Matrimonial / Doble</td><td style="text-align:center;color:var(--verde);font-weight:700;">S/150</td><td style="text-align:center;color:#aaa;">—</td></tr>
-                <tr style="background:#fafafa;"><td style="padding:2px 5px;">Doble Familiar</td><td style="text-align:center;color:var(--verde);font-weight:700;">S/170</td><td style="text-align:center;color:#aaa;">—</td></tr>
-                <tr><td colspan="3" style="padding:3px 5px;font-weight:700;font-size:0.67rem;color:#666;background:#f5f5f5;">BÁSICA — HOSTEL</td></tr>
-                <tr><td style="padding:2px 5px;">Matrimonial</td><td style="text-align:center;color:var(--verde);font-weight:700;">S/160</td><td style="text-align:center;color:#aaa;">—</td></tr>
-                <tr style="background:#fafafa;"><td style="padding:2px 5px;">Matrimonial (1 cama)</td><td style="text-align:center;color:var(--verde);font-weight:700;">S/135</td><td style="text-align:center;color:#aaa;">—</td></tr>
-              </tbody>
-            </table>
+            <table style="width:100%;font-size:0.71rem;border-collapse:collapse;"><thead><tr style="background:#f5f5f5;"><th style="padding:3px 5px;text-align:left;">Tipo</th><th style="padding:3px;text-align:center;">Vent.</th><th style="padding:3px;text-align:center;">A/C</th></tr></thead><tbody>
+              <tr><td colspan="3" style="padding:3px 5px;font-weight:700;font-size:0.67rem;color:var(--rojo);background:#fff8f8;">SUPERIOR — EDIFICIO</td></tr>
+              <tr><td style="padding:2px 5px;">Individual</td><td style="text-align:center;color:var(--verde);font-weight:700;">S/200</td><td style="text-align:center;color:var(--rojo);font-weight:700;">S/230</td></tr>
+              <tr style="background:#fafafa;"><td style="padding:2px 5px;">Doble/Matrimonial</td><td style="text-align:center;color:var(--verde);font-weight:700;">S/220</td><td style="text-align:center;color:var(--rojo);font-weight:700;">S/260</td></tr>
+              <tr><td colspan="3" style="padding:3px 5px;font-weight:700;font-size:0.67rem;color:#666;background:#f5f5f5;">STANDARD — BUNGALOW</td></tr>
+              <tr><td style="padding:2px 5px;">Matrimonial/Doble</td><td style="text-align:center;color:var(--verde);font-weight:700;">S/150</td><td style="text-align:center;color:#aaa;">—</td></tr>
+            </tbody></table>
           </div>
-          <div style="margin-top:9px;display:flex;gap:7px;flex-wrap:wrap;">
+          <div style="margin-top:9px;display:flex;gap:7px;">
             <a href="https://maps.app.goo.gl/47BHjYaEQRgWzDPA8" target="_blank" class="btn-reservar" style="font-size:0.68rem;padding:7px 10px;background:var(--verde);">📍 Maps</a>
             <a href="tel:997516351" class="btn-reservar" style="font-size:0.68rem;padding:7px 10px;background:#1a73e8;">📞 Llamar</a>
           </div>
@@ -2062,119 +1002,50 @@ footer::before {
       <div class="divider" style="background:var(--verde);"></div>
       <p style="margin-top:12px;color:#666;font-size:0.88rem;">Puerto Maldonado · Disfruta lo mejor de la naturaleza en un solo día 🌿</p>
     </div>
-
     <div class="tour-grid">
-
-      <!-- 1. TAMBOPATA EXPEDITIONS -->
       <div class="tour-card" style="border-top:5px solid #2D6A4F;">
         <div class="tour-header" style="background:linear-gradient(135deg,#1B4332,#2D6A4F);">
           <div style="font-size:1.6rem;margin-bottom:5px;">🦜</div>
           <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:1px;">1. Tambopata Expeditions</h3>
-          <div style="font-size:0.75rem;opacity:0.85;margin-top:4px;">📍 Av. León Velarde 1ª cdra., Tambopata</div>
         </div>
         <div style="padding:16px 18px;">
-          <div class="tour-pkg" style="background:#f0faf4;border-left:4px solid #2D6A4F;">
-            <div class="tour-pkg-title" style="color:#1B4332;">🦜 COLLPA DE GUACAMAYOS — FULL DAY</div>
-            <div class="tour-pkg-detail"><span>🕒 3:30 a.m. – 5:00 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 400.00</strong></span><span>✅ Traslado, almuerzo y guiado</span></div>
-          </div>
-          <div class="tour-pkg" style="background:#f8fffe;border-left:4px solid #40916C;">
-            <div class="tour-pkg-title" style="color:#2D6A4F;">🌊 LAGO SANDOVAL — FULL DAY</div>
-            <div class="tour-pkg-detail"><span>🕒 9:30 a.m. – 5:00 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 130.00</strong></span><span>✅ Caminata Reserva Tambopata, canoa, almuerzo y guiado</span></div>
-          </div>
-          <div class="tour-pkg" style="background:#f8fffe;border-left:4px solid #40916C;">
-            <div class="tour-pkg-title" style="color:#2D6A4F;">🏄 DEPORTE DE AVENTURA — FULL DAY</div>
-            <div class="tour-pkg-detail"><span>🕒 9:00 a.m. – 5:00 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 130.00</strong></span><span>✅ Canopy bridge, kayak, zipline, Isla de los Monos, almuerzo</span></div>
-          </div>
+          <div class="tour-pkg" style="background:#f0faf4;border-left:4px solid #2D6A4F;"><div class="tour-pkg-title" style="color:#1B4332;">🦜 COLLPA DE GUACAMAYOS — FULL DAY</div><div class="tour-pkg-detail"><span>🕒 3:30 a.m. – 5:00 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 400.00</strong></span><span>✅ Traslado, almuerzo y guiado</span></div></div>
+          <div class="tour-pkg" style="background:#f8fffe;border-left:4px solid #40916C;"><div class="tour-pkg-title" style="color:#2D6A4F;">🌊 LAGO SANDOVAL — FULL DAY</div><div class="tour-pkg-detail"><span>🕒 9:30 a.m. – 5:00 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 130.00</strong></span><span>✅ Canoa, almuerzo y guiado</span></div></div>
+          <div class="tour-pkg" style="background:#f8fffe;border-left:4px solid #40916C;"><div class="tour-pkg-title" style="color:#2D6A4F;">🏄 DEPORTE DE AVENTURA — FULL DAY</div><div class="tour-pkg-detail"><span>🕒 9:00 a.m. – 5:00 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 130.00</strong></span><span>✅ Canopy bridge, kayak, zipline</span></div></div>
         </div>
         <div class="tour-footer">
           <a href="tel:949329712" class="btn-reservar" style="font-size:0.68rem;padding:7px 11px;background:#1a73e8;">📞 949 329 712</a>
           <a href="tel:987590164" class="btn-reservar" style="font-size:0.68rem;padding:7px 11px;background:#1a73e8;">📞 987 590 164</a>
         </div>
       </div>
-
-      <!-- 2. AMAZON ECO LODGE -->
       <div class="tour-card" style="border-top:5px solid #1565C0;">
         <div class="tour-header" style="background:linear-gradient(135deg,#0D47A1,#1565C0);">
           <div style="font-size:1.6rem;margin-bottom:5px;">🌿</div>
           <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:1px;">2. Amazon Eco Lodge</h3>
-          <div style="font-size:0.75rem;opacity:0.85;margin-top:4px;">📍 Av. León Velarde 1ª cdra., Tambopata</div>
         </div>
         <div style="padding:16px 18px;">
-          <div class="tour-pkg" style="background:#f0f4ff;border-left:4px solid #1565C0;">
-            <div class="tour-pkg-title" style="color:#0D47A1;">🌊 FULL DAY LAGO SANDOVAL</div>
-            <div class="tour-pkg-detail"><span>🕒 9:30 a.m. – 5:30 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 120</strong> nac. / <strong>S/ 150</strong> extr.</span><span>✅ Reserva Tambopata, canoa, interpretación de bosque</span></div>
-          </div>
-          <div class="tour-pkg" style="background:#f0f4ff;border-left:4px solid #1565C0;">
-            <div class="tour-pkg-title" style="color:#0D47A1;">🏄 FULL DAY AVENTURA</div>
-            <div class="tour-pkg-detail"><span>🕒 9:30 a.m. – 5:30 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 120</strong></span><span>✅ Puente colgante, tirolesa, kayak, Isla de los Monos</span></div>
-          </div>
-          <div class="tour-pkg" style="background:#f0f4ff;border-left:4px solid #1565C0;">
-            <div class="tour-pkg-title" style="color:#0D47A1;">🎣 PESCA DEPORTIVA & FAMILIA NATIVA</div>
-            <div class="tour-pkg-detail"><span>🕒 9:30 a.m. – 5:30 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 120</strong> nac. / <strong>S/ 150</strong> extr.</span><span>✅ Pesca, almuerzo, visita familia Matsigenka</span></div>
-          </div>
-          <div class="tour-pkg" style="background:#fff8f0;border-left:4px solid #f0a500;">
-            <div class="tour-pkg-title" style="color:#7a5200;">🐊 PESCA DE PIRAÑAS — LAGO YACUMAMA (MAÑANA)</div>
-            <div class="tour-pkg-detail"><span>🕒 5:00 a.m. – 8:00 a.m. &nbsp;·&nbsp; 💰 <strong>S/ 100</strong> / persona</span><span>✅ Transporte, amanecer, avistamiento aves, pesca</span></div>
-          </div>
-          <div class="tour-pkg" style="background:#fff8f0;border-left:4px solid #f0a500;">
-            <div class="tour-pkg-title" style="color:#7a5200;">🌅 PESCA DE PIRAÑAS — LAGO YACUMAMA (TARDE)</div>
-            <div class="tour-pkg-detail"><span>🕒 3:30 p.m. – 6:30 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 100</strong> / persona</span><span>✅ Bicicleta, atardecer, búsqueda caimanes</span></div>
-          </div>
+          <div class="tour-pkg" style="background:#f0f4ff;border-left:4px solid #1565C0;"><div class="tour-pkg-title" style="color:#0D47A1;">🌊 FULL DAY LAGO SANDOVAL</div><div class="tour-pkg-detail"><span>🕒 9:30 a.m. – 5:30 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 120</strong> nac.</span></div></div>
+          <div class="tour-pkg" style="background:#f0f4ff;border-left:4px solid #1565C0;"><div class="tour-pkg-title" style="color:#0D47A1;">🏄 FULL DAY AVENTURA</div><div class="tour-pkg-detail"><span>💰 <strong>S/ 120</strong> · Kayak, zipline, Isla de los Monos</span></div></div>
+          <div class="tour-pkg" style="background:#fff8f0;border-left:4px solid #f0a500;"><div class="tour-pkg-title" style="color:#7a5200;">🐊 PESCA DE PIRAÑAS — LAGO YACUMAMA</div><div class="tour-pkg-detail"><span>🕒 3:30 p.m. – 6:30 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 100</strong></span></div></div>
         </div>
-        <div class="tour-footer">
-          <a href="tel:953396223" class="btn-reservar" style="font-size:0.68rem;padding:7px 11px;background:#1a73e8;">📞 953 396 223</a>
-        </div>
+        <div class="tour-footer"><a href="tel:953396223" class="btn-reservar" style="font-size:0.68rem;padding:7px 11px;background:#1a73e8;">📞 953 396 223</a></div>
       </div>
-
-      <!-- 3. CARLOS EXPEDITIONS -->
       <div class="tour-card" style="border-top:5px solid #6A1B9A;">
         <div class="tour-header" style="background:linear-gradient(135deg,#4A148C,#6A1B9A);">
           <div style="font-size:1.6rem;margin-bottom:5px;">📸</div>
           <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:1px;">3. Carlos Expeditions</h3>
-          <div style="font-size:0.75rem;opacity:0.85;margin-top:4px;">📍 Av. León Velarde 1ª cdra., Tambopata</div>
         </div>
         <div style="padding:16px 18px;">
-          <div class="tour-pkg" style="background:#fdf0ff;border-left:4px solid #6A1B9A;">
-            <div class="tour-pkg-title" style="color:#4A148C;">🦜 COLLPA DE GUACAMAYOS — FULL DAY</div>
-            <div class="tour-pkg-detail"><span>🕒 3:30 a.m. – 5:00 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 400.00</strong></span><span>✅ Traslado, almuerzo y guiado</span></div>
-          </div>
-          <div class="tour-pkg" style="background:#fdf0ff;border-left:4px solid #6A1B9A;">
-            <div class="tour-pkg-title" style="color:#4A148C;">🌊 LAGO SANDOVAL — FULL DAY</div>
-            <div class="tour-pkg-detail"><span>🕒 9:30 a.m. – 5:00 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 120.00</strong></span><span>✅ Reserva Tambopata, canoa, entrada, almuerzo y guiado</span></div>
-          </div>
-          <div class="tour-pkg" style="background:#fdf0ff;border-left:4px solid #6A1B9A;">
-            <div class="tour-pkg-title" style="color:#4A148C;">🏄 DEPORTE DE AVENTURA — FULL DAY</div>
-            <div class="tour-pkg-detail"><span>🕒 9:00 a.m. – 5:00 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 120.00</strong></span><span>✅ Canopy bridge, kayak, zipline, Isla de los Monos, almuerzo</span></div>
-          </div>
-          <div class="tour-pkg" style="background:#fff8f0;border-left:4px solid #f0a500;">
-            <div class="tour-pkg-title" style="color:#7a5200;">🐊 PESCA DE PIRAÑAS — LAGO YACUMAMA</div>
-            <div class="tour-pkg-detail"><span>🕒 3:30 p.m. – 6:30 p.m. &nbsp;·&nbsp; 💰 <strong>S/ 100</strong> / persona</span><span>✅ Atardecer, avistamiento aves, búsqueda caimanes</span></div>
-          </div>
+          <div class="tour-pkg" style="background:#fdf0ff;border-left:4px solid #6A1B9A;"><div class="tour-pkg-title" style="color:#4A148C;">🦜 COLLPA DE GUACAMAYOS</div><div class="tour-pkg-detail"><span>💰 <strong>S/ 400.00</strong> · Full Day</span></div></div>
+          <div class="tour-pkg" style="background:#fdf0ff;border-left:4px solid #6A1B9A;"><div class="tour-pkg-title" style="color:#4A148C;">🌊 LAGO SANDOVAL</div><div class="tour-pkg-detail"><span>💰 <strong>S/ 120.00</strong> · Canoa + almuerzo</span></div></div>
+          <div class="tour-pkg" style="background:#fdf0ff;border-left:4px solid #6A1B9A;"><div class="tour-pkg-title" style="color:#4A148C;">🏄 DEPORTE DE AVENTURA</div><div class="tour-pkg-detail"><span>💰 <strong>S/ 120.00</strong> · Kayak, zipline</span></div></div>
         </div>
-        <div class="tour-footer">
-          <a href="tel:914126312" class="btn-reservar" style="font-size:0.68rem;padding:7px 11px;background:#1a73e8;">📞 914 126 312</a>
-        </div>
+        <div class="tour-footer"><a href="tel:914126312" class="btn-reservar" style="font-size:0.68rem;padding:7px 11px;background:#1a73e8;">📞 914 126 312</a></div>
       </div>
     </div>
-
-    <!-- Incluye + Recomendaciones -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:26px;">
-      <div style="background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border:1px solid #81c784;border-radius:10px;padding:18px 20px;">
-        <h4 style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:2px;color:var(--verde);margin-bottom:8px;">✅ INCLUYE EN TODOS LOS TOURS</h4>
-        <ul style="font-size:0.8rem;color:#444;line-height:1.9;list-style:none;padding:0;">
-          <li>🚐 Traslado (según tour)</li><li>🍽️ Almuerzo</li><li>🎓 Guiado especializado</li><li>🎟️ Entrada a los atractivos</li>
-        </ul>
-      </div>
-      <div style="background:linear-gradient(135deg,#fff8e1,#fff3cd);border:1px solid #f0a500;border-radius:10px;padding:18px 20px;">
-        <h4 style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:2px;color:#7a5200;margin-bottom:8px;">🎒 RECOMENDACIONES GENERALES</h4>
-        <ul style="font-size:0.8rem;color:#444;line-height:1.9;list-style:none;padding:0;">
-          <li>🦟 Repelente</li><li>👟 Zapatillas</li><li>🧴 Bloqueador solar</li><li>🧢 Gorra</li><li>🎁 Víveres para familia nativa (opcionales)</li>
-        </ul>
-      </div>
-      <div style="background:linear-gradient(135deg,#fce4ec,#fdf0f4);border:1px solid #e91e63;border-radius:10px;padding:18px 20px;">
-        <h4 style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:2px;color:#880e4f;margin-bottom:8px;">⚠️ OBSERVACIÓN IMPORTANTE</h4>
-        <p style="font-size:0.8rem;color:#444;line-height:1.7;">Los precios son referenciales y pueden cambiar. Para mayor información y reservas, comunícate directamente con los números de cada agencia.</p>
-      </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:24px;">
+      <div style="background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border:1px solid #81c784;border-radius:10px;padding:16px 18px;"><h4 style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:2px;color:var(--verde);margin-bottom:8px;">✅ INCLUYE</h4><ul style="font-size:0.8rem;color:#444;line-height:2;list-style:none;padding:0;"><li>🚐 Traslado · 🍽️ Almuerzo · 🎓 Guiado · 🎟️ Entrada</li></ul></div>
+      <div style="background:linear-gradient(135deg,#fff8e1,#fff3cd);border:1px solid #f0a500;border-radius:10px;padding:16px 18px;"><h4 style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:2px;color:#7a5200;margin-bottom:8px;">🎒 LLEVAR</h4><ul style="font-size:0.8rem;color:#444;line-height:2;list-style:none;padding:0;"><li>🦟 Repelente · 👟 Zapatillas · 🧴 Bloqueador · 🧢 Gorra</li></ul></div>
     </div>
   </div>
 </section>
@@ -2187,16 +1058,12 @@ footer::before {
       <h2 class="section-title">Cómo <span>Llegar</span></h2>
       <div class="divider"></div>
     </div>
-
     <div class="mapa-tabs">
       <button class="mapa-tab active" onclick="switchTab(this,'tab-colegio')">🏫 Sede Deportiva</button>
       <button class="mapa-tab" onclick="switchTab(this,'tab-isis')">💃 Local ISIS — Danzas y Fiesta</button>
     </div>
-
     <div class="mapa-panel active" id="tab-colegio">
-      <div class="mapa-wrap">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3820!2d-69.1878048!3d-12.5921565!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9167a96d89f9d33f%3A0x9303269e213f39c9!2sMadre%20De%20Dios%20475%2C%20Puerto%20Maldonado!5e0!3m2!1ses!2spe!4v1700000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      </div>
+      <div class="mapa-wrap"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3820!2d-69.1878048!3d-12.5921565!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9167a96d89f9d33f%3A0x9303269e213f39c9!2sMadre%20De%20Dios%20475%2C%20Puerto%20Maldonado!5e0!3m2!1ses!2spe!4v1700000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
       <div class="mapa-info">
         <div class="mapa-item"><div class="mapa-item-icon">📍</div><div class="mapa-item-text"><h4>Dirección</h4><p>Madre de Dios 475, Puerto Maldonado 17001, Perú</p></div></div>
         <div class="mapa-item"><div class="mapa-item-icon">✈️</div><div class="mapa-item-text"><h4>Desde el aeropuerto</h4><p>Aeropuerto Padre Aldamiz — ~15 min en taxi o mototaxi</p></div></div>
@@ -2204,15 +1071,9 @@ footer::before {
         <div class="mapa-item"><div class="mapa-item-icon">🏃</div><div class="mapa-item-text"><h4>Maratón y 100m</h4><p>Se realizan en la pista atlética del propio colegio</p></div></div>
       </div>
     </div>
-
     <div class="mapa-panel" id="tab-isis">
-      <div style="background:#f0e6ff;border:2px solid #9B59B6;border-radius:8px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:12px;">
-        <span style="font-size:1.6rem;">💃</span>
-        <div><strong style="color:#6C3483;">Concurso de Danzas — 07:00 PM</strong><br><span style="font-size:0.82rem;color:#555;">Interoceanica Sur 705, Puerto Maldonado 17001</span></div>
-      </div>
-      <div class="mapa-wrap">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3820!2d-69.1780000!3d-12.5950000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sInteroceanica+Sur+705%2C+Puerto+Maldonado+17001!5e0!3m2!1ses!2spe!4v1700000000002" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      </div>
+      <div style="background:#f0e6ff;border:2px solid #9B59B6;border-radius:8px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:12px;"><span style="font-size:1.6rem;">💃</span><div><strong style="color:#6C3483;">Concurso de Danzas — 07:00 PM</strong><br><span style="font-size:0.82rem;color:#555;">Interoceanica Sur 705, Puerto Maldonado 17001</span></div></div>
+      <div class="mapa-wrap"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3820!2d-69.1780000!3d-12.5950000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sInteroceanica+Sur+705%2C+Puerto+Maldonado+17001!5e0!3m2!1ses!2spe!4v1700000000002" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
       <div class="mapa-info">
         <div class="mapa-item"><div class="mapa-item-icon">📍</div><div class="mapa-item-text"><h4>Local ISIS</h4><p>Interoceanica Sur 705, Puerto Maldonado 17001, Perú</p></div></div>
         <div class="mapa-item"><div class="mapa-item-icon">🕖</div><div class="mapa-item-text"><h4>Hora del evento</h4><p>07:00 PM — 28 de junio de 2026</p></div></div>
@@ -2247,30 +1108,12 @@ footer::before {
       <div class="divider"></div>
     </div>
     <div class="faq-list">
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">¿Cuándo y dónde es el campeonato?<span class="faq-icon">+</span></div>
-        <div class="faq-a">El XXIV Campeonato Regional del Sur "Eliana Amparo Molina del Carpio" se realizará el 28 de junio de 2026 en la IEBR Carlos Fermín Fitzcarrald, Madre de Dios 475, Puerto Maldonado. Las danzas serán a las 07:00 PM y la fiesta de clausura a las 08:00 PM en el local de ISIS (Interoceanica Sur 705, Puerto Maldonado).</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">¿Cuántas delegaciones participan y cuáles son?<span class="faq-icon">+</span></div>
-        <div class="faq-a">Participan 5 delegaciones: Arequipa, Cusco, Madre de Dios, Puno y Tacna.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">¿Cómo funciona el sistema de puntaje?<span class="faq-icon">+</span></div>
-        <div class="faq-a">Las disciplinas grupales otorgan: 1° = 15 pts, 2° = 12 pts, 3° = 9 pts, 4° = 6 pts, 5° = 3 pts. Las disciplinas individuales otorgan: 1° = 5 pts, 2° = 4 pts, 3° = 3 pts, 4° = 2 pts, 5° = 1 pt. Gana la delegación con mayor puntaje acumulado al final del día.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">¿Cómo se evalúa el concurso de danzas?<span class="faq-icon">+</span></div>
-        <div class="faq-a">Los criterios son: Coreografía (25 pts), Sincronización (25 pts), Vestuario (25 pts) e Interpretación Artística (25 pts), con un total de 100 puntos. El evento es a las 07:00 PM en el Local de ISIS.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">¿En qué consiste la Fiesta de Vaqueros?<span class="faq-icon">+</span></div>
-        <div class="faq-a">Es la fiesta de clausura a las 08:00 PM en el local de ISIS. La temática es vaqueros de la Amazonía Peruano-Brasileña. Incluye concursos de Toro Loco y Toro Chelero, música y baile regional amazónico. Dresscode: vaquero/a amazónico.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">¿Cómo puedo contactar a la organización?<span class="faq-icon">+</span></div>
-        <div class="faq-a">Escríbenos a xxivcampeonatoregionaldelsur@gmail.com o al celular/WhatsApp: 997 077 837. Atención de lunes a viernes de 8:00 AM a 5:00 PM.</div>
-      </div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">¿Cuándo y dónde es el campeonato?<span class="faq-icon">+</span></div><div class="faq-a">El XXIV Campeonato Regional del Sur se realizará el 28 de junio de 2026 en la IEBR Carlos Fermín Fitzcarrald, Madre de Dios 475, Puerto Maldonado. Las danzas serán a las 07:00 PM y la fiesta a las 08:00 PM en el local de ISIS.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">¿Cuántas delegaciones participan?<span class="faq-icon">+</span></div><div class="faq-a">Participan 5 delegaciones: Arequipa, Cusco, Madre de Dios, Puno y Tacna.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">¿Cómo funciona el sistema de puntaje?<span class="faq-icon">+</span></div><div class="faq-a">Las disciplinas grupales otorgan: 1° = 15 pts, 2° = 12 pts, 3° = 9 pts, 4° = 6 pts, 5° = 3 pts. Las disciplinas individuales otorgan: 1° = 5 pts, 2° = 4 pts, 3° = 3 pts, 4° = 2 pts, 5° = 1 pt. Gana la delegación con mayor puntaje acumulado.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">¿Cómo se evalúa el concurso de danzas?<span class="faq-icon">+</span></div><div class="faq-a">Los criterios son: Coreografía (25 pts), Sincronización (25 pts), Vestuario (25 pts) e Interpretación Artística (25 pts), total 100 puntos.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">¿En qué consiste la Fiesta de Vaqueros?<span class="faq-icon">+</span></div><div class="faq-a">Fiesta de clausura a las 08:00 PM en el local de ISIS. Temática vaqueros de la Amazonía Peruano-Brasileña. Incluye concursos de Toro Loco y Toro Chelero. Dresscode: vaquero/a amazónico.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">¿Cómo puedo contactar a la organización?<span class="faq-icon">+</span></div><div class="faq-a">Escríbenos a xxivcampeonatoregionaldelsur@gmail.com o al celular/WhatsApp: 997 077 837. Atención de lunes a viernes de 8:00 AM a 5:00 PM.</div></div>
     </div>
   </div>
 </section>
@@ -2284,22 +1127,10 @@ footer::before {
       <div class="divider"></div>
     </div>
     <div class="contacto-grid">
-      <div class="contacto-card">
-        <div class="contacto-icon">📧</div>
-        <div class="contacto-info"><h4>Correo Oficial</h4><a href="mailto:xxivcampeonatoregionaldelsur@gmail.com">xxivcampeonatoregionaldelsur@gmail.com</a></div>
-      </div>
-      <div class="contacto-card">
-        <div class="contacto-icon">📱</div>
-        <div class="contacto-info"><h4>Celular / WhatsApp</h4><a href="tel:+51997077837">997 077 837</a><p style="margin-top:3px;">Lunes a viernes · 8:00 AM – 5:00 PM</p></div>
-      </div>
-      <div class="contacto-card">
-        <div class="contacto-icon">🏫</div>
-        <div class="contacto-info"><h4>Sede Deportiva</h4><p>IEBR Carlos Fermín Fitzcarrald<br>Madre de Dios 475, Puerto Maldonado</p></div>
-      </div>
-      <div class="contacto-card">
-        <div class="contacto-icon">🎉</div>
-        <div class="contacto-info"><h4>Fiesta de Clausura</h4><p>Local de ISIS<br>Interoceanica Sur 705, Puerto Maldonado<br>08:00 PM</p></div>
-      </div>
+      <div class="contacto-card"><div class="contacto-icon">📧</div><div class="contacto-info"><h4>Correo Oficial</h4><a href="mailto:xxivcampeonatoregionaldelsur@gmail.com">xxivcampeonatoregionaldelsur@gmail.com</a></div></div>
+      <div class="contacto-card"><div class="contacto-icon">📱</div><div class="contacto-info"><h4>Celular / WhatsApp</h4><a href="tel:+51997077837">997 077 837</a><p style="margin-top:3px;">Lunes a viernes · 8:00 AM – 5:00 PM</p></div></div>
+      <div class="contacto-card"><div class="contacto-icon">🏫</div><div class="contacto-info"><h4>Sede Deportiva</h4><p>IEBR Carlos Fermín Fitzcarrald<br>Madre de Dios 475, Puerto Maldonado</p></div></div>
+      <div class="contacto-card"><div class="contacto-icon">🎉</div><div class="contacto-info"><h4>Fiesta de Clausura</h4><p>Local de ISIS<br>Interoceanica Sur 705, Puerto Maldonado<br>08:00 PM</p></div></div>
     </div>
   </div>
 </section>
@@ -2314,7 +1145,7 @@ footer::before {
   </p>
 </footer>
 
-<!-- BARRA DE NAVEGACIÓN INFERIOR MÓVIL -->
+<!-- BARRA INFERIOR MÓVIL -->
 <nav id="bottomNav" aria-label="Navegación principal">
   <a href="#posiciones"><span class="bn-icon">📊</span>Posiciones</a>
   <a href="#fixture"><span class="bn-icon">📅</span>Fixture</a>
@@ -2330,415 +1161,158 @@ footer::before {
 
 <button id="scrollTopBtn" title="Volver arriba">⬆</button>
 
-<!-- ============================================================
-     JAVASCRIPT
-============================================================ -->
 <script>
-/* ── CONFIG ─────────────────────────────────── */
-const FIXTURE_URL   = 'https://opensheet.elk.sh/1q7Z2ktW1ixLFCHJxkE80iddu29qZvwTnfsoEyTESki0/Hoja%201'; // ← Fixture
-const RANKING_URL   = 'https://opensheet.elk.sh/1q7Z2ktW1ixLFCHJxkE80iddu29qZvwTnfsoEyTESki0/Hoja%202'; // ← Ranking
-const RESULTADOS_URL= 'https://opensheet.elk.sh/1q7Z2ktW1ixLFCHJxkE80iddu29qZvwTnfsoEyTESki0/Hoja%203'; // ← Resultados por categoría
-const POLL_MS       = 60000; // cada 60 seg
+/* CONFIG */
+const FIXTURE_URL   = 'https://opensheet.elk.sh/1q7Z2ktW1ixLFCHJxkE80iddu29qZvwTnfsoEyTESki0/Hoja%201';
+const RANKING_URL   = 'https://opensheet.elk.sh/1q7Z2ktW1ixLFCHJxkE80iddu29qZvwTnfsoEyTESki0/Hoja%202';
+const RESULTADOS_URL= 'https://opensheet.elk.sh/1q7Z2ktW1ixLFCHJxkE80iddu29qZvwTnfsoEyTESki0/Hoja%203';
+const POLL_MS       = 60000;
 
-/* ── MENÚ INFERIOR MÓVIL — resaltar ítem activo al scroll ── */
+/* BOTTOM NAV ACTIVO */
 const bottomNavLinks = document.querySelectorAll('#bottomNav a');
-
 function updateActiveBottomNav() {
-  const scrollY = window.scrollY + 80;
-  let current = '';
-  document.querySelectorAll('section[id], div[id]').forEach(sec => {
-    if (sec.offsetTop <= scrollY) current = sec.id;
-  });
-  bottomNavLinks.forEach(a => {
-    const href = a.getAttribute('href').replace('#', '');
-    a.classList.toggle('active', href === current);
-  });
+  const scrollY = window.scrollY + 80; let current = '';
+  document.querySelectorAll('section[id],div[id]').forEach(sec => { if (sec.offsetTop <= scrollY) current = sec.id; });
+  bottomNavLinks.forEach(a => { const href = a.getAttribute('href').replace('#',''); a.classList.toggle('active', href === current); });
 }
-window.addEventListener('scroll', updateActiveBottomNav, { passive: true });
+window.addEventListener('scroll', updateActiveBottomNav, { passive:true });
 window.addEventListener('load', updateActiveBottomNav);
 
-/* ── HERO ANIMACIÓN ──────────────────────────── */
+/* HERO ANIMACIÓN */
 setTimeout(() => document.getElementById('heroSection')?.classList.add('show'), 200);
 
-/* ── COUNTDOWN ÉPICO ─────────────────────────── */
+/* COUNTDOWN */
 const targetDate = new Date('June 28, 2026 08:00:00').getTime();
 const countdownEl = document.getElementById('countdown');
-
 function updateCountdown() {
   const diff = targetDate - Date.now();
   if (!countdownEl) return;
-  if (diff <= 0) {
-    countdownEl.innerHTML = '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:2rem;color:var(--dorado);letter-spacing:3px;">🏁 ¡EVENTO EN CURSO!</div>';
-    return;
-  }
-  const d = Math.floor(diff / 86400000);
-  const h = Math.floor((diff % 86400000) / 3600000);
-  const m = Math.floor((diff % 3600000) / 60000);
-  const s = Math.floor((diff % 60000) / 1000);
-  countdownEl.innerHTML = `
-    <div class="cd-block"><span class="cd-num">${String(d).padStart(2,'0')}</span><span class="cd-lbl">Días</span></div>
-    <div class="cd-block"><span class="cd-num">${String(h).padStart(2,'0')}</span><span class="cd-lbl">Horas</span></div>
-    <div class="cd-block"><span class="cd-num">${String(m).padStart(2,'0')}</span><span class="cd-lbl">Min</span></div>
-    <div class="cd-block"><span class="cd-num">${String(s).padStart(2,'0')}</span><span class="cd-lbl">Seg</span></div>
-  `;
+  if (diff <= 0) { countdownEl.innerHTML = '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:2rem;color:var(--dorado);letter-spacing:3px;">🏁 ¡EVENTO EN CURSO!</div>'; return; }
+  const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
+  countdownEl.innerHTML=`<div class="cd-block"><span class="cd-num">${String(d).padStart(2,'0')}</span><span class="cd-lbl">Días</span></div><div class="cd-block"><span class="cd-num">${String(h).padStart(2,'0')}</span><span class="cd-lbl">Horas</span></div><div class="cd-block"><span class="cd-num">${String(m).padStart(2,'0')}</span><span class="cd-lbl">Min</span></div><div class="cd-block"><span class="cd-num">${String(s).padStart(2,'0')}</span><span class="cd-lbl">Seg</span></div>`;
 }
-updateCountdown();
-setInterval(updateCountdown, 1000);
+updateCountdown(); setInterval(updateCountdown,1000);
 
-/* ===== FIX: botón UP correcto en móvil y PC ===== */
+/* SCROLL TOP */
 const scrollBtn = document.getElementById('scrollTopBtn');
+function toggleScrollBtn() { const s=window.pageYOffset||document.documentElement.scrollTop; scrollBtn.classList.toggle('show',s>150); }
+window.addEventListener('scroll',toggleScrollBtn,{passive:true});
+window.addEventListener('load',toggleScrollBtn);
+setTimeout(toggleScrollBtn,300); setTimeout(toggleScrollBtn,800);
+scrollBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+window.addEventListener('touchmove',toggleScrollBtn,{passive:true});
 
-function toggleScrollBtn() {
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  if (scrollTop > 150) {
-    scrollBtn.classList.add('show');
-  } else {
-    scrollBtn.classList.remove('show');
-  }
-}
+/* NAV SCROLLED */
+const mainNav=document.getElementById('mainNav');
+window.addEventListener('scroll',()=>mainNav.classList.toggle('scrolled',window.scrollY>50),{passive:true});
 
-// Detecta scroll real (vertical)
-window.addEventListener('scroll', toggleScrollBtn, { passive: true });
+/* FADE-UP — solo elementos que NO son delegaciones */
+const fadeObserver = new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show');});},{threshold:0.08});
+document.querySelectorAll('section,.disc-card,.hotel-card,.fiesta-card,.tour-card,.res-card').forEach(el=>{el.classList.add('fade-up');fadeObserver.observe(el);});
 
-// Ejecuta al cargar
-window.addEventListener('load', toggleScrollBtn);
-// ✅ FORZAR DETECCIÓN EN MÓVILES (CLAVE)
-setTimeout(toggleScrollBtn, 300);
-setTimeout(toggleScrollBtn, 800);
-   
-// Click del botón
-scrollBtn.addEventListener('click', () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
+/* FAQ */
+window.toggleFaq=function(el){const item=el.parentElement;const isOpen=item.classList.contains('open');document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));if(!isOpen)item.classList.add('open');};
 
-// ✅ Detecta cambios de viewport (cuando haces swipe raro)
-window.addEventListener('touchmove', toggleScrollBtn, { passive: true });
+/* MAP TABS */
+window.switchTab=function(btn,id){document.querySelectorAll('.mapa-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.mapa-panel').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.getElementById(id)?.classList.add('active');};
 
-/* ── NAV SCROLLED ────────────────────────────── */
-const mainNav = document.getElementById('mainNav');
-window.addEventListener('scroll', () => {
-  mainNav.classList.toggle('scrolled', window.scrollY > 50);
-}, { passive: true });
+/* FIXTURE TABS */
+window.switchFixtureTab=function(tab,btn){document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.fpanel').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.getElementById('fp-'+tab)?.classList.add('active');};
 
-/* ── FADE-UP OBSERVER ────────────────────────── */
-const fadeObserver = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
-}, { threshold: 0.08 });
-document.querySelectorAll('section, .disc-card, .hotel-card, .fiesta-card, .tour-card').forEach(el => {
-  el.classList.add('fade-up');
-  fadeObserver.observe(el);
-});
+/* DELEGACIONES */
+const DELEGACIONES={'AQP':'Arequipa','CUS':'Cusco','MDD':'Madre de Dios','PUN':'Puno','TAC':'Tacna'};
+function nombreDelegacion(codigo){if(!codigo)return'';const c=codigo.trim().toUpperCase();return DELEGACIONES[c]||codigo.trim();}
 
-/* ── FAQ ─────────────────────────────────────── */
-window.toggleFaq = function(el) {
-  const item   = el.parentElement;
-  const isOpen = item.classList.contains('open');
-  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-  if (!isOpen) item.classList.add('open');
-};
-
-/* ── MAP TABS ────────────────────────────────── */
-window.switchTab = function(btn, id) {
-  document.querySelectorAll('.mapa-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.mapa-panel').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById(id)?.classList.add('active');
-};
-
-/* ── FIXTURE TABS ────────────────────────────── */
-window.switchFixtureTab = function(tab, btn) {
-  document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.fpanel').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('fp-' + tab)?.classList.add('active');
-};
-
-/* ── DICCIONARIO DE DELEGACIONES ─────────────── */
-const DELEGACIONES = {
-  'AQP': 'Arequipa',
-  'CUS': 'Cusco',
-  'MDD': 'Madre de Dios',
-  'PUN': 'Puno',
-  'TAC': 'Tacna'
-};
-
-// Traduce código a nombre completo; si ya es nombre completo lo devuelve igual
-function nombreDelegacion(codigo) {
-  if (!codigo) return '';
-  const c = codigo.trim().toUpperCase();
-  return DELEGACIONES[c] || codigo.trim();
-}
-
-/* ── HELPERS ─────────────────────────────────── */
-function fmtTime(ts) {
-  return ts ? new Date(ts).toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' }) : '';
-}
-
-/* ── PARTÍCULAS HERO ─────────────────────────── */
-(function() {
-  const canvas = document.getElementById('heroCanvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  let W, H, particles = [];
-
-  function resize() {
-    W = canvas.width  = canvas.offsetWidth;
-    H = canvas.height = canvas.offsetHeight;
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  const COLORS = ['rgba(240,165,0,', 'rgba(255,209,102,', 'rgba(200,16,46,', 'rgba(255,255,255,'];
-
-  function rand(a, b) { return Math.random() * (b - a) + a; }
-
-  for (let i = 0; i < 80; i++) {
-    particles.push({
-      x: rand(0, 1), y: rand(0, 1),
-      vx: rand(-0.08, 0.08), vy: rand(-0.15, -0.04),
-      r: rand(1, 3.5),
-      color: COLORS[Math.floor(Math.random() * COLORS.length)],
-      alpha: rand(0.3, 0.9),
-      life: rand(0, 1)
-    });
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    particles.forEach(p => {
-      p.life += 0.004;
-      if (p.life > 1) { p.life = 0; p.y = 1.05; p.x = rand(0,1); }
-      const a = p.alpha * Math.sin(p.life * Math.PI);
-      ctx.beginPath();
-      ctx.arc(p.x * W, p.y * H, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.color + a + ')';
-      ctx.fill();
-      p.x += p.vx * 0.01;
-      p.y += p.vy * 0.01;
-    });
-    requestAnimationFrame(draw);
-  }
+/* PARTÍCULAS HERO */
+(function(){
+  const canvas=document.getElementById('heroCanvas'); if(!canvas)return;
+  const ctx=canvas.getContext('2d'); let W,H,particles=[];
+  function resize(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight;}
+  resize(); window.addEventListener('resize',resize);
+  const COLORS=['rgba(240,165,0,','rgba(255,209,102,','rgba(200,16,46,','rgba(255,255,255,'];
+  function rand(a,b){return Math.random()*(b-a)+a;}
+  for(let i=0;i<80;i++){particles.push({x:rand(0,1),y:rand(0,1),vx:rand(-0.08,0.08),vy:rand(-0.15,-0.04),r:rand(1,3.5),color:COLORS[Math.floor(Math.random()*COLORS.length)],alpha:rand(0.3,0.9),life:rand(0,1)});}
+  function draw(){ctx.clearRect(0,0,W,H);particles.forEach(p=>{p.life+=0.004;if(p.life>1){p.life=0;p.y=1.05;p.x=rand(0,1);}const a=p.alpha*Math.sin(p.life*Math.PI);ctx.beginPath();ctx.arc(p.x*W,p.y*H,p.r,0,Math.PI*2);ctx.fillStyle=p.color+a+')';ctx.fill();p.x+=p.vx*0.01;p.y+=p.vy*0.01;});requestAnimationFrame(draw);}
   draw();
 })();
 
-/* ── FETCH FIXTURE ───────────────────────────── */
-let fixtureLoaded = false;
-
-async function fetchFixture() {
-  const dot   = document.getElementById('fixtureStatusDot');
-  const txt   = document.getElementById('fixtureStatusText');
-  const last  = document.getElementById('fixtureLastUpdate');
-
-  try {
-    const res = await fetch(FIXTURE_URL);
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-
-    if (!Array.isArray(data) || data.length === 0) {
-      if (dot) { dot.className = 'fixture-status-dot'; txt.textContent = 'Sin datos en la hoja'; }
-      return;
-    }
-
-    const buckets = { todos:[], futbol:[], baloncesto:[], voley:[], atletismo:[], tenis:[], recreativos:[] };
-
-    data.forEach(row => {
-      const estado = (row.Estado || 'PROX').toUpperCase().trim();
-      const badge  = estado === 'LIVE' ? '<span class="badge-live">EN VIVO</span>'
-                   : estado === 'FIN'  ? '<span class="badge-fin">FINAL</span>'
-                                        : '<span class="badge-prox">PRÓXIMO</span>';
-
-      const scoreHtml = row.Resultado
-        ? `<div class="fixture-score">${row.Resultado}</div>`
-        : `<div class="fixture-vs">VS</div>`;
-
-      const item = `
-        <div class="fixture-item ${estado === 'LIVE' ? 'live' : ''}">
-          <div class="fixture-date">${row.Hora || '—'}</div>
-          <div class="fixture-team">${nombreDelegacion(row.EquipoA || '')}</div>
-          <div style="text-align:center;">${scoreHtml}${badge}<div class="fixture-sport">${row.Deporte || ''}</div></div>
-          <div class="fixture-team right">${nombreDelegacion(row.EquipoB || '')}</div>
-          <div class="fixture-lugar">${(row.Lugar || '').replace(/\s/g,'<br>')}</div>
-        </div>`;
-
-      const dep = (row.Deporte || '').toLowerCase();
+/* FETCH FIXTURE */
+async function fetchFixture(){
+  const dot=document.getElementById('fixtureStatusDot'),txt=document.getElementById('fixtureStatusText'),last=document.getElementById('fixtureLastUpdate');
+  try{
+    const res=await fetch(FIXTURE_URL); if(!res.ok)throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    if(!Array.isArray(data)||data.length===0){if(dot){dot.className='fixture-status-dot';txt.textContent='Sin datos en la hoja';}return;}
+    const buckets={todos:[],futbol:[],baloncesto:[],voley:[],atletismo:[],tenis:[],recreativos:[]};
+    data.forEach(row=>{
+      const estado=(row.Estado||'PROX').toUpperCase().trim();
+      const badge=estado==='LIVE'?'<span class="badge-live">EN VIVO</span>':estado==='FIN'?'<span class="badge-fin">FINAL</span>':'<span class="badge-prox">PRÓXIMO</span>';
+      const scoreHtml=row.Resultado?`<div class="fixture-score">${row.Resultado}</div>`:`<div class="fixture-vs">VS</div>`;
+      const item=`<div class="fixture-item ${estado==='LIVE'?'live':''}"><div class="fixture-date">${row.Hora||'—'}</div><div class="fixture-team">${nombreDelegacion(row.EquipoA||'')}</div><div style="text-align:center;">${scoreHtml}${badge}<div class="fixture-sport">${row.Deporte||''}</div></div><div class="fixture-team right">${nombreDelegacion(row.EquipoB||'')}</div><div class="fixture-lugar">${(row.Lugar||'').replace(/\s/g,'<br>')}</div></div>`;
+      const dep=(row.Deporte||'').toLowerCase();
       buckets.todos.push(item);
-      if      (dep.includes('futbol') || dep.includes('fútbol')) buckets.futbol.push(item);
-      else if (dep.includes('baloncesto'))                        buckets.baloncesto.push(item);
-      else if (dep.includes('voley') || dep.includes('vóley'))   buckets.voley.push(item);
-      else if (dep.includes('maraton') || dep.includes('atletismo') || dep.includes('100')) buckets.atletismo.push(item);
-      else if (dep.includes('tenis'))                             buckets.tenis.push(item);
-      else                                                        buckets.recreativos.push(item);
+      if(dep.includes('futbol')||dep.includes('fútbol'))buckets.futbol.push(item);
+      else if(dep.includes('baloncesto'))buckets.baloncesto.push(item);
+      else if(dep.includes('voley')||dep.includes('vóley'))buckets.voley.push(item);
+      else if(dep.includes('maraton')||dep.includes('atletismo')||dep.includes('100'))buckets.atletismo.push(item);
+      else if(dep.includes('tenis'))buckets.tenis.push(item);
+      else buckets.recreativos.push(item);
     });
-
-    Object.entries(buckets).forEach(([key, list]) => {
-      const id = 'fixtureList' + key.charAt(0).toUpperCase() + key.slice(1);
-      const el = document.getElementById(id);
-      if (el) el.innerHTML = list.length ? list.join('') : '<div style="text-align:center;padding:28px;color:#aaa;">Sin partidos en esta categoría.</div>';
-    });
-
-    fixtureLoaded = true;
-    if (dot)  dot.className = 'fixture-status-dot ok';
-    if (txt)  txt.textContent = `${data.length} registros cargados`;
-    if (last) last.textContent = 'Actualizado: ' + new Date().toLocaleTimeString('es-PE');
-
-  } catch (err) {
-    console.error('Fixture error:', err);
-    if (dot)  dot.className = 'fixture-status-dot err';
-    if (txt)  txt.textContent = 'Error al conectar con Google Sheets';
-    if (last) last.textContent = new Date().toLocaleTimeString('es-PE');
-  }
+    Object.entries(buckets).forEach(([key,list])=>{const id='fixtureList'+key.charAt(0).toUpperCase()+key.slice(1);const el=document.getElementById(id);if(el)el.innerHTML=list.length?list.join(''):'<div style="text-align:center;padding:28px;color:#aaa;">Sin partidos en esta categoría.</div>';});
+    if(dot)dot.className='fixture-status-dot ok';
+    if(txt)txt.textContent=`${data.length} registros cargados`;
+    if(last)last.textContent='Actualizado: '+new Date().toLocaleTimeString('es-PE');
+  }catch(err){console.error('Fixture error:',err);if(dot)dot.className='fixture-status-dot err';if(txt)txt.textContent='Error al conectar con Google Sheets';if(last)last.textContent=new Date().toLocaleTimeString('es-PE');}
 }
+fetchFixture(); setInterval(fetchFixture,POLL_MS);
 
-fetchFixture();
-setInterval(fetchFixture, POLL_MS);
-
-
-
-
-/* ── RANKING (Google Sheets) ─────────────────── */
-async function fetchRanking() {
-  const dot  = document.getElementById('rankingDot');
-  const txt  = document.getElementById('rankingStatusText');
-  const last = document.getElementById('rankingLastUpdate');
-  const body = document.getElementById('rankingBody');
-
-  try {
-    const res = await fetch(RANKING_URL)
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-
-    if (!Array.isArray(data) || data.length === 0) {
-      if (body) body.innerHTML = `
-        <tr><td><span class="pos-num">1</span></td><td>Arequipa</td><td>—</td><td>—</td><td><span class="pts-cell">—</span></td></tr>
-        <tr><td><span class="pos-num">2</span></td><td>Cusco</td><td>—</td><td>—</td><td><span class="pts-cell">—</span></td></tr>
-        <tr><td><span class="pos-num">3</span></td><td>Madre de Dios</td><td>—</td><td>—</td><td><span class="pts-cell">—</span></td></tr>
-        <tr><td><span class="pos-num">4</span></td><td>Puno</td><td>—</td><td>—</td><td><span class="pts-cell">—</span></td></tr>
-        <tr><td><span class="pos-num">5</span></td><td>Tacna</td><td>—</td><td>—</td><td><span class="pts-cell">—</span></td></tr>`;
-      if (dot) dot.className = 'ranking-dot';
-      if (txt) txt.textContent = 'Tabla aún sin datos';
-      return;
-    }
-
-    // Ordenar por Total descendente (si viene como número o string)
-    const sorted = [...data].sort((a, b) => {
-      const ta = parseFloat(a.Total) || 0;
-      const tb = parseFloat(b.Total) || 0;
-      return tb - ta;
-    });
-
-    body.innerHTML = sorted.map((row, i) => {
-      const pos        = i + 1;
-      const delegacion = nombreDelegacion(row.Delegacion || row.Delegación || row.delegacion || row.Codigo || row.codigo || '—');
-      const grp        = row.PtsGrupales   || row['Pts Grupales']   || row.grupales   || '—';
-      const ind        = row.PtsIndividuales|| row['Pts Individuales']|| row.individuales|| '—';
-      const total      = row.Total || '—';
-      const isFirst    = pos === 1 ? 'style="background:rgba(240,165,0,0.06);"' : '';
-      return `<tr ${isFirst}>
-        <td><span class="pos-num">${pos}</span></td>
-        <td>${pos === 1 ? '🥇 ' : pos === 2 ? '🥈 ' : pos === 3 ? '🥉 ' : ''}${delegacion}</td>
-        <td>${grp}</td>
-        <td>${ind}</td>
-        <td><span class="pts-cell">${total}</span></td>
-      </tr>`;
+/* RANKING */
+async function fetchRanking(){
+  const dot=document.getElementById('rankingDot'),txt=document.getElementById('rankingStatusText'),last=document.getElementById('rankingLastUpdate'),body=document.getElementById('rankingBody');
+  const fallback=`<tr><td><span class="pos-num">1</span></td><td>Arequipa</td><td>—</td><td>—</td><td><span class="pts-cell">—</span></td></tr><tr><td><span class="pos-num">2</span></td><td>Cusco</td><td>—</td><td>—</td><td><span class="pts-cell">—</span></td></tr><tr><td><span class="pos-num">3</span></td><td>Madre de Dios</td><td>—</td><td>—</td><td><span class="pts-cell">—</span></td></tr><tr><td><span class="pos-num">4</span></td><td>Puno</td><td>—</td><td>—</td><td><span class="pts-cell">—</span></td></tr><tr><td><span class="pos-num">5</span></td><td>Tacna</td><td>—</td><td>—</td><td><span class="pts-cell">—</span></td></tr>`;
+  try{
+    const res=await fetch(RANKING_URL);if(!res.ok)throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    if(!Array.isArray(data)||data.length===0){if(body)body.innerHTML=fallback;if(dot)dot.className='ranking-dot';if(txt)txt.textContent='Tabla aún sin datos';return;}
+    const sorted=[...data].sort((a,b)=>(parseFloat(b.Total)||0)-(parseFloat(a.Total)||0));
+    body.innerHTML=sorted.map((row,i)=>{
+      const pos=i+1;
+      const delegacion=nombreDelegacion(row.Delegacion||row.Delegación||row.delegacion||row.Codigo||row.codigo||'—');
+      const grp=row.PtsGrupales||row['Pts Grupales']||row.grupales||'—';
+      const ind=row.PtsIndividuales||row['Pts Individuales']||row.individuales||'—';
+      const total=row.Total||'—';
+      const isFirst=pos===1?'style="background:rgba(240,165,0,0.06);"':'';
+      return `<tr ${isFirst}><td><span class="pos-num">${pos}</span></td><td>${pos===1?'🥇 ':pos===2?'🥈 ':pos===3?'🥉 ':''}${delegacion}</td><td>${grp}</td><td>${ind}</td><td><span class="pts-cell">${total}</span></td></tr>`;
     }).join('');
-
-    if (dot)  dot.className = 'ranking-dot ok';
-    if (txt)  txt.textContent = `${sorted.length} delegaciones cargadas`;
-    if (last) last.textContent = 'Actualizado: ' + new Date().toLocaleTimeString('es-PE');
-
-  } catch (err) {
-    console.error('Ranking error:', err);
-    // mantener tabla estática como fallback
-    if (document.getElementById('rankingBody').innerHTML.includes('Cargando')) {
-      document.getElementById('rankingBody').innerHTML = `
-        <tr><td><span class="pos-num">1</span></td><td>Arequipa</td><td>—</td><td>—</td><td><span class="pts-cell">—</span></td></tr>
-        <tr><td><span class="pos-num">2</span></td><td>Cusco</td><td>—</td><td>—</td><td><span class="pts-cell">—</span></td></tr>
-        <tr><td><span class="pos-num">3</span></td><td>Madre de Dios</td><td>—</td><td>—</td><td><span class="pts-cell">—</span></td></tr>
-        <tr><td><span class="pos-num">4</span></td><td>Puno</td><td>—</td><td>—</td><td><span class="pts-cell">—</span></td></tr>
-        <tr><td><span class="pos-num">5</span></td><td>Tacna</td><td>—</td><td>—</td><td><span class="pts-cell">—</span></td></tr>`;
-    }
-    if (dot) dot.className = 'ranking-dot err';
-    if (txt) txt.textContent = 'Error al cargar ranking';
-    if (last) last.textContent = new Date().toLocaleTimeString('es-PE');
-  }
+    if(dot)dot.className='ranking-dot ok';if(txt)txt.textContent=`${sorted.length} delegaciones cargadas`;if(last)last.textContent='Actualizado: '+new Date().toLocaleTimeString('es-PE');
+  }catch(err){console.error('Ranking error:',err);if(body&&body.innerHTML.includes('Cargando'))body.innerHTML=fallback;if(dot)dot.className='ranking-dot err';if(txt)txt.textContent='Error al cargar ranking';if(last)last.textContent=new Date().toLocaleTimeString('es-PE');}
 }
+fetchRanking(); setInterval(fetchRanking,POLL_MS);
 
-fetchRanking();
-setInterval(fetchRanking, POLL_MS);
-
-/* ── RESULTADOS POR CATEGORÍA (Google Sheets Hoja 3) ── */
-// Columnas esperadas: Deporte, Categoria, Pos1, Pos2, Pos3, Pos4, Pos5
-// Pos1..Pos5 = nombre de delegación en cada puesto
-async function fetchResultados() {
-  const dot  = document.getElementById('resultadosDot');
-  const txt  = document.getElementById('resultadosStatusText');
-  const last = document.getElementById('resultadosLastUpdate');
-  const grid = document.getElementById('resultadosGrid');
-
-  const MEDALS = ['🥇','🥈','🥉','4°','5°'];
-  const POS_CLASS = ['pos-1','pos-2','pos-3','',''];
-  const ptsGrupal = [15,12,9,6,3];
-  const ptsIndividual = [5,4,3,2,1];
-
-  try {
-    const res = await fetch(RESULTADOS_URL);
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-
-    if (!Array.isArray(data) || data.length === 0) {
-      if (grid) grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:28px;color:#aaa;font-size:0.85rem;">Aún no hay resultados publicados.</div>';
-      if (dot) dot.className = 'resultados-dot';
-      if (txt) txt.textContent = 'Sin resultados aún';
-      return;
-    }
-
-    const cards = data.map(row => {
-      const deporte  = row.Deporte   || row.deporte   || '—';
-      const cat      = row.Categoria || row.categoria || row.Categoría || '';
-      const esGrupal = (row.Tipo || row.tipo || 'grupal').toLowerCase().includes('ind') ? false : true;
-      const pts      = esGrupal ? ptsGrupal : ptsIndividual;
-      const puestos  = [row.Pos1||'', row.Pos2||'', row.Pos3||'', row.Pos4||'', row.Pos5||''].map(nombreDelegacion);
-
-      const filas = puestos.map((delegacion, i) => {
-        if (!delegacion) return '';
-        return `<div class="res-podio-row ${POS_CLASS[i] || ''}">
-          <span class="res-medal">${MEDALS[i]}</span>
-          <span class="res-delegacion">${delegacion}</span>
-          <span class="res-pts-badge">+${pts[i]} pts</span>
-        </div>`;
-      }).join('');
-
-      const iconos = {'Fútbol':'⚽','Futbol':'⚽','Baloncesto':'🏀','Vóley':'🏐','Voley':'🏐','Danza':'💃','Ajedrez':'♟️','Cubilete':'🎲','Futbolín':'⚽','Maratón':'🏃','Marathon':'🏃','Tenis de Mesa':'🏓','Sapo':'🐸','100 Metros':'💨'};
-      const icono = Object.entries(iconos).find(([k]) => deporte.includes(k))?.[1] || '🏅';
-
-      return `<div class="res-card">
-        <div class="res-card-head">
-          <span style="font-size:1.2rem;">${icono}</span>
-          <span class="res-deporte">${deporte}</span>
-          ${cat ? `<span class="res-cat">${cat}</span>` : ''}
-        </div>
-        <div class="res-podio">
-          ${filas || '<div class="res-empty">Sin resultados aún</div>'}
-        </div>
-      </div>`;
+/* RESULTADOS */
+async function fetchResultados(){
+  const dot=document.getElementById('resultadosDot'),txt=document.getElementById('resultadosStatusText'),last=document.getElementById('resultadosLastUpdate'),grid=document.getElementById('resultadosGrid');
+  const MEDALS=['🥇','🥈','🥉','4°','5°'];const POS_CLASS=['pos-1','pos-2','pos-3','',''];
+  const ptsGrupal=[15,12,9,6,3];const ptsIndividual=[5,4,3,2,1];
+  try{
+    const res=await fetch(RESULTADOS_URL);if(!res.ok)throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    if(!Array.isArray(data)||data.length===0){if(grid)grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:28px;color:#aaa;font-size:0.85rem;">Aún no hay resultados publicados.</div>';if(dot)dot.className='resultados-dot';if(txt)txt.textContent='Sin resultados aún';return;}
+    const cards=data.map(row=>{
+      const deporte=row.Deporte||row.deporte||'—';const cat=row.Categoria||row.categoria||row.Categoría||'';
+      const esGrupal=!(row.Tipo||row.tipo||'grupal').toLowerCase().includes('ind');
+      const pts=esGrupal?ptsGrupal:ptsIndividual;
+      const puestos=[row.Pos1||'',row.Pos2||'',row.Pos3||'',row.Pos4||'',row.Pos5||''].map(nombreDelegacion);
+      const filas=puestos.map((d,i)=>{if(!d)return'';return`<div class="res-podio-row ${POS_CLASS[i]||''}"><span class="res-medal">${MEDALS[i]}</span><span class="res-delegacion">${d}</span><span class="res-pts-badge">+${pts[i]} pts</span></div>`;}).join('');
+      const iconos={'Fútbol':'⚽','Futbol':'⚽','Baloncesto':'🏀','Vóley':'🏐','Voley':'🏐','Danza':'💃','Ajedrez':'♟️','Cubilete':'🎲','Futbolín':'⚽','Maratón':'🏃','Tenis de Mesa':'🏓','Sapo':'🐸','100 Metros':'💨'};
+      const icono=Object.entries(iconos).find(([k])=>deporte.includes(k))?.[1]||'🏅';
+      return`<div class="res-card"><div class="res-card-head"><span style="font-size:1.2rem;">${icono}</span><span class="res-deporte">${deporte}</span>${cat?`<span class="res-cat">${cat}</span>`:''}</div><div class="res-podio">${filas||'<div class="res-empty">Sin resultados aún</div>'}</div></div>`;
     });
-
-    if (grid) grid.innerHTML = cards.join('');
-    if (dot)  dot.className = 'resultados-dot ok';
-    if (txt)  txt.textContent = `${data.length} categorías cargadas`;
-    if (last) last.textContent = 'Actualizado: ' + new Date().toLocaleTimeString('es-PE');
-
-  } catch (err) {
-    console.error('Resultados error:', err);
-    if (grid) grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:28px;color:#aaa;font-size:0.85rem;">Aún no hay resultados publicados.</div>';
-    if (dot)  dot.className = 'resultados-dot err';
-    if (txt)  txt.textContent = 'Sin resultados publicados aún';
-    if (last) last.textContent = new Date().toLocaleTimeString('es-PE');
-  }
+    if(grid)grid.innerHTML=cards.join('');
+    if(dot)dot.className='resultados-dot ok';if(txt)txt.textContent=`${data.length} categorías cargadas`;if(last)last.textContent='Actualizado: '+new Date().toLocaleTimeString('es-PE');
+  }catch(err){console.error('Resultados error:',err);if(grid)grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:28px;color:#aaa;font-size:0.85rem;">Aún no hay resultados publicados.</div>';if(dot)dot.className='resultados-dot err';if(txt)txt.textContent='Sin resultados publicados aún';if(last)last.textContent=new Date().toLocaleTimeString('es-PE');}
 }
-
-fetchResultados();
-setInterval(fetchResultados, POLL_MS);
+fetchResultados(); setInterval(fetchResultados,POLL_MS);
 </script>
 </body>
 </html>
