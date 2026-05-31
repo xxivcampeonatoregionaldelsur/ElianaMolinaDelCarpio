@@ -785,33 +785,29 @@ footer {
 .footer-txt { font-size: 0.78rem; line-height: 2; }
 .footer-txt span { color: var(--blanco); }
 
-/* ============================================================
-   SCROLL TOP
-============================================================ */
-#scrollTopBtn {
-  position: fixed; bottom: 20px; right: 20px;
-  background: var(--dorado); color: var(--negro);
-  border: none; width: 44px; height: 44px; font-size: 18px;
-  border-radius: 50%; cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-  display: none; z-index: 400; transition: all 0.2s;
-  align-items: center; justify-content: center;
-  -webkit-tap-highlight-color: transparent;
-}
-#scrollTopBtn:hover { background: var(--dorado-claro); transform: translateY(-3px); }
+/* ===== FIX: botón UP consistente en móvil ===== */
+const scrollBtn = document.getElementById('scrollTopBtn');
 
+/* Mostrar solo cuando realmente bajas */
+function toggleScrollBtn() {
+  const isMobile = window.innerWidth <= 900;
 
-/* ===== FIX: Botón UP siempre visible en móvil ===== */
-#scrollTopBtn {
-  z-index: 9999; /* evita que otros elementos lo tapen */
-}
-
-@media (max-width: 900px) {
-  #scrollTopBtn {
-    display: flex !important; /* fuerza visibilidad en móvil */
+  if (isMobile) {
+    // En móvil aparece antes (más usable)
+    scrollBtn.style.display = window.scrollY > 120 ? 'flex' : 'none';
+  } else {
+    // En escritorio mantiene comportamiento normal
+    scrollBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
   }
 }
-  
+
+window.addEventListener('scroll', toggleScrollBtn, { passive: true });
+window.addEventListener('load', toggleScrollBtn);
+
+scrollBtn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+   
 /* ============================================================
    SCROLL ANIMATIONS
 ============================================================ */
