@@ -133,6 +133,12 @@ nav.scrolled {
   pointer-events: auto;
 }
 
+
+/* ===== FIX: ocultar botón cerrar menú en desktop ===== */
+.nav-close-btn {
+  display: none;
+}
+   
 /* ============================================================
    MOBILE NAV
 ============================================================ */
@@ -794,6 +800,18 @@ footer {
 }
 #scrollTopBtn:hover { background: var(--dorado-claro); transform: translateY(-3px); }
 
+
+/* ===== FIX: Botón UP siempre visible en móvil ===== */
+#scrollTopBtn {
+  z-index: 9999; /* evita que otros elementos lo tapen */
+}
+
+@media (max-width: 900px) {
+  #scrollTopBtn {
+    display: flex !important; /* fuerza visibilidad en móvil */
+  }
+}
+  
 /* ============================================================
    SCROLL ANIMATIONS
 ============================================================ */
@@ -1674,7 +1692,7 @@ setInterval(updateCountdown, 30000);
 
 /* ── SCROLL TOP ──────────────────────────────── */
 const scrollBtn = document.getElementById('scrollTopBtn');
-scrollBtn.style.display = 'none';
+scrollBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
 window.addEventListener('scroll', () => {
   scrollBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
 }, { passive: true });
@@ -1794,6 +1812,21 @@ async function fetchFixture() {
 
 fetchFixture();
 setInterval(fetchFixture, POLL_MS);
+
+
+/* ===== FIX: cerrar menú al cambiar a escritorio ===== */
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 900) {
+    closeMenu();
+  }
+});
+
+/* ===== FIX: cerrar menú al hacer scroll (UX mejora) ===== */
+window.addEventListener('scroll', () => {
+  if (navLinks.classList.contains('show')) {
+    closeMenu();
+  }
+}, { passive: true });
 
 /* ── RANKING (Google Sheets) ─────────────────── */
 async function fetchRanking() {
