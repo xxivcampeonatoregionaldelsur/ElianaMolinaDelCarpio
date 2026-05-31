@@ -811,7 +811,9 @@ footer {
   border: none;
   border-radius: 50%;
 
-  display: none; /* ✅ oculto inicialmente */
+  display: flex;           /* ✅ SIEMPRE visible estructuralmente */
+  opacity: 0;              /* ✅ oculto visualmente */
+  pointer-events: none;    /* ✅ no interactivo */
 
   align-items: center;
   justify-content: center;
@@ -819,9 +821,15 @@ footer {
   font-size: 18px;
   cursor: pointer;
 
-  z-index: 999999; /* ✅ siempre encima */
+  z-index: 1000;           /* ✅ más bajo pero estable */
 
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  transform: translateZ(0); /* ✅ FIX MÓVILES (clave) */
+  transition: opacity 0.25s ease;
+}
+
+#scrollTopBtn.show {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* ============================================================
@@ -1642,7 +1650,7 @@ body.menu-open {
 ============================================================ -->
 <script>
 /* ── CONFIG ─────────────────────────────────── */
-const FIXTURE_URL  = 'https://opensheet.elk.sh/1q7Z2ktW1ixLFCHJxkE80iddu29qZvwTnfsoEyTESki0/Hoja%201';
+const FIXTURE_URL  = 'https://opensheet.elk.sh/1q7Z2ktW1ixLFCHJxkE80iddu29qZvwTnfsoEyTESki0/Hoja%201'; // ← Fixture
 const RANKING_URL  = 'https://opensheet.elk.sh/1q7Z2ktW1ixLFCHJxkE80iddu29qZvwTnfsoEyTESki0/Hoja%202'; // ← Ranking
 const POLL_MS      = 60000; // cada 60 seg
 
@@ -1709,17 +1717,15 @@ const scrollBtn = document.getElementById('scrollTopBtn');
 function toggleScrollBtn() {
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-  // 🔴 Si el menú está abierto → nunca mostrar botón
   if (document.body.classList.contains('menu-open')) {
-    scrollBtn.style.display = 'none';
+    scrollBtn.classList.remove('show');
     return;
   }
 
-  // ✅ Mostrar correctamente en todos los dispositivos
   if (scrollTop > 150) {
-    scrollBtn.style.display = 'flex';
+    scrollBtn.classList.add('show');
   } else {
-    scrollBtn.style.display = 'none';
+    scrollBtn.classList.remove('show');
   }
 }
 
@@ -1728,11 +1734,18 @@ window.addEventListener('scroll', toggleScrollBtn, { passive: true });
 
 // Ejecuta al cargar
 window.addEventListener('load', toggleScrollBtn);
-
+// ✅ FORZAR DETECCIÓN EN MÓVILES (CLAVE)
+setTimeout(toggleScrollBtn, 300);
+setTimeout(toggleScrollBtn, 800);
+   
 // Click del botón
 scrollBtn.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
+
+// ✅ Detecta cambios de viewport (cuando haces swipe raro)
+window.addEventListener('touchmove', toggleScrollBtn, { passive: true });
+
 /* ── NAV SCROLLED ────────────────────────────── */
 const mainNav = document.getElementById('mainNav');
 window.addEventListener('scroll', () => {
