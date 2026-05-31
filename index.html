@@ -127,12 +127,9 @@ nav.scrolled {
   z-index: 600;
   opacity: 0;
   transition: opacity 0.3s;
-}
-.menu-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
-}
 
+  pointer-events: none; /* ✅ AGREGA ESTO */
+}
 
 /* ===== FIX: ocultar botón cerrar menú en desktop ===== */
 .nav-close-btn {
@@ -818,11 +815,19 @@ footer {
   font-size: 18px;
   cursor: pointer;
 
-  z-index: 9999; /* ✅ siempre encima */
+  z-index: 999999; /* ✅ siempre encima */
 
   box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
-     
+
+
+/* ============================================================
+   OCULTAR BOTÓN CUANDO ESTE ABIERTO MENÚ
+============================================================ */
+.nav-links.show ~ #scrollTopBtn {
+  display: none !important;
+}
+   
 /* ============================================================
    RESPONSIVE UTILITIES
 ============================================================ */
@@ -1650,7 +1655,9 @@ function openMenu() {
   navLinks.classList.add('show');
   menuOverlay.classList.add('active');
   menuToggle.textContent = '✖';
-  document.body.style.overflow = 'hidden'; // bloquear scroll del fondo
+  document.body.style.overflow = 'hidden';
+
+  scrollBtn.style.display = 'none'; /* ✅ AGREGA */
 }
 
 function closeMenu() {
@@ -1658,9 +1665,11 @@ function closeMenu() {
   menuOverlay.classList.remove('active');
   menuToggle.textContent = '☰';
   document.body.style.overflow = '';
+
+  toggleScrollBtn(); /* ✅ AGREGA */
 }
 
-menuToggle.addEventListener('click', () => {
+   menuToggle.addEventListener('click', () => {
   navLinks.classList.contains('show') ? closeMenu() : openMenu();
 });
 
