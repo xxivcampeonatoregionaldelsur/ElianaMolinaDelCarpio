@@ -27,7 +27,7 @@ body { font-family:'Barlow',sans-serif; background:var(--blanco); color:var(--te
 
 /* NAV */
 nav { background:var(--negro); position:sticky; top:0; z-index:500; border-bottom:3px solid var(--dorado); transition:background 0.3s; }
-nav.scrolled { background:rgba(13,13,13,0.92); backdrop-filter:blur(10px); }
+nav.scrolled { background: rgba(13,13,13,0.92);backdrop-filter: blur(10px);-webkit-backdrop-filter: blur(10px); }
 .nav-inner { max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:0 20px; height:var(--nav-h); gap:8px; }
 .nav-logo { font-family:'Bebas Neue',sans-serif; font-size:1rem; color:var(--dorado); letter-spacing:1px; display:flex; align-items:center; gap:8px; white-space:nowrap; flex-shrink:0; }
 .nav-logo span { color:var(--blanco); }
@@ -51,11 +51,11 @@ nav.scrolled { background:rgba(13,13,13,0.92); backdrop-filter:blur(10px); }
 @media (min-width:901px) { #bottomNav { display:none; } }
 
 /* HERO */
-.hero { background:linear-gradient(135deg,#0a1628 0%,#1a0a0a 50%,#2d1b00 100%); color:var(--blanco); min-height:100svh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:45px 20px 60px; position:relative; overflow:hidden; }
+.hero { background:linear-gradient(135deg,#0a1628 0%,#1a0a0a 50%,#2d1b00 100%); color:var(--blanco); min-height:100svh; min-height: 100svh; /* fallback moderno */;display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:45px 20px 60px; position:relative; overflow:clip; }
 .hero::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(240,165,0,0.02) 40px,rgba(240,165,0,0.02) 80px); pointer-events:none; }
 .hero-badge { display:inline-block; background:var(--dorado); color:var(--negro); font-family:'Barlow Condensed',sans-serif; font-size:0.75rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; padding:5px 16px; border-radius:2px; margin-bottom:12px; }
 /* ── HERO H1 REDUCIDO para móvil ── */
-.hero h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.5rem,4.5vw,5rem); line-height:0.95; letter-spacing:3px; margin-bottom:8px; }
+.hero h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.5rem,4vw,5rem); line-height:0.95; letter-spacing:3px; margin-bottom:8px; }
 .hero h1 span { color:var(--dorado); }
 .hero-nombre { font-family:'Barlow Condensed',sans-serif; font-size:clamp(0.78rem,2vw,1.2rem); letter-spacing:2px; color:#ddd; text-transform:uppercase; font-style:italic; margin-bottom:4px; }
 .hero-sub { font-family:'Barlow Condensed',sans-serif; font-size:0.88rem; letter-spacing:3px; color:#888; text-transform:uppercase; margin-bottom:10px; }
@@ -120,7 +120,7 @@ section { padding:60px 20px; }
 
 /* FIXTURE */
 .fixture-list { display:flex; flex-direction:column; gap:8px; }
-.fixture-item { background:var(--blanco); border-radius:8px; padding:12px 16px; display:grid; grid-template-columns:80px 1fr auto 1fr 100px; align-items:center; gap:8px; box-shadow:0 2px 8px rgba(0,0,0,0.06); border-left:4px solid var(--dorado); }
+.fixture-item { background:var(--blanco); border-radius:8px; padding:12px 16px; display:grid; grid-template-columns:90px 1fr auto 1fr 120px; align-items:center; gap:8px; box-shadow:0 2px 8px rgba(0,0,0,0.06); border-left:4px solid var(--dorado); }
 .fixture-date { font-size:0.72rem; font-weight:700; color:#888; text-align:center; line-height:1.4; }
 .fixture-team { font-weight:700; font-size:0.85rem; }
 .fixture-team.right { text-align:right; }
