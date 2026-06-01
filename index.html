@@ -22,15 +22,23 @@
   --texto:       #2A2A2A;
   --nav-h:       62px;
   --banner-h:    46px;
-  --offset:      108px; /* nav + banner */
+  --offset:      108px;
 }
 *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; font-size:clamp(14px,0.85vw + 0.55rem,17px); -webkit-text-size-adjust:100%; text-size-adjust:100%; }
 body { font-family:'Barlow',sans-serif; background:var(--blanco); color:var(--texto); line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
 
-/* NAV */
-nav { background:var(--negro); position:sticky; top:0; z-index:500; border-bottom:3px solid var(--dorado); transition:background 0.3s; }
-nav.scrolled { background: rgba(13,13,13,0.92);backdrop-filter: blur(10px);-webkit-backdrop-filter: blur(10px); }
+/* ── EDGE FIX: Sticky wrapper contiene nav + banner ── */
+#stickyHeader {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 500;
+}
+
+/* NAV — ya no necesita sticky propio */
+nav { background:var(--negro); position:relative; top:auto; z-index:500; border-bottom:3px solid var(--dorado); transition:background 0.3s; }
+nav.scrolled { background: rgba(13,13,13,0.95) !important; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
 .nav-inner { max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:0 20px; height:var(--nav-h); gap:8px; }
 .nav-logo { font-family:'Bebas Neue',sans-serif; font-size:1rem; color:var(--dorado); letter-spacing:1px; display:flex; align-items:center; gap:8px; white-space:nowrap; flex-shrink:0; }
 .nav-logo span { color:var(--blanco); }
@@ -55,9 +63,9 @@ nav.scrolled { background: rgba(13,13,13,0.92);backdrop-filter: blur(10px);-webk
 
 /* HERO */
 .hero { background:linear-gradient(135deg,#0a1628 0%,#1a0a0a 50%,#2d1b00 100%); color:var(--blanco); min-height:calc(100vh - var(--offset)); padding:40px 20px 50px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; position:relative; overflow:hidden; box-sizing:border-box; }
-.hero::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(240,165,0,0.02) 40px,rgba(240,165,0,0.02) 80px); pointer-events:none; }
+/* EDGE FIX: inset → top/right/bottom/left */
+.hero::before { content:''; position:absolute; top:0; right:0; bottom:0; left:0; background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(240,165,0,0.02) 40px,rgba(240,165,0,0.02) 80px); pointer-events:none; }
 .hero-badge { display:inline-block; background:var(--dorado); color:var(--negro); font-family:'Barlow Condensed',sans-serif; font-size:0.75rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; padding:5px 16px; border-radius:2px; margin-bottom:8px; }
-/* ── HERO H1 REDUCIDO para móvil ── */
 .hero h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.5rem,4vw,5rem); line-height:0.95; letter-spacing:3px; margin-bottom:6px; }
 .hero h1 span { color:var(--dorado); }
 .hero-nombre { font-family:'Barlow Condensed',sans-serif; font-size:clamp(0.78rem,2vw,1.2rem); letter-spacing:2px; color:#ddd; text-transform:uppercase; font-style:italic; margin-bottom:3px; }
@@ -137,11 +145,10 @@ section { padding:60px 20px; }
 .badge-fin  { display:inline-block; background:#27ae60; color:white; font-size:0.6rem; font-weight:700; padding:2px 6px; border-radius:3px; letter-spacing:1px; margin-left:4px; }
 .badge-prox { display:inline-block; background:#95a5a6; color:white; font-size:0.6rem; font-weight:700; padding:2px 6px; border-radius:3px; letter-spacing:1px; margin-left:4px; }
 .fixture-tabs-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:4px; margin-bottom:16px; }
-.fixture-tabs-inner { display:flex; gap:6px; width:max-content; }
+.fixture-tabs-inner { display:flex; gap:6px; width:-webkit-max-content; width:max-content; }
 .ftab { padding:8px 14px; font-weight:700; font-size:0.72rem; letter-spacing:0.7px; text-transform:uppercase; border:2px solid #ddd; border-radius:20px; cursor:pointer; transition:all 0.2s; background:var(--blanco); color:#666; white-space:nowrap; -webkit-tap-highlight-color:transparent; }
 .ftab.active { background:var(--gris-oscuro); color:var(--dorado); border-color:var(--gris-oscuro); }
 .ftab:hover:not(.active) { border-color:var(--dorado); color:var(--negro); }
-/* Tab especial Final */
 .ftab.final-tab { border-color:var(--dorado); color:var(--dorado); }
 .ftab.final-tab.active { background:linear-gradient(135deg,#1a1200,#2a1d00); border-color:var(--dorado); }
 .fpanel { display:none; }
@@ -307,27 +314,46 @@ button, a { transition:all 0.22s ease; }
 
 /* ── UPGRADE VISUAL ÉPICO ── */
 
-#heroCanvas { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:0; }
+/* EDGE FIX: inset → explícito, will-change para GPU */
+#heroCanvas { position:absolute; top:0; right:0; bottom:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; will-change:transform; }
 
 .hero { background:radial-gradient(ellipse at 20% 50%,#1a0533 0%,#0a0a0a 40%,#0d1a00 70%,#1a0800 100%) !important; overflow:hidden !important; }
 .hero > * { position:relative; z-index:1; }
 
-.hero::after { content:''; position:absolute; inset:-50%; background:repeating-linear-gradient(60deg,transparent,transparent 120px,rgba(240,165,0,0.03) 120px,rgba(240,165,0,0.03) 121px); animation:scanlines 8s linear infinite; pointer-events:none; z-index:0; }
+/* EDGE FIX: inset explícito en hero::after */
+.hero::after { content:''; position:absolute; top:-50%; right:-50%; bottom:-50%; left:-50%; background:repeating-linear-gradient(60deg,transparent,transparent 120px,rgba(240,165,0,0.03) 120px,rgba(240,165,0,0.03) 121px); animation:scanlines 8s linear infinite; pointer-events:none; z-index:0; }
 @keyframes scanlines { 0%{transform:translateX(-60px) translateY(-60px);} 100%{transform:translateX(60px) translateY(60px);} }
 
-/* HERO H1 override épico — REDUCIDO */
 .hero h1 { font-size:clamp(1.7rem,5.5vw,6.5rem) !important; line-height:0.88 !important; letter-spacing:4px !important; text-shadow:0 0 40px rgba(240,165,0,0.3),0 2px 0 rgba(0,0,0,0.8); animation:titlePulse 4s ease-in-out infinite; }
 @keyframes titlePulse { 0%,100%{text-shadow:0 0 40px rgba(240,165,0,0.3),0 2px 0 rgba(0,0,0,0.8);} 50%{text-shadow:0 0 80px rgba(240,165,0,0.6),0 0 120px rgba(200,16,46,0.2),0 2px 0 rgba(0,0,0,0.8);} }
-.hero h1 span { background:linear-gradient(90deg,#F0A500,#FFD166,#F0A500,#C8102E,#F0A500); background-size:300% 100%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; animation:gradientShift 4s ease infinite; }
+
+/* EDGE FIX: background-clip sin prefijo + color:transparent fallback */
+.hero h1 span {
+  background:linear-gradient(90deg,#F0A500,#FFD166,#F0A500,#C8102E,#F0A500);
+  background-size:300% 100%;
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  color:transparent; /* fallback Edge */
+  animation:gradientShift 4s ease infinite;
+}
 @keyframes gradientShift { 0%{background-position:0% 50%;} 50%{background-position:100% 50%;} 100%{background-position:0% 50%;} }
 
 .hero-badge { background:linear-gradient(135deg,var(--dorado),#ff6b35) !important; box-shadow:0 0 20px rgba(240,165,0,0.5),0 0 40px rgba(240,165,0,0.2); animation:badgePulse 2s ease-in-out infinite; border-radius:30px !important; padding:6px 18px !important; }
 @keyframes badgePulse { 0%,100%{box-shadow:0 0 20px rgba(240,165,0,0.5),0 0 40px rgba(240,165,0,0.2);} 50%{box-shadow:0 0 35px rgba(240,165,0,0.8),0 0 70px rgba(240,165,0,0.4);} }
 
-.hero-stat { background:rgba(255,255,255,0.04); border:1px solid rgba(240,165,0,0.18); border-radius:12px; padding:10px 16px; backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); transition:all 0.3s; }
+.hero-stat { background:rgba(255,255,255,0.04); border:1px solid rgba(240,165,0,0.18); border-radius:12px; padding:10px 16px; -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); transition:all 0.3s; }
 .hero-stat:hover { border-color:rgba(240,165,0,0.5); background:rgba(240,165,0,0.07); transform:translateY(-4px); box-shadow:0 8px 24px rgba(240,165,0,0.12); }
-/* STAT NUM REDUCIDO */
-.hero-stat .num { font-size:1.9rem !important; background:linear-gradient(135deg,var(--dorado),var(--dorado-claro)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+
+/* EDGE FIX: background-clip + color:transparent */
+.hero-stat .num {
+  font-size:1.9rem !important;
+  background:linear-gradient(135deg,var(--dorado),var(--dorado-claro));
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  color:transparent;
+}
 
 .btn-primary { background:linear-gradient(135deg,#F0A500,#FFD166,#F0A500) !important; background-size:200% !important; box-shadow:0 6px 25px rgba(240,165,0,0.4) !important; border-radius:50px !important; padding:14px 36px !important; font-size:0.9rem !important; letter-spacing:2px !important; animation:shimmer 3s linear infinite; position:relative; overflow:hidden; }
 .btn-primary::after { content:''; position:absolute; top:-50%; left:-75%; width:50%; height:200%; background:rgba(255,255,255,0.3); transform:skewX(-20deg); animation:btnShine 3s ease infinite; }
@@ -335,23 +361,31 @@ button, a { transition:all 0.22s ease; }
 @keyframes shimmer { 0%{background-position:0% 50%;} 50%{background-position:100% 50%;} 100%{background-position:0% 50%;} }
 .btn-primary:hover { transform:translateY(-3px) scale(1.04) !important; box-shadow:0 12px 40px rgba(240,165,0,0.6) !important; }
 
-/* FECHA REDUCIDA */
 .hero-fecha { border-color:rgba(240,165,0,0.6) !important; box-shadow:0 0 12px rgba(240,165,0,0.2),inset 0 0 12px rgba(240,165,0,0.03); border-radius:50px !important; padding:8px 28px !important; background:rgba(240,165,0,0.05) !important; font-size:1.1rem !important; }
 
+/* EDGE FIX: nav estilos sin position:sticky (lo maneja #stickyHeader) */
 nav { border-bottom:2px solid transparent !important; background:linear-gradient(to bottom,rgba(13,13,13,0.98),rgba(13,13,13,0.95)) !important; box-shadow:0 4px 30px rgba(0,0,0,0.4),0 1px 0 rgba(240,165,0,0.3); }
-nav::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--dorado),var(--rojo),var(--dorado),transparent); background-size:200% 100%; animation:navLine 3s linear infinite; }
-@keyframes navLine { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
-nav { position:sticky; top:0; }
+/* EDGE FIX: nav::after estático (sin animación que rompe sticky) */
+nav::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--dorado),var(--rojo),var(--dorado),transparent); }
 
-.nav-logo { font-size:1.1rem !important; background:linear-gradient(135deg,var(--dorado),var(--dorado-claro)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; filter:drop-shadow(0 0 8px rgba(240,165,0,0.4)); }
-.nav-logo span { -webkit-text-fill-color:white !important; filter:none; }
+/* EDGE FIX: background-clip en nav-logo */
+.nav-logo {
+  font-size:1.1rem !important;
+  background:linear-gradient(135deg,var(--dorado),var(--dorado-claro));
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  color:transparent;
+  filter:drop-shadow(0 0 8px rgba(240,165,0,0.4));
+}
+.nav-logo span { -webkit-text-fill-color:white !important; color:white !important; filter:none; }
 
 .section-tag { border-radius:30px !important; padding:6px 20px !important; font-size:0.72rem !important; letter-spacing:4px !important; box-shadow:0 4px 15px rgba(0,0,0,0.2); }
 .section-title { font-size:clamp(2rem,5vw,3.5rem) !important; letter-spacing:3px !important; }
 .divider { width:80px !important; height:3px !important; background:linear-gradient(90deg,transparent,var(--dorado),transparent) !important; border-radius:2px; }
 
 .disc-card { background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%) !important; border:1px solid rgba(240,165,0,0.15) !important; position:relative; overflow:hidden; }
-.disc-card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(240,165,0,0.05),transparent); opacity:0; transition:opacity 0.3s; }
+.disc-card::before { content:''; position:absolute; top:0; right:0; bottom:0; left:0; background:linear-gradient(135deg,rgba(240,165,0,0.05),transparent); opacity:0; transition:opacity 0.3s; }
 .disc-card:hover::before { opacity:1; }
 .disc-card:hover { border-color:var(--dorado) !important; transform:translateY(-6px) scale(1.02) !important; box-shadow:0 16px 40px rgba(240,165,0,0.2) !important; }
 .disc-icon { font-size:2.2rem !important; filter:drop-shadow(0 0 6px rgba(240,165,0,0.4)); }
@@ -375,7 +409,7 @@ nav { position:sticky; top:0; }
 #scrollTopBtn { background:linear-gradient(135deg,var(--dorado),#ff6b35) !important; border-radius:50% !important; width:52px !important; height:52px !important; font-size:1.3rem !important; box-shadow:0 6px 20px rgba(240,165,0,0.4) !important; border:none !important; }
 #scrollTopBtn:hover { transform:translateY(-4px) scale(1.1) !important; box-shadow:0 12px 30px rgba(240,165,0,0.6) !important; }
 
-#bottomNav { background:rgba(10,10,10,0.97) !important; border-top:1px solid rgba(240,165,0,0.3) !important; backdrop-filter:blur(20px) !important; box-shadow:0 -8px 30px rgba(0,0,0,0.4) !important; }
+#bottomNav { background:rgba(10,10,10,0.97) !important; border-top:1px solid rgba(240,165,0,0.3) !important; -webkit-backdrop-filter:blur(20px) !important; backdrop-filter:blur(20px) !important; box-shadow:0 -8px 30px rgba(0,0,0,0.4) !important; }
 #bottomNav a.active { color:var(--dorado) !important; background:rgba(240,165,0,0.12) !important; }
 #bottomNav a .bn-icon { transition:transform 0.2s; }
 #bottomNav a:active .bn-icon { transform:scale(1.3); }
@@ -400,7 +434,8 @@ footer::before { content:'🏆'; position:absolute; font-size:18rem; opacity:0.0
 .delegaciones-banner::before, .delegaciones-banner::after { content:''; position:absolute; top:0; bottom:0; width:80px; z-index:2; pointer-events:none; }
 .delegaciones-banner::before { left:0; background:linear-gradient(90deg,#0d0d0d,transparent); }
 .delegaciones-banner::after  { right:0; background:linear-gradient(-90deg,#0d0d0d,transparent); }
-.delegaciones-track { display:flex; gap:0; animation:scrollTrack 20s linear infinite; width:max-content; }
+/* EDGE FIX: -ms-overflow-style + width fallback */
+.delegaciones-track { display:flex; gap:0; animation:scrollTrack 20s linear infinite; width:-webkit-max-content; width:max-content; -ms-overflow-style:none; }
 .delegaciones-track:hover { animation-play-state:paused; }
 .delegacion-item { display:flex; align-items:center; gap:10px; padding:8px 32px; color:#ccc; font-family:'Barlow Condensed',sans-serif; font-size:1rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; white-space:nowrap; border-right:1px solid rgba(240,165,0,0.15); transition:color 0.3s; }
 .delegacion-item:hover { color:var(--dorado); }
@@ -409,16 +444,12 @@ footer::before { content:'🏆'; position:absolute; font-size:18rem; opacity:0.0
 
 /* COUNTDOWN */
 #countdown { display:flex !important; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:12px !important; }
-.cd-block { background:rgba(255,255,255,0.04); border:1px solid rgba(240,165,0,0.22); border-radius:10px; padding:8px 12px; min-width:62px; text-align:center; backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
+.cd-block { background:rgba(255,255,255,0.04); border:1px solid rgba(240,165,0,0.22); border-radius:10px; padding:8px 12px; min-width:62px; text-align:center; -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); }
 .cd-num { font-family:'Bebas Neue',sans-serif; font-size:1.9rem; color:var(--dorado); line-height:1; display:block; }
 .cd-lbl { font-size:0.58rem; color:#888; letter-spacing:2px; text-transform:uppercase; display:block; margin-top:2px; }
 
-/* SCROLL HINT — oculto */
 .hero-scroll-hint { display:none; }
-@keyframes fadeInOut { 0%,100%{opacity:0.4;} 50%{opacity:1;} }
-@keyframes scrollLine { 0%{transform:scaleY(0);transform-origin:top;} 50%{transform:scaleY(1);transform-origin:top;} 51%{transform:scaleY(1);transform-origin:bottom;} 100%{transform:scaleY(0);transform-origin:bottom;} }
 
-/* RESPONSIVE */
 @media (max-width:600px) {
   .cd-block { min-width:48px; padding:5px 7px; }
   .cd-num   { font-size:1.4rem; }
@@ -427,7 +458,9 @@ footer::before { content:'🏆'; position:absolute; font-size:18rem; opacity:0.0
 </head>
 <body>
 
-<!-- NAV -->
+<!-- NAV + BANNER WRAPPER — EDGE FIX: sticky en el wrapper, no en nav -->
+<div id="stickyHeader" style="position:-webkit-sticky;position:sticky;top:0;z-index:500;">
+
 <nav id="mainNav">
   <div class="nav-inner">
     <div class="nav-logo">🏆 <span>CAMPEONATO</span> REGIONAL SUR</div>
@@ -466,6 +499,8 @@ footer::before { content:'🏆'; position:absolute; font-size:18rem; opacity:0.0
     <div class="delegacion-item"><span>🏆</span> XXIV Campeonato Regional del Sur 2026</div>
   </div>
 </div>
+
+</div><!-- /#stickyHeader -->
 
 <!-- HERO -->
 <section class="hero" id="heroSection">
@@ -550,7 +585,6 @@ footer::before { content:'🏆'; position:absolute; font-size:18rem; opacity:0.0
     </div>
     <p class="tabla-nota">* La tabla se actualiza automáticamente cada 60 segundos.</p>
 
-    <!-- RESULTADOS POR CATEGORÍA -->
     <div class="resultados-section">
       <div class="resultados-header">
         <h3>Resultados por <span>Categoría</span></h3>
@@ -578,7 +612,6 @@ footer::before { content:'🏆'; position:absolute; font-size:18rem; opacity:0.0
       <p style="margin-top:10px;color:#888;font-size:0.85rem;">📅 Todos los eventos se realizan el 28 de junio de 2026</p>
     </div>
 
-    <!-- Tabs -->
     <div class="fixture-tabs-wrap">
       <div class="fixture-tabs-inner">
         <button class="ftab active" onclick="switchFixtureTab('todos',this)">📋 Todos</button>
@@ -592,14 +625,12 @@ footer::before { content:'🏆'; position:absolute; font-size:18rem; opacity:0.0
       </div>
     </div>
 
-    <!-- Status bar -->
     <div class="fixture-status">
       <div class="fixture-status-dot" id="fixtureStatusDot"></div>
       <span id="fixtureStatusText">Conectando con Base de Datos…</span>
       <span id="fixtureLastUpdate" style="margin-left:auto;color:#aaa;font-size:0.72rem;"></span>
     </div>
 
-    <!-- Paneles -->
     <div>
       <div id="fp-todos" class="fpanel active">
         <div class="fixture-list" id="fixtureListTodos">
@@ -669,15 +700,10 @@ footer::before { content:'🏆'; position:absolute; font-size:18rem; opacity:0.0
       <div id="fp-tenis"       class="fpanel"><div class="fixture-list" id="fixtureListTenis"><div style="text-align:center;padding:32px;color:#aaa;">Cargando base de datos…</div></div></div>
       <div id="fp-recreativos" class="fpanel"><div class="fixture-list" id="fixtureListRecreativos"><div style="text-align:center;padding:32px;color:#aaa;">Cargando base de datos…</div></div></div>
 
-      <!-- ══════════════════════════════════════════
-           PANEL SEMIFINAL / FINAL
-      ══════════════════════════════════════════ -->
       <div id="fp-semifinal" class="fpanel">
         <div style="margin-bottom:14px;background:linear-gradient(135deg,rgba(240,165,0,0.08),rgba(200,16,46,0.06));border:1px solid rgba(240,165,0,0.25);border-radius:8px;padding:12px 16px;font-size:0.8rem;color:#aaa;line-height:1.6;">
           ⚡ <strong style="color:var(--dorado);">Sistema de eliminación directa</strong> — Los partidos de semifinal y final se programan según resultados de Fase 1. Se actualiza en tiempo real.
         </div>
-
-        <!-- Info de cómo se asignan posiciones -->
         <div style="background:var(--gris-claro);border-radius:10px;padding:16px 18px;border:1px solid rgba(240,165,0,0.15);margin-bottom:20px;">
           <div style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:2px;color:var(--negro);margin-bottom:12px;display:flex;align-items:center;gap:8px;">
             <span style="width:4px;height:18px;background:var(--dorado);border-radius:2px;display:inline-block;"></span>
@@ -692,8 +718,6 @@ footer::before { content:'🏆'; position:absolute; font-size:18rem; opacity:0.0
           </div>
           <div style="margin-top:10px;font-size:0.72rem;color:#999;font-style:italic;">* En caso de empate: goles anotados → tarjetas (menos = mejor) → sorteo</div>
         </div>
-
-        <!-- Partidos semifinal/final por deporte (cargados datos Hoja 4) -->
         <div id="semifinalGrid" style="display:flex;flex-direction:column;gap:22px;">
           <div style="text-align:center;padding:32px;color:#aaa;">Cargando datos de semifinales de forma automática</div>
         </div>
@@ -849,7 +873,7 @@ footer::before { content:'🏆'; position:absolute; font-size:18rem; opacity:0.0
           <div style="margin-top:10px;border-top:1px solid #eee;padding-top:8px;">
             <div style="font-size:0.68rem;font-weight:700;background:var(--gris-oscuro);color:white;padding:3px 8px;border-radius:3px;margin-bottom:5px;">❄️ CON AIRE ACONDICIONADO</div>
             <table style="width:100%;font-size:0.73rem;border-collapse:collapse;"><tbody>
-              <tr><td style="padding:2px 5px;">Confort Simple</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 170</td></tr>
+              <tr><td style="padding:2px 5px;">Confort Simple</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 170</td></div>
               <tr style="background:#fafafa;"><td style="padding:2px 5px;">Confort Doble</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 210</td></tr>
               <tr><td style="padding:2px 5px;">Suite Tambopata</td><td style="text-align:right;color:var(--rojo);font-weight:700;">S/ 380</td></tr>
             </tbody></table>
@@ -1072,19 +1096,28 @@ window.addEventListener('load', updateActiveBottomNav);
 /* HERO ANIMACIÓN */
 setTimeout(() => document.getElementById('heroSection')?.classList.add('show'), 200);
 
-/* EDGE / MÓVIL VIEWPORT FIX — corrige 100vh en Edge y móvil */
-function fixHeroHeight(){
-  const nav = document.getElementById('mainNav');
-  const banner = document.querySelector('.delegaciones-banner');
-  const navH = nav ? nav.offsetHeight : 62;
-  const bannerH = banner ? banner.offsetHeight : 46;
-  const offset = navH + bannerH;
-  document.documentElement.style.setProperty('--offset', offset + 'px');
-  const hero = document.getElementById('heroSection');
-  if(hero) hero.style.minHeight = Math.max(400, window.innerHeight - offset) + 'px';
+/* ── EDGE FIX: fixHeroHeight con doble requestAnimationFrame ──
+   Edge necesita esperar a que el sticky wrapper mida correctamente */
+function fixHeroHeight() {
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      var header = document.getElementById('stickyHeader');
+      var headerH = header ? header.getBoundingClientRect().height : 108;
+      if (headerH < 10) headerH = 108; // fallback si aún no renderizó
+      document.documentElement.style.setProperty('--offset', headerH + 'px');
+      var hero = document.getElementById('heroSection');
+      if (hero) {
+        var minH = Math.max(400, window.innerHeight - headerH);
+        hero.style.minHeight = minH + 'px';
+      }
+    });
+  });
 }
 fixHeroHeight();
-window.addEventListener('resize', fixHeroHeight, {passive:true});
+window.addEventListener('resize', fixHeroHeight, { passive: true });
+window.addEventListener('load', fixHeroHeight);
+setTimeout(fixHeroHeight, 300);
+setTimeout(fixHeroHeight, 800); // Edge a veces tarda en render de fonts
 
 /* COUNTDOWN */
 const targetDate = new Date('June 28, 2026 08:00:00').getTime();
@@ -1107,11 +1140,11 @@ setTimeout(toggleScrollBtn,300); setTimeout(toggleScrollBtn,800);
 scrollBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 window.addEventListener('touchmove',toggleScrollBtn,{passive:true});
 
-/* NAV SCROLLED */
-const mainNav=document.getElementById('mainNav');
-window.addEventListener('scroll',()=>mainNav.classList.toggle('scrolled',window.scrollY>50),{passive:true});
+/* NAV SCROLLED — ahora aplica al wrapper */
+const mainNav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => mainNav.classList.toggle('scrolled', window.scrollY > 50), { passive:true });
 
-/* FADE-UP — solo elementos que NO son delegaciones */
+/* FADE-UP */
 const fadeObserver = new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show');});},{threshold:0.08});
 document.querySelectorAll('section,.disc-card,.hotel-card,.fiesta-card,.tour-card,.res-card').forEach(el=>{el.classList.add('fade-up');fadeObserver.observe(el);});
 
@@ -1133,7 +1166,7 @@ function nombreDelegacion(codigo){if(!codigo)return'';const c=codigo.trim().toUp
   const canvas=document.getElementById('heroCanvas'); if(!canvas)return;
   const ctx=canvas.getContext('2d'); let W,H,particles=[];
   function resize(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight;}
-  resize(); window.addEventListener('resize',resize);
+  resize(); window.addEventListener('resize',resize,{passive:true});
   const COLORS=['rgba(240,165,0,','rgba(255,209,102,','rgba(200,16,46,','rgba(255,255,255,'];
   function rand(a,b){return Math.random()*(b-a)+a;}
   for(let i=0;i<80;i++){particles.push({x:rand(0,1),y:rand(0,1),vx:rand(-0.08,0.08),vy:rand(-0.15,-0.04),r:rand(1,3.5),color:COLORS[Math.floor(Math.random()*COLORS.length)],alpha:rand(0.3,0.9),life:rand(0,1)});}
@@ -1219,11 +1252,7 @@ async function fetchResultados(){
 }
 fetchResultados(); setInterval(fetchResultados,POLL_MS);
 
-/* SEMIFINAL / FINAL — Hoja 4
-   Columnas esperadas: Hora | EquipoA | EquipoB | Resultado | Estado | Deporte | Fase | Lugar
-   Fase: "Semifinal" o "Final"
-   Estado: PROX | LIVE | FIN
-*/
+/* SEMIFINAL / FINAL */
 async function fetchSemifinal(){
   const grid=document.getElementById('semifinalGrid');
   if(!grid)return;
@@ -1235,7 +1264,6 @@ async function fetchSemifinal(){
       grid.innerHTML='<div style="text-align:center;padding:28px;color:#aaa;font-size:0.85rem;">Aún no hay semifinales programadas. Se publicarán al concluir la Fase 1.</div>';
       return;
     }
-    // Agrupar por deporte
     const byDeporte={};
     data.forEach(row=>{
       const dep=row.Deporte||row.deporte||'General';
