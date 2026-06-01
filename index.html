@@ -21,6 +21,8 @@
   --blanco:      #FFFFFF;
   --texto:       #2A2A2A;
   --nav-h:       62px;
+  --banner-h:    46px;
+  --offset:      108px; /* nav + banner */
 }
 *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; font-size:clamp(14px,0.85vw + 0.55rem,17px); -webkit-text-size-adjust:100%; text-size-adjust:100%; }
@@ -52,7 +54,7 @@ nav.scrolled { background: rgba(13,13,13,0.92);backdrop-filter: blur(10px);-webk
 @media (min-width:901px) { #bottomNav { display:none; } }
 
 /* HERO */
-.hero { background:linear-gradient(135deg,#0a1628 0%,#1a0a0a 50%,#2d1b00 100%); color:var(--blanco); padding:50px 20px 60px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; position:relative; overflow:hidden; }
+.hero { background:linear-gradient(135deg,#0a1628 0%,#1a0a0a 50%,#2d1b00 100%); color:var(--blanco); min-height:calc(100vh - var(--offset)); padding:40px 20px 50px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; position:relative; overflow:hidden; box-sizing:border-box; }
 .hero::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(240,165,0,0.02) 40px,rgba(240,165,0,0.02) 80px); pointer-events:none; }
 .hero-badge { display:inline-block; background:var(--dorado); color:var(--negro); font-family:'Barlow Condensed',sans-serif; font-size:0.75rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; padding:5px 16px; border-radius:2px; margin-bottom:8px; }
 /* ── HERO H1 REDUCIDO para móvil ── */
@@ -256,7 +258,7 @@ footer { background:#050505; color:#666; padding:32px 20px; text-align:center; b
   .fixture-item { grid-template-columns:1fr; gap:4px; }
   .fixture-team.right { text-align:left; }
   .fixture-lugar { text-align:left; }
-  .hero { padding:36px 16px 48px; }
+  .hero { min-height:0; padding:44px 16px 52px; }
   .hero-stats { gap:8px; }
   .hero-stat { padding:8px 12px; }
 }
@@ -268,6 +270,10 @@ footer { background:#050505; color:#666; padding:32px 20px; text-align:center; b
   .hero-stat { padding:6px 10px; }
   .cd-num { font-size:1.3rem !important; }
   .cd-block { min-width:44px; padding:4px 6px; }
+  .hero-nombre { font-size:0.72rem; letter-spacing:1px; }
+  .hero-ctas { gap:8px; }
+  .btn-primary { padding:11px 22px !important; font-size:0.8rem !important; }
+  .btn-secondary { padding:9px 16px; font-size:0.78rem; }
 }
 
 * { -webkit-tap-highlight-color:transparent; }
@@ -407,9 +413,8 @@ footer::before { content:'🏆'; position:absolute; font-size:18rem; opacity:0.0
 .cd-num { font-family:'Bebas Neue',sans-serif; font-size:1.9rem; color:var(--dorado); line-height:1; display:block; }
 .cd-lbl { font-size:0.58rem; color:#888; letter-spacing:2px; text-transform:uppercase; display:block; margin-top:2px; }
 
-/* SCROLL HINT */
-.hero-scroll-hint { position:absolute; bottom:16px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:4px; color:rgba(255,255,255,0.35); font-size:0.6rem; letter-spacing:3px; text-transform:uppercase; animation:fadeInOut 2s ease-in-out infinite; z-index:2; pointer-events:none; }
-.hero-scroll-hint::after { content:''; width:1px; height:30px; background:linear-gradient(to bottom,rgba(240,165,0,0.5),transparent); animation:scrollLine 2s ease-in-out infinite; }
+/* SCROLL HINT — oculto */
+.hero-scroll-hint { display:none; }
 @keyframes fadeInOut { 0%,100%{opacity:0.4;} 50%{opacity:1;} }
 @keyframes scrollLine { 0%{transform:scaleY(0);transform-origin:top;} 50%{transform:scaleY(1);transform-origin:top;} 51%{transform:scaleY(1);transform-origin:bottom;} 100%{transform:scaleY(0);transform-origin:bottom;} }
 
@@ -1066,6 +1071,20 @@ window.addEventListener('load', updateActiveBottomNav);
 
 /* HERO ANIMACIÓN */
 setTimeout(() => document.getElementById('heroSection')?.classList.add('show'), 200);
+
+/* EDGE / MÓVIL VIEWPORT FIX — corrige 100vh en Edge y móvil */
+function fixHeroHeight(){
+  const nav = document.getElementById('mainNav');
+  const banner = document.querySelector('.delegaciones-banner');
+  const navH = nav ? nav.offsetHeight : 62;
+  const bannerH = banner ? banner.offsetHeight : 46;
+  const offset = navH + bannerH;
+  document.documentElement.style.setProperty('--offset', offset + 'px');
+  const hero = document.getElementById('heroSection');
+  if(hero) hero.style.minHeight = Math.max(400, window.innerHeight - offset) + 'px';
+}
+fixHeroHeight();
+window.addEventListener('resize', fixHeroHeight, {passive:true});
 
 /* COUNTDOWN */
 const targetDate = new Date('June 28, 2026 08:00:00').getTime();
