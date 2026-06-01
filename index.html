@@ -21,11 +21,10 @@
   --blanco:      #FFFFFF;
   --texto:       #2A2A2A;
   --nav-h:       62px;
-  --banner-h:    46px;
-  --offset:      108px;
+  --offset:      65px;
 }
 *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; font-size:clamp(14px,0.85vw + 0.55rem,17px); -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+html { scroll-behavior:smooth; font-size:clamp(14px,0.85vw + 0.55rem,17px); -webkit-text-size-adjust:100%; text-size-adjust:100%; scroll-padding-top:var(--nav-h); }
 body { font-family:'Barlow',sans-serif; background:var(--blanco); color:var(--texto); line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
 
 /* ── EDGE FIX: Sticky wrapper contiene nav + banner ── */
@@ -62,7 +61,7 @@ nav.scrolled { background: rgba(13,13,13,0.95) !important; -webkit-backdrop-filt
 @media (min-width:901px) { #bottomNav { display:none; } }
 
 /* HERO */
-.hero { background:linear-gradient(135deg,#0a1628 0%,#1a0a0a 50%,#2d1b00 100%); color:var(--blanco); min-height:calc(100vh - var(--offset)); padding:40px 20px 50px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; position:relative; overflow:hidden; box-sizing:border-box; }
+.hero { background:linear-gradient(135deg,#0a1628 0%,#1a0a0a 50%,#2d1b00 100%); color:var(--blanco); min-height:calc(100vh - var(--nav-h)); padding:40px 20px 50px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; position:relative; overflow:hidden; box-sizing:border-box; }
 /* EDGE FIX: inset → top/right/bottom/left */
 .hero::before { content:''; position:absolute; top:0; right:0; bottom:0; left:0; background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(240,165,0,0.02) 40px,rgba(240,165,0,0.02) 80px); pointer-events:none; }
 .hero-badge { display:inline-block; background:var(--dorado); color:var(--negro); font-family:'Barlow Condensed',sans-serif; font-size:0.75rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; padding:5px 16px; border-radius:2px; margin-bottom:8px; }
@@ -429,18 +428,7 @@ footer::before { content:'🏆'; position:absolute; font-size:18rem; opacity:0.0
 .contacto-card { border-radius:16px !important; transition:all 0.3s !important; border:1px solid transparent !important; }
 .contacto-card:hover { border-color:var(--dorado) !important; transform:translateY(-4px) !important; box-shadow:0 12px 30px rgba(240,165,0,0.15) !important; }
 
-/* BANNER DELEGACIONES */
-.delegaciones-banner { background:linear-gradient(135deg,#0d0d0d,#1a1a2e); border-top:1px solid rgba(240,165,0,0.2); border-bottom:1px solid rgba(240,165,0,0.2); padding:14px 0; overflow:hidden; position:relative; }
-.delegaciones-banner::before, .delegaciones-banner::after { content:''; position:absolute; top:0; bottom:0; width:80px; z-index:2; pointer-events:none; }
-.delegaciones-banner::before { left:0; background:linear-gradient(90deg,#0d0d0d,transparent); }
-.delegaciones-banner::after  { right:0; background:linear-gradient(-90deg,#0d0d0d,transparent); }
-/* EDGE FIX: -ms-overflow-style + width fallback */
-.delegaciones-track { display:flex; gap:0; animation:scrollTrack 20s linear infinite; width:-webkit-max-content; width:max-content; -ms-overflow-style:none; }
-.delegaciones-track:hover { animation-play-state:paused; }
-.delegacion-item { display:flex; align-items:center; gap:10px; padding:8px 32px; color:#ccc; font-family:'Barlow Condensed',sans-serif; font-size:1rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; white-space:nowrap; border-right:1px solid rgba(240,165,0,0.15); transition:color 0.3s; }
-.delegacion-item:hover { color:var(--dorado); }
-.delegacion-item span { font-size:1.4rem; }
-@keyframes scrollTrack { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
+
 
 /* COUNTDOWN */
 #countdown { display:flex !important; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:12px !important; }
@@ -481,24 +469,6 @@ footer::before { content:'🏆'; position:absolute; font-size:18rem; opacity:0.0
     </div>
   </div>
 </nav>
-
-<!-- BANNER DELEGACIONES -->
-<div class="delegaciones-banner">
-  <div class="delegaciones-track" id="delegTrack">
-    <div class="delegacion-item"><span>🦁</span> Arequipa</div>
-    <div class="delegacion-item"><span>🏔️</span> Cusco</div>
-    <div class="delegacion-item"><span>🌿</span> Madre de Dios</div>
-    <div class="delegacion-item"><span>🦙</span> Puno</div>
-    <div class="delegacion-item"><span>⚓</span> Tacna</div>
-    <div class="delegacion-item"><span>🏆</span> XXIV Campeonato Regional del Sur 2026</div>
-    <div class="delegacion-item"><span>🦁</span> Arequipa</div>
-    <div class="delegacion-item"><span>🏔️</span> Cusco</div>
-    <div class="delegacion-item"><span>🌿</span> Madre de Dios</div>
-    <div class="delegacion-item"><span>🦙</span> Puno</div>
-    <div class="delegacion-item"><span>⚓</span> Tacna</div>
-    <div class="delegacion-item"><span>🏆</span> XXIV Campeonato Regional del Sur 2026</div>
-  </div>
-</div>
 
 </div><!-- /#stickyHeader -->
 
