@@ -548,7 +548,7 @@ footer::before { content:'🏆'; position:absolute; font-size:18rem; opacity:0.0
         </tbody>
       </table>
     </div>
-    <p class="tabla-nota">* La tabla se actualiza automáticamente desde Google Sheets cada 60 segundos.</p>
+    <p class="tabla-nota">* La tabla se actualiza automáticamente cada 60 segundos.</p>
 
     <!-- RESULTADOS POR CATEGORÍA -->
     <div class="resultados-section">
@@ -595,7 +595,7 @@ footer::before { content:'🏆'; position:absolute; font-size:18rem; opacity:0.0
     <!-- Status bar -->
     <div class="fixture-status">
       <div class="fixture-status-dot" id="fixtureStatusDot"></div>
-      <span id="fixtureStatusText">Conectando con Google Sheets…</span>
+      <span id="fixtureStatusText">Conectando con Base de Datos…</span>
       <span id="fixtureLastUpdate" style="margin-left:auto;color:#aaa;font-size:0.72rem;"></span>
     </div>
 
@@ -662,19 +662,19 @@ footer::before { content:'🏆'; position:absolute; font-size:18rem; opacity:0.0
         </div>
       </div>
 
-      <div id="fp-futbol"      class="fpanel"><div class="fixture-list" id="fixtureListFutbol"><div style="text-align:center;padding:32px;color:#aaa;">Cargando datos de Google Sheets…</div></div></div>
-      <div id="fp-baloncesto"  class="fpanel"><div class="fixture-list" id="fixtureListBaloncesto"><div style="text-align:center;padding:32px;color:#aaa;">Cargando datos de Google Sheets…</div></div></div>
-      <div id="fp-voley"       class="fpanel"><div class="fixture-list" id="fixtureListVoley"><div style="text-align:center;padding:32px;color:#aaa;">Cargando datos de Google Sheets…</div></div></div>
-      <div id="fp-atletismo"   class="fpanel"><div class="fixture-list" id="fixtureListAtletismo"><div style="text-align:center;padding:32px;color:#aaa;">Cargando datos de Google Sheets…</div></div></div>
-      <div id="fp-tenis"       class="fpanel"><div class="fixture-list" id="fixtureListTenis"><div style="text-align:center;padding:32px;color:#aaa;">Cargando datos de Google Sheets…</div></div></div>
-      <div id="fp-recreativos" class="fpanel"><div class="fixture-list" id="fixtureListRecreativos"><div style="text-align:center;padding:32px;color:#aaa;">Cargando datos de Google Sheets…</div></div></div>
+      <div id="fp-futbol"      class="fpanel"><div class="fixture-list" id="fixtureListFutbol"><div style="text-align:center;padding:32px;color:#aaa;">Cargando base de datos…</div></div></div>
+      <div id="fp-baloncesto"  class="fpanel"><div class="fixture-list" id="fixtureListBaloncesto"><div style="text-align:center;padding:32px;color:#aaa;">Cargando base de datos…</div></div></div>
+      <div id="fp-voley"       class="fpanel"><div class="fixture-list" id="fixtureListVoley"><div style="text-align:center;padding:32px;color:#aaa;">Cargando base de datos…</div></div></div>
+      <div id="fp-atletismo"   class="fpanel"><div class="fixture-list" id="fixtureListAtletismo"><div style="text-align:center;padding:32px;color:#aaa;">Cargando base de datos…</div></div></div>
+      <div id="fp-tenis"       class="fpanel"><div class="fixture-list" id="fixtureListTenis"><div style="text-align:center;padding:32px;color:#aaa;">Cargando base de datos…</div></div></div>
+      <div id="fp-recreativos" class="fpanel"><div class="fixture-list" id="fixtureListRecreativos"><div style="text-align:center;padding:32px;color:#aaa;">Cargando base de datos…</div></div></div>
 
       <!-- ══════════════════════════════════════════
            PANEL SEMIFINAL / FINAL
       ══════════════════════════════════════════ -->
       <div id="fp-semifinal" class="fpanel">
         <div style="margin-bottom:14px;background:linear-gradient(135deg,rgba(240,165,0,0.08),rgba(200,16,46,0.06));border:1px solid rgba(240,165,0,0.25);border-radius:8px;padding:12px 16px;font-size:0.8rem;color:#aaa;line-height:1.6;">
-          ⚡ <strong style="color:var(--dorado);">Sistema de eliminación directa</strong> — Los partidos de semifinal y final se programan según resultados de Fase 1. Se actualiza en tiempo real desde Google Sheets (Hoja 4).
+          ⚡ <strong style="color:var(--dorado);">Sistema de eliminación directa</strong> — Los partidos de semifinal y final se programan según resultados de Fase 1. Se actualiza en tiempo real.
         </div>
 
         <!-- Info de cómo se asignan posiciones -->
@@ -693,9 +693,9 @@ footer::before { content:'🏆'; position:absolute; font-size:18rem; opacity:0.0
           <div style="margin-top:10px;font-size:0.72rem;color:#999;font-style:italic;">* En caso de empate: goles anotados → tarjetas (menos = mejor) → sorteo</div>
         </div>
 
-        <!-- Partidos semifinal/final por deporte (cargados desde Sheets Hoja 4) -->
+        <!-- Partidos semifinal/final por deporte (cargados datos Hoja 4) -->
         <div id="semifinalGrid" style="display:flex;flex-direction:column;gap:22px;">
-          <div style="text-align:center;padding:32px;color:#aaa;">Cargando datos de semifinales desde Google Sheets…</div>
+          <div style="text-align:center;padding:32px;color:#aaa;">Cargando datos de semifinales de forma automática</div>
         </div>
       </div>
     </div>
@@ -1167,7 +1167,7 @@ async function fetchFixture(){
     if(dot)dot.className='fixture-status-dot ok';
     if(txt)txt.textContent=`${data.length} registros cargados`;
     if(last)last.textContent='Actualizado: '+new Date().toLocaleTimeString('es-PE');
-  }catch(err){console.error('Fixture error:',err);if(dot)dot.className='fixture-status-dot err';if(txt)txt.textContent='Error al conectar con Google Sheets';if(last)last.textContent=new Date().toLocaleTimeString('es-PE');}
+  }catch(err){console.error('Fixture error:',err);if(dot)dot.className='fixture-status-dot err';if(txt)txt.textContent='Error al conectar con Base de Datos';if(last)last.textContent=new Date().toLocaleTimeString('es-PE');}
 }
 fetchFixture(); setInterval(fetchFixture,POLL_MS);
 
