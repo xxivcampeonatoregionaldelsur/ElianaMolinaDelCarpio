@@ -3,8 +3,8 @@
    MDD 2026 — PWA offline cache
    ===================================================== */
 
-const CACHE_NAME     = 'mdd2026-v1';
-const CACHE_DYNAMIC  = 'mdd2026-dynamic-v1';
+const CACHE_NAME     = 'mdd2026-v2';
+const CACHE_DYNAMIC  = 'mdd2026-dynamic-v2';
 
 // Recursos que se cachean en la instalación
 const STATIC_ASSETS = [
@@ -47,18 +47,23 @@ self.addEventListener('fetch', event => {
   // Solo interceptar GET
   if (request.method !== 'GET') return;
 
-  // Estrategia: Cache First → Network fallback (para assets estáticos)
-  // Network First → Cache fallback (para datos dinámicos / APIs)
+  // Network First: APIs de datos en tiempo real + el propio index.html
   const isDynamicAPI =
-    url.hostname.includes('docs.google.com') ||
-    url.hostname.includes('googleapis.com') ||
+    url.hostname.includes('opensheet.elk.sh')  ||  // registros públicos
+    url.hostname.includes('script.google.com') ||  // Apps Script POST/GET
+    url.hostname.includes('docs.google.com')   ||
+    url.hostname.includes('googleapis.com')    ||
     url.pathname.includes('/spreadsheets');
 
-  if (isDynamicAPI) {
-    // Network First para datos en tiempo real
+  // index.html nunca desde caché: siempre red para recibir actualizaciones
+  const isHTMLPage =
+    url.pathname === '/' ||
+    url.pathname.endsWith('/index.html') ||
+    url.pathname.endsWith('.html');
+
+  if (isDynamicAPI || isHTMLPage) {
     event.respondWith(networkFirst(request));
   } else {
-    // Cache First para recursos estáticos
     event.respondWith(cacheFirst(request));
   }
 });
@@ -75,7 +80,6 @@ async function cacheFirst(request) {
     }
     return response;
   } catch {
-    // Sin conexión y sin cache: devuelve página offline si existe
     const fallback = await caches.match('./index.html');
     return fallback || new Response('Sin conexión', { status: 503 });
   }
@@ -86,8 +90,14 @@ async function networkFirst(request) {
   try {
     const response = await fetch(request);
     if (response && response.status === 200) {
-      const cache = await caches.open(CACHE_DYNAMIC);
-      cache.put(request, response.clone());
+      // No cachear respuestas de APIs de datos para evitar datos viejos
+      const isAPI =
+        request.url.includes('opensheet.elk.sh') ||
+        request.url.includes('script.google.com');
+      if (!isAPI) {
+        const cache = await caches.open(CACHE_DYNAMIC);
+        cache.put(request, response.clone());
+      }
     }
     return response;
   } catch {
