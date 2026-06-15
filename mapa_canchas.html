@@ -384,7 +384,7 @@ const ZONES = [
     desc:'Cancha PC norte. Disciplina fútbol libre — categoría Varones.',
     acts:'⚽ Fase de grupos · ⚽ Final fútbol libre',
     label:'PC', labelSize:28,
-    sub:'FÚTBOL Libre Varones', subSize:11,
+    sub:['FÚTBOL LIBRE','VARONES'], subSize:11,
     iconEmoji:'⚽', iconSize:22,
     cx: CA_X + CA_W/2,
     cy: PC_Y + PC_H/2 },
@@ -431,7 +431,7 @@ const ZONES = [
     desc:'Cancha SB. Disciplina baloncesto — Varones.',
     acts:'🏀 Fase de grupos · 🏀 Semifinal Baloncesto',
     label:'SB', labelSize:32,
-    sub:['BALONCESTO VARONES'], subSize:9,
+    sub:['BALONCESTO','VARONES'], subSize:11,
     iconEmoji:'🏀', iconSize:32,
     cx: SB_X + SB_W/2,
     cy: CANC_D_Y + CANC_D_H/2 },
@@ -443,7 +443,7 @@ const ZONES = [
     desc:'Cancha SC. Baloncesto damas.',
     acts:'🏀 Fase de grupos · 🏀 Semifinal Baloncesto',
     label:'SC', labelSize:32,
-    sub:'BALONCESTO DAMAS', subSize:9,
+    sub:['BALONCESTO','DAMAS'], subSize:11,
     iconEmoji:'🏀', iconSize:32,
     cx: SC_X + SC_W/2,
     cy: CANC_D_Y + CANC_D_H/2 },
@@ -455,7 +455,7 @@ const ZONES = [
     desc:'Cancha SA. Disciplina vóley mixto.',
     acts:'🏐 Fase de grupos · 🏐 Final Vóley',
     label:'SA', labelSize:32,
-    sub:'VÓLEY', subSize:12,
+    sub:'VÓLEY', subSize:13,
     iconEmoji:'🏐', iconSize:32,
     cx: SA_X + SA_W/2,
     cy: CANC_D_Y + CANC_D_H/2 },
@@ -489,7 +489,7 @@ const ZONES = [
     desc:'Infraestructura cubierta principal. Sede de la ceremonia de apertura y finales.',
     acts:'🎉 Ceremonia de Apertura\n🏀 Final Baloncesto · 🏐 Final Vóley',
     label:'POLIDEPORTIVO', labelSize:20,
-    sub:'Apertura - Finales', subSize:11,
+    sub:['APERTURA','FINALES'], subSize:12,
     iconEmoji:'🏟️', iconSize:34,
     cx: CA_X + CA_W/2,
     cy: POLO_Y + POLO_H/2 },
@@ -501,7 +501,7 @@ const ZONES = [
     desc:'Auditorio principal. Sede de disciplinas de mesa, recreativos y almuerzo.',
     acts:'♟️ Ajedrez · 🏓 Tenis de Mesa\n🎲 Cubilete · 🐸 Sapo · 🍱 Almuerzo',
     label:'AUDITORIO', labelSize:15,
-    sub:'RECREATIVOS Y ALMUERZO', subSize:8,
+    sub:['RECREATIVOS','Y ALMUERZO'], subSize:9,
     iconEmoji:'🎭', iconSize:22,
     cx: CB_X + CB_W/2,
     cy: AUD_Y + AUD_H/2 },
@@ -548,7 +548,7 @@ const ZONES = [
     name:'COAR — Acceso No Autorizado', type_z:'Zona Restringida', icon:'🔒',
     desc:'Bloque de instalaciones COAR. No habilitado para el evento. Acceso restringido a personal autorizado.',
     label:'COAR –', labelSize:26,
-    sub:'ACCESO NO AUTORIZADO', subSize:12,
+    sub:['ACCESO NO','AUTORIZADO'], subSize:12,
     iconEmoji:'🔒', iconSize:36,
     cx: CC_X + CC_W/2,
     cy: COAR_Y + COAR_H/2 },
@@ -749,16 +749,23 @@ ZONES.forEach(z => {
     t.textContent = z.label;
     g.appendChild(t);
 
-    // Sub-etiqueta
+    // Sub-etiqueta (soporta string simple o array de 2 líneas)
     if (z.sub && z.subSize) {
-      const s = document.createElementNS('http://www.w3.org/2000/svg','text');
-      s.setAttribute('x', cx);
-      s.setAttribute('y', labelY + (z.labelSize||16) * 0.95);
-      s.setAttribute('class','zona-sub');
-      s.setAttribute('fill', z.stroke || '#aaa');
-      s.setAttribute('font-size', z.subSize);
-      s.textContent = z.sub;
-      g.appendChild(s);
+      const lines = Array.isArray(z.sub) ? z.sub : [z.sub];
+      const lineH = (z.subSize || 11) * 1.35;
+      const baseY = labelY + (z.labelSize||16) * 0.95;
+      // Centrar verticalmente si hay 2 líneas
+      const startY = lines.length > 1 ? baseY - lineH * 0.3 : baseY;
+      lines.forEach((line, i) => {
+        const s = document.createElementNS('http://www.w3.org/2000/svg','text');
+        s.setAttribute('x', cx);
+        s.setAttribute('y', startY + i * lineH);
+        s.setAttribute('class','zona-sub');
+        s.setAttribute('fill', z.stroke || '#aaa');
+        s.setAttribute('font-size', z.subSize);
+        s.textContent = line;
+        g.appendChild(s);
+      });
     }
   }
 
