@@ -6,15 +6,15 @@
 <title>IE Fitzcarrald — Mapa del Campus</title>
 <style>
 :root {
-  --bg:        #0f1a0f;
-  --surface:   #162116;
-  --panel:     #1a2a1a;
-  --border:    #2d442d;
+  --bg:        #1a1008;
+  --surface:   #221508;
+  --panel:     #1e1a10;
+  --border:    #3d3018;
   --gold:      #e8b84b;
   --gold-dim:  #a07828;
-  --text:      #e8ede8;
-  --text-2:    #94a894;
-  --text-3:    #5a6e5a;
+  --text:      #f0ece0;
+  --text-2:    #a09878;
+  --text-3:    #5a4e30;
   --font:      system-ui, -apple-system, 'Segoe UI', sans-serif;
   --safe-b:    env(safe-area-inset-bottom, 0px);
 }
@@ -25,7 +25,7 @@ html, body { height:100%; overflow:hidden; background:var(--bg); font-family:var
 header {
   position: absolute; top:0; left:0; right:0; z-index:30;
   height: 48px;
-  background: rgba(15,26,15,0.97);
+  background: rgba(26,16,8,0.97);
   border-bottom: 1px solid var(--border);
   display: flex; align-items: center; gap: 10px; padding: 0 14px;
 }
@@ -49,37 +49,28 @@ header::after {
 #map-wrap.dragging { cursor: grabbing; }
 #map-svg { display:block; user-select:none; }
 
-/* ── ZONAS SVG — estilos base ── */
-.zona {
-  cursor: pointer;
-  transition: filter .15s, opacity .15s;
-}
-.zona:hover rect, .zona:active rect { filter: brightness(1.25); }
-.zona.active rect { outline: none; }
+/* ── ZONAS SVG ── */
+.zona { cursor: pointer; transition: filter .15s, opacity .15s; }
+.zona:hover .zona-shape { filter: brightness(1.28) drop-shadow(0 0 8px currentColor); }
 .zona-label {
-  font-family: var(--font);
-  font-weight: 700;
-  text-anchor: middle;
-  dominant-baseline: middle;
-  pointer-events: none;
-  letter-spacing: .01em;
+  font-family: var(--font); font-weight: 800;
+  text-anchor: middle; dominant-baseline: middle;
+  pointer-events: none; letter-spacing: .04em;
 }
 .zona-sub {
-  font-family: var(--font);
-  font-weight: 500;
-  text-anchor: middle;
-  dominant-baseline: middle;
-  pointer-events: none;
+  font-family: var(--font); font-weight: 500;
+  text-anchor: middle; dominant-baseline: middle;
+  pointer-events: none; letter-spacing: .06em; text-transform: uppercase;
 }
+.zona-icon { text-anchor: middle; dominant-baseline: middle; pointer-events: none; }
 
-/* ── PULSE del tap ── */
 @keyframes tapRing {
   0%   { r: 0;  opacity:.8; }
-  100% { r: 22px; opacity:0; }
+  100% { r: 30px; opacity:0; }
 }
 .tap-ring { animation: tapRing .5s ease-out forwards; }
 
-/* ── PANEL DE INFO (bottom sheet) ── */
+/* ── PANEL DE INFO ── */
 #info-panel {
   position: absolute; bottom:0; left:0; right:0; z-index:40;
   background: var(--panel);
@@ -88,13 +79,12 @@ header::after {
   padding: 0 0 calc(12px + var(--safe-b));
   transform: translateY(100%);
   transition: transform .28s cubic-bezier(.25,.8,.25,1);
-  box-shadow: 0 -8px 32px rgba(0,0,0,.5);
+  box-shadow: 0 -8px 32px rgba(0,0,0,.6);
   will-change: transform;
   max-height: 55vh;
   display: flex; flex-direction: column;
 }
 #info-panel.open { transform: translateY(0); }
-
 .panel-handle {
   width:36px; height:4px; border-radius:2px; background:var(--border);
   margin:10px auto 0; flex-shrink:0;
@@ -106,42 +96,32 @@ header::after {
 }
 .panel-icon { font-size:22px; flex-shrink:0; margin-top:2px; }
 .panel-head-text { flex:1; min-width:0; }
-#panel-name {
-  font-size: 15px; font-weight:700; color:var(--text);
-  line-height:1.2; letter-spacing:.01em;
-}
-#panel-type {
-  font-size: 10px; font-weight:700; color:var(--gold);
-  text-transform:uppercase; letter-spacing:.08em; margin-top:3px;
-}
+#panel-name { font-size: 15px; font-weight:700; color:var(--text); line-height:1.2; letter-spacing:.01em; }
+#panel-type { font-size: 10px; font-weight:700; color:var(--gold); text-transform:uppercase; letter-spacing:.08em; margin-top:3px; }
 .panel-close {
   width:28px; height:28px; border-radius:50%; border:1px solid var(--border);
   background:transparent; color:var(--text-2); font-size:14px; cursor:pointer;
   display:flex; align-items:center; justify-content:center; flex-shrink:0;
 }
-
 .panel-body { padding:12px 16px; overflow-y:auto; }
 #panel-desc { font-size:12.5px; color:var(--text-2); line-height:1.6; }
 #panel-acts {
   margin-top:10px; padding:10px 12px;
   background:rgba(232,184,75,.07); border:1px solid rgba(232,184,75,.2);
-  border-radius:8px; font-size:12px; color:var(--gold); line-height:1.7;
-  white-space:pre-line;
+  border-radius:8px; font-size:12px; color:var(--gold); line-height:1.7; white-space:pre-line;
 }
 #panel-acts:empty { display:none; }
 
 /* ── LEYENDA ── */
 #legend {
   position:absolute; top:58px; right:10px; z-index:20;
-  background:rgba(15,26,15,.92); border:1px solid var(--border);
-  border-radius:10px; padding:8px 10px;
-  backdrop-filter:blur(6px);
+  background:rgba(26,16,8,.93); border:1px solid var(--border);
+  border-radius:10px; padding:8px 10px; backdrop-filter:blur(6px);
 }
 #legend-toggle {
-  background:none; border:none; color:var(--gold); font-size:16px;
-  cursor:pointer; display:flex; align-items:center; gap:4px;
-  font-size:11px; font-weight:700; color:var(--text-2);
-  text-transform:uppercase; letter-spacing:.05em;
+  background:none; border:none; font-size:11px; font-weight:700; color:var(--text-2);
+  text-transform:uppercase; letter-spacing:.05em; cursor:pointer;
+  display:flex; align-items:center; gap:4px;
 }
 #legend-body { display:none; margin-top:6px; }
 #legend-body.open { display:block; }
@@ -156,7 +136,7 @@ header::after {
 }
 .zb {
   width:34px; height:34px; border-radius:8px;
-  background:rgba(15,26,15,.92); border:1px solid var(--border);
+  background:rgba(26,16,8,.93); border:1px solid var(--border);
   color:var(--text-2); font-size:18px; cursor:pointer;
   display:flex; align-items:center; justify-content:center;
 }
@@ -164,7 +144,7 @@ header::after {
 /* ── HINT ── */
 #hint {
   position:absolute; bottom:calc(18px + var(--safe-b)); left:14px; z-index:20;
-  background:rgba(15,26,15,.85); border:1px solid var(--border);
+  background:rgba(26,16,8,.88); border:1px solid var(--border);
   border-radius:8px; padding:6px 10px; font-size:9px; color:var(--text-3);
   line-height:1.8; pointer-events:none;
 }
@@ -172,7 +152,7 @@ header::after {
 /* ── NORTH ── */
 #north {
   position:absolute; top:58px; left:10px; z-index:20;
-  background:rgba(15,26,15,.88); border:1px solid var(--border);
+  background:rgba(26,16,8,.90); border:1px solid var(--border);
   border-radius:8px; width:32px; height:32px;
   display:flex; align-items:center; justify-content:center;
   font-size:12px; font-weight:800; color:var(--text-2); letter-spacing:.02em;
@@ -189,30 +169,26 @@ header::after {
   <div class="h-badge">2D · Interactivo</div>
 </header>
 
-<!-- Indicador norte -->
 <div id="north">N↑</div>
 
-<!-- Leyenda colapsable -->
 <div id="legend">
   <button id="legend-toggle" onclick="toggleLegend()">☰ Leyenda</button>
   <div id="legend-body">
     <div class="leg"><div class="leg-dot" style="background:#22c55e"></div>Cancha de Fútbol</div>
-    <div class="leg"><div class="leg-dot" style="background:#3b82f6"></div>Baloncesto</div>
-    <div class="leg"><div class="leg-dot" style="background:#8b5cf6"></div>Vóley</div>
+    <div class="leg"><div class="leg-dot" style="background:#3b82f6"></div>Baloncesto / Vóley</div>
+    <div class="leg"><div class="leg-dot" style="background:#7c3aed"></div>Pabellón</div>
     <div class="leg"><div class="leg-dot" style="background:#d97706"></div>Polideportivo</div>
     <div class="leg"><div class="leg-dot" style="background:#dc2626"></div>Auditorio</div>
-    <div class="leg"><div class="leg-dot" style="background:#db2777"></div>Stand</div>
-    <div class="leg"><div class="leg-dot" style="background:#0891b2"></div>SSHH</div>
-    <div class="leg"><div class="leg-dot" style="background:#78716c"></div>Sin uso</div>
+    <div class="leg"><div class="leg-dot" style="background:#db2777"></div>Stands</div>
+    <div class="leg"><div class="leg-dot" style="background:#0891b2"></div>SSHH / Aulas</div>
+    <div class="leg"><div class="leg-dot" style="background:#44403c"></div>Sin acceso</div>
   </div>
 </div>
 
-<!-- Canvas del mapa -->
 <div id="map-wrap">
   <svg id="map-svg" xmlns="http://www.w3.org/2000/svg"></svg>
 </div>
 
-<!-- Panel de info -->
 <div id="info-panel">
   <div class="panel-handle"></div>
   <div class="panel-head">
@@ -229,14 +205,12 @@ header::after {
   </div>
 </div>
 
-<!-- Zoom -->
 <div id="zoom-ctrl">
   <button class="zb" onclick="zoomBy(1.25)">+</button>
   <button class="zb" onclick="zoomBy(0.8)">−</button>
   <button class="zb" title="Centrar" onclick="resetView()" style="font-size:13px;">⌖</button>
 </div>
 
-<!-- Hint -->
 <div id="hint">
   👆 Toca una zona<br>
   ✌️ Pellizca para zoom<br>
@@ -244,177 +218,545 @@ header::after {
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════════
-// DATOS DE ZONAS
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════
+// VIEWBOX 1000 × 650
+//
+// ESTRUCTURA SEGÚN IMAGEN DE REFERENCIA:
+//
+//  ┌─────────────────────────────────────────────────────────────────┐
+//  │                   Jr. Jaime Troncoso (calle norte)             │
+//  ├──────────┬──────────┬────────────────────────────┬─────────────┤
+//  │          │          │ SSHH NORTE │   AULAS NORTE  │             │
+//  │          │          ├────────────────────────────┤             │
+//  │  PA      │          │    SB      │  SC   │  SA   │             │
+//  │ Fútbol   │PABELLÓN  │ Baloncesto │ Balon │ Vóley │             │
+//  │ Damas    │          │            │       │       │             │
+//  ├──────────┤          ├────────────────────────────┤             │
+//  │  PB      │          │ SSHH SUR   │   AULAS SUR    │  (vacío)   │
+//  │ Fútbol   │          ├────────────────────────────┼─────────────┤
+//  │ Máster   │          │                            │             │
+//  ├──────────┤          │  (espacio vacío campus)    │    COAR     │
+//  │  PC      ├──────────┤                            │  Acceso No  │
+//  │ Fútbol   │AUDITORIO │                            │ Autorizado  │
+//  │ Libre    │+SS.HH    │                            │             │
+//  ├──────────┤──────────┤                            │             │
+//  │          │ STAND    │                            │             │
+//  │POLIDEP.  │ FOTOS    │                            │             │
+//  │Apertura- │──────────┤                            │             │
+//  │Finales   │ STAND    │                            │             │
+//  │          │ REGIONAL │                            │             │
+//  └──────────┴──────────┴────────────────────────────┴─────────────┘
+//                          Calle Ica — Ingreso
+//
+// COLUMNAS:
+//   Calle O:    x=0..44        (44px)
+//   Col A Fútbol: x=44..314   (270px)
+//   gap:          x=314..322  (8px)
+//   Col B Centro: x=322..458  (136px)  ← Pabellón, Auditorio, Stands
+//   gap:          x=458..466  (8px)
+//   Col C Deporte: x=466..762 (296px)  ← Aulas+SB+SC+SA
+//     SB: x=466..568  (102px)
+//     gap: 568..574   (6px)
+//     SC: x=574..676  (102px)
+//     gap: 676..682   (6px)
+//     SA: x=682..762  (80px)
+//   gap:          x=762..770  (8px)
+//   Col D COAR:   x=770..956  (186px)
+//   Calle E:      x=956..1000 (44px)
+//
+// FILAS:
+//   Calle N:      y=0..52     (52px)
+//   Aulas Norte:  y=52..112   (60px)   ← solo Col C
+//   Canchas dep:  y=120..420  (300px)  ← SB, SC, SA  (gap 8px desde aulas norte)
+//   Aulas Sur:    y=428..488  (60px)   (gap 8px desde canchas)
+//   Campus vacío: y=488..590           ← debajo de aulas sur en cols C y D
+//   COAR:         y=428..590  (162px)  ← comienza EXACTAMENTE en y=428 (= Aulas Sur)
+//   Canchas fútbol: y=120..411 (97px × 3 + 2 gaps de 8px = 306px)
+//     PA: y=120..217  (97px)
+//     PB: y=225..322  (97px)  gap=8
+//     PC: y=330..427  (97px)  gap=8
+//   Polideportivo: y=435..590 (155px) gap=8 desde PC
+//   Pabellón:      y=120..410 (290px) alineado con canchas fútbol top
+//   gap pabellón-auditorio: 410..418 (8px)
+//   Auditorio:     y=418..510 (92px)
+//   Stand Fotos:   y=518..554 (36px)  gap=8 desde auditorio
+//   Stand Regional:y=562..590 (28px)  gap=8 desde stand fotos
+//   Calle S:       y=598..650 (52px)
+// ═══════════════════════════════════════════════════════════════════════
+
+const VW = 1000, VH = 650;
+
+function rrPath(x, y, w, h, r) {
+  r = Math.min(r, w/2, h/2);
+  return `M${x+r},${y} H${x+w-r} Q${x+w},${y} ${x+w},${y+r}
+          V${y+h-r} Q${x+w},${y+h} ${x+w-r},${y+h}
+          H${x+r} Q${x},${y+h} ${x},${y+h-r}
+          V${y+r} Q${x},${y} ${x+r},${y} Z`;
+}
+
+// ── CONSTANTES DE LAYOUT ────────────────────────────────────────────
+// Columnas X
+const CA_X = 55,  CA_W = 270;   // Col A: fútbol
+const CB_X = 355, CB_W = 136;   // Col B: pabellón / auditorio / stands
+const CC_X = 525;               // Col C: deportes
+const SC_X = 525, SC_W = 115;   // SB baloncesto
+const SB_X = 650, SB_W = 115;   // SC baloncesto
+const SA_X = 775, SA_W = 115;    // SA vóley
+const CC_W = SA_X + SA_W - CC_X; // = 296px
+const CD_X = CC_X, CD_W = CC_W;  // Col D: COAR — mismo x y ancho que Aulas Sur
+
+// Filas Y
+const CALLE_N_Y = 0,   CALLE_N_H = 52;
+const AULAS_N_Y = 52,  AULAS_N_H = 52;  // SSHH+Aulas norte
+const CANC_D_Y  = 120, CANC_D_H  = 200; // Canchas SB/SC/SA  (gap=8 desde aulas norte)
+const AULAS_S_Y = 335 , AULAS_S_H = 52;  // SSHH+Aulas sur    (gap=8 desde canchas)
+const CALLE_S_Y = 598, CALLE_S_H = 52;
+// COAR comienza EXACTAMENTE debajo de AULAS SUR
+const COAR_Y = 400;   // 488
+const COAR_H = CALLE_S_Y - COAR_Y;       // 110  (488..598)
+
+// Canchas fútbol: 3×97 + 2×8gap = 309px, empieza en 120
+const PC_Y = 70, PC_H = 115;
+const PB_Y = 195, PB_H = 115;   // PA_Y+PA_H+8 = 225
+const PA_Y = 320, PA_H = 115;   // PB_Y+PB_H+8 = 330
+// Polideportivo: gap=8 desde PC → 330+97+8=435
+const POLO_Y = 465, POLO_H = 110; // 435..590
+
+// Pabellón: alineado con canchas fútbol arriba, gap de 8px antes de auditorio
+const PAB_Y = 110, PAB_H = 240;  // 120..410
+// Auditorio: gap=8 desde pabellón → 410+8=418
+const AUD_Y = 380, AUD_H = 100;   // 418..510
+// SSHH Auditorio: esquina superior izquierda del auditorio
+const SSHH_AUD_W = 54, SSHH_AUD_H = 44;
+// Stand Fotos: gap=8 desde auditorio → 510+8=518
+const SF_Y  = 518, SF_H  = 36;   // 518..554
+// Stand Regional: gap=8 desde stand fotos → 554+8=562
+const SR_Y  = 562, SR_H  = 28;   // 562..590
+
+// SSHH dentro de aulas (ancho fijo)
+const SSHH_W = 110;
+
+// ═══════════════════════════════════════════════════════════════════════
+// DEFINICIÓN DE ZONAS
+// ═══════════════════════════════════════════════════════════════════════
 const ZONES = [
-  // ── CALLES ──
-  { id:'calle_n', rect:[  0,  0, 300, 26], fill:'#3a3228', stroke:'none', interactive:false },
-  { id:'calle_s', rect:[  0,274, 300, 26], fill:'#3a3228', stroke:'none', interactive:false },
-  { id:'calle_o', rect:[  0,  0,  28, 300], fill:'#3a3228', stroke:'none', interactive:false },
-  { id:'calle_e', rect:[272,  0,  28, 300], fill:'#3a3228', stroke:'none', interactive:false },
 
-  // ── SUELO CAMPUS ──
-  { id:'campus', rect:[ 28, 26, 244, 248], fill:'#1e2e14', stroke:'none', interactive:false },
+  // ── CALLES ─────────────────────────────────────────────────────────
+  { id:'calle_n', type:'rect', shape:[0, 0, 1000, CALLE_N_H],
+    fill:'#2e2010', stroke:'none', interactive:false },
+  { id:'calle_s', type:'rect', shape:[0, CALLE_S_Y, 1000, CALLE_S_H],
+    fill:'#2e2010', stroke:'none', interactive:false },
+  { id:'calle_o', type:'rect', shape:[0, 0, 44, VH],
+    fill:'#2e2010', stroke:'none', interactive:false },
+  { id:'calle_e', type:'rect', shape:[956, 0, 44, VH],
+    fill:'#2e2010', stroke:'none', interactive:false },
 
-  // ── GRASS FÚTBOL ──
-  { id:'grass_fut', rect:[ 36, 44, 100, 138], fill:'#163d10', stroke:'none', interactive:false },
+  // ── SUELO CAMPUS ───────────────────────────────────────────────────
+  { id:'campus', type:'rect', shape:[44, CALLE_N_H, 912, CALLE_S_Y - CALLE_N_H],
+    fill:'#182010', stroke:'none', interactive:false },
 
-  // ── LOSA SECUNDARIA (ancho total de las 3 canchas: 41+41+40=122) ──
-  { id:'losa_sec', rect:[144, 56, 122, 92], fill:'#0d1a30', stroke:'none', interactive:false },
+  // ── AULAS NORTE (col C completa: x=466..762, w=296) ────────────────
+  { id:'aulas_n', type:'rect', shape:[CC_X, AULAS_N_Y, CC_W, AULAS_N_H], rx:6,
+    fill:'#0f2044', stroke:'#2563eb', sw:3,
+    name:'Aulas — Bloque Norte', type_z:'Bloque Educativo', icon:'📚',
+    desc:'Aulas del bloque norte. Durante el evento sirven como zonas de apoyo logístico.',
+    label:'AULAS', labelSize:20,
+    sub:'Bloque Norte', subSize:11,
+    iconEmoji:'📚', iconSize:0,
+    cx: CC_X + SSHH_W + (CC_W - SSHH_W)/2,
+    cy: AULAS_N_Y + AULAS_N_H/2 },
 
-  // ══ BANNER — Cancha Principal ══
-  { id:'banner_principal', rect:[ 36, 34, 100, 12], fill:'rgba(0,0,0,0)',
-    stroke:'#ef4444', sw:1.5,
-    name:'Cancha Principal', type:'Zona de Fútbol', icon:'⚽',
-    desc:'Área que alberga las tres canchas de fútbol: PC (Varones), PB (Damas) y PA (Máster).',
-    label:'⚽ Cancha Principal', sub:'', labelY:.5 },
+  // ── SSHH NORTE (izquierda de aulas norte) ──────────────────────────
+  { id:'sshh_n', type:'rect', shape:[CC_X, AULAS_N_Y, SSHH_W, AULAS_N_H], rx:6,
+    fill:'#0c3047', stroke:'#0891b2', sw:3,
+    name:'SSHH — Norte', type_z:'Servicios Higiénicos', icon:'🚻',
+    desc:'Servicios higiénicos bloque norte.',
+    label:'SS.HH', labelSize:13,
+    sub:'NORTE', subSize:9,
+    iconEmoji:'🚻', iconSize:17,
+    cx: CC_X + SSHH_W/2,
+    cy: AULAS_N_Y + AULAS_N_H/2 },
 
-  // ══ CANCHAS FÚTBOL (norte→sur: PC · PB · PA) ══
-  { id:'pc', rect:[ 36, 46, 100, 42], fill:'#14532d', stroke:'#22c55e', sw:2,
-    name:'PC — Fútbol Varones', type:'Cancha de Fútbol', icon:'⚽',
-    desc:'Cancha principal norte. Fútbol libre varones.',
-    label:'⚽ PC', sub:'Fútbol Varones', labelY:.45 },
+  // ── CANCHA PC — Fútbol Libre Varones ────────────────────────────────────────
+  { id:'pa_libre', type:'path', shape: rrPath(CA_X, PC_Y, CA_W, PC_H, 12), rx:12,
+    fill:'#0f4a1e', stroke:'#22c55e', sw:4,
+    name:'PC — Fútbol Libre Varones', type_z:'Cancha de Fútbol', icon:'⚽',
+    desc:'Cancha PC norte. Disciplina fútbol libre — categoría Varones.',
+    acts:'⚽ Fase de grupos · ⚽ Final fútbol libre',
+    label:'PC', labelSize:28,
+    sub:'FÚTBOL Libre Varones', subSize:11,
+    iconEmoji:'⚽', iconSize:22,
+    cx: CA_X + CA_W/2,
+    cy: PC_Y + PC_H/2 },
 
-  { id:'pb', rect:[ 36, 92, 100, 42], fill:'#15803d', stroke:'#22c55e', sw:2,
-    name:'PB — Fútbol Damas', type:'Cancha de Fútbol', icon:'⚽',
-    desc:'Cancha principal centro. Fútbol libre damas.',
-    label:'⚽ PB', sub:'Fútbol Damas', labelY:.45 },
+  // ── CANCHA PB — Fútbol Libre Damas ──────────────────────────────────────
+  { id:'pa_damas', type:'path', shape: rrPath(CA_X, PB_Y, CA_W, PB_H, 12), rx:12,
+    fill:'#136329', stroke:'#22c55e', sw:4,
+    name:'PB — Fútbol Libre Damas', type_z:'Cancha de Fútbol', icon:'⚽',
+    desc:'Cancha PB centro. Disciplina fútbol libre damas.',
+    acts:'⚽ Fase de grupos · ⚽ Final de damas',
+    label:'PB', labelSize:28,
+    sub:'FÚTBOL DAMAS', subSize:11,
+    iconEmoji:'⚽', iconSize:22,
+    cx: CA_X + CA_W/2,
+    cy: PB_Y + PB_H/2 },
 
-  { id:'pa', rect:[ 36,138, 100, 44], fill:'#166534', stroke:'#22c55e', sw:2,
-    name:'PA — Fútbol Máster', type:'Cancha de Fútbol', icon:'⚽',
-    desc:'Cancha principal sur. Fútbol máster.',
-    label:'⚽ PA', sub:'Fútbol Máster', labelY:.45 },
+  // ── CANCHA PA — Fútbol Máster ────────────────────────────
+  { id:'pa_master', type:'path', shape: rrPath(CA_X, PA_Y, CA_W, PA_H, 12), rx:12,
+    fill:'#0f5c22', stroke:'#16a34a', sw:4,
+    name:'PA — Fútbol Máster', type_z:'Cancha de Fútbol', icon:'⚽',
+    desc:'Cancha PA sur. Disciplina fútbol Máster.',
+    acts:'⚽ Fase de grupos · ⚽ Final Fútbol Máster',
+    label:'PA', labelSize:28,
+    sub:'FÚTBOL MÁSTER', subSize:10,
+    iconEmoji:'⚽', iconSize:22,
+    cx: CA_X + CA_W/2,
+    cy: PA_Y + PA_H/2 },
 
-  // ══ SSHH NORTE — mismo ancho que SSHH Central (60px) ══
-  { id:'sshh_n', rect:[144, 44, 60, 10], fill:'#0e4a5a', stroke:'#0891b2', sw:1.5,
-    name:'SSHH — Bloque Norte', type:'Servicios Higiénicos', icon:'🚻',
-    desc:'Servicios higiénicos, bloque norte.',
-    label:'🚻 SSHH Norte', sub:'', labelY:.5 },
+  // ── PABELLÓN (col B, alineado top con canchas fútbol) ──────────────
+  { id:'pabellon', type:'path', shape: rrPath(CB_X, PAB_Y, CB_W, PAB_H, 12), rx:12,
+    fill:'#3b0d82', stroke:'#7c3aed', sw:4,
+    name:'Pabellón', type_z:'Infraestructura Educativa', icon:'📖',
+    desc:'Pabellón principal de la institución. Durante el evento es punto de información.',
+    label:'PABELLÓN', labelSize:20,
+    sub:'', subSize:0,
+    iconEmoji:'📖', iconSize:52,
+    cx: 420,
+    cy: PAB_Y + PAB_H/2 },
 
-  // ══ CANCHAS SECUNDARIAS izq→der: SA(Vóley) · SB(Baloncesto) · SC(Baloncesto)
-  //    SA empieza en x=144, ancho=41 → SB x=185, ancho=41 → SC x=226, ancho=40
-  { id:'sc', rect:[144, 56,  41, 92], fill:'#3b0764', stroke:'#8b5cf6', sw:2,
-    name:'SC — Baloncesto', type:'Cancha de Baloncesto ', icon:'🏀',
-    desc:'Cancha secundaria. Baloncesto.',
-    label:'🏀 SC', sub:'Baloncesto', labelY:.45 },
+  // ── SB — BALONCESTO ────────────────────────────────────────────────
+  { id:'sb', type:'path', shape: rrPath(SB_X, CANC_D_Y, SB_W, CANC_D_H, 10), rx:10,
+    fill:'#0b1f5e', stroke:'#3b82f6', sw:4,
+    name:'SB — Baloncesto Varones', type_z:'Cancha de Baloncesto', icon:'🏀',
+    desc:'Cancha SB. Disciplina baloncesto — Varones.',
+    acts:'🏀 Fase de grupos · 🏀 Semifinal Baloncesto',
+    label:'SB', labelSize:32,
+    sub:['BALONCESTO VARONES'], subSize:9,
+    iconEmoji:'🏀', iconSize:32,
+    cx: SB_X + SB_W/2,
+    cy: CANC_D_Y + CANC_D_H/2 },
 
-  { id:'sb', rect:[185, 56,  41, 92], fill:'#1e3a8a', stroke:'#3b82f6', sw:2,
-    name:'SB — Baloncesto', type:'Cancha de Baloncesto', icon:'🏀',
-    desc:'Cancha secundaria central. Baloncesto.',
-    label:'🏀 SB', sub:'Baloncesto', labelY:.45 },
+  // ── SC — BALONCESTO ────────────────────────────────────────────────
+  { id:'sc', type:'path', shape: rrPath(SC_X, CANC_D_Y, SC_W, CANC_D_H, 10), rx:10,
+    fill:'#0e2266', stroke:'#3b82f6', sw:4,
+    name:'SC — Baloncesto Damas', type_z:'Cancha de Baloncesto', icon:'🏀',
+    desc:'Cancha SC. Baloncesto damas.',
+    acts:'🏀 Fase de grupos · 🏀 Semifinal Baloncesto',
+    label:'SC', labelSize:32,
+    sub:'BALONCESTO DAMAS', subSize:9,
+    iconEmoji:'🏀', iconSize:32,
+    cx: SC_X + SC_W/2,
+    cy: CANC_D_Y + CANC_D_H/2 },
 
-  { id:'sa', rect:[226, 56,  40, 92], fill:'#1e40af', stroke:'#3b82f6', sw:2,
-    name:'SA — Vóley Mixto', type:'Cancha de Vóley', icon:'🏐',
-    desc:'Cancha secundaria. Vóley mixto.',
-    label:'🏐 SA', sub:'Vóley', labelY:.45 },
+  // ── SA — VÓLEY ─────────────────────────────────────────────────────
+  { id:'sa', type:'path', shape: rrPath(SA_X, CANC_D_Y, SA_W, CANC_D_H, 10), rx:10,
+    fill:'#0c1a55', stroke:'#60a5fa', sw:4,
+    name:'SA — Vóley', type_z:'Cancha de Vóley', icon:'🏐',
+    desc:'Cancha SA. Disciplina vóley mixto.',
+    acts:'🏐 Fase de grupos · 🏐 Final Vóley',
+    label:'SA', labelSize:32,
+    sub:'VÓLEY', subSize:12,
+    iconEmoji:'🏐', iconSize:32,
+    cx: SA_X + SA_W/2,
+    cy: CANC_D_Y + CANC_D_H/2 },
 
-  // ══ BANNER — Cancha Secundaria ══
-  { id:'banner_secundaria', rect:[144,150, 122, 12], fill:'rgba(0,0,0,0)',
-    stroke:'#ef4444', sw:1.5,
-    name:'Cancha Secundaria', type:'Zona Deportiva', icon:'🏀',
-    desc:'SA (Vóley), SB (Baloncesto) y SC (Baloncesto).',
-    label:'Cancha Secundaria', sub:'', labelY:.5 },
+  // ── AULAS SUR (col C completa: x=466..762, w=296) ──────────────────
+  { id:'aulas_s', type:'rect', shape:[CC_X, AULAS_S_Y, CC_W, AULAS_S_H], rx:6,
+    fill:'#0f2044', stroke:'#2563eb', sw:3,
+    name:'Aulas — Bloque Sur', type_z:'Bloque Educativo', icon:'📚',
+    desc:'Aulas del bloque sur. Zona de apoyo durante el evento.',
+    label:'AULAS', labelSize:20,
+    sub:'Bloque Sur', subSize:11,
+    iconEmoji:'📚', iconSize:0,
+    cx: CC_X + SSHH_W + (CC_W - SSHH_W)/2,
+    cy: AULAS_S_Y + AULAS_S_H/2 },
 
-  // ══ SSHH CENTRAL — x=144, ancho=60 ══
-  { id:'sshh_c', rect:[144,164, 60, 10], fill:'#065f46', stroke:'#0891b2', sw:1.5,
-    name:'SSHH — Bloque Central', type:'Servicios Higiénicos', icon:'🚻',
-    desc:'Servicios higiénicos, bloque central.',
-    label:'🚻 SSHH Central', sub:'', labelY:.5 },
+  // ── SSHH SUR (izquierda de aulas sur) ──────────────────────────────
+  { id:'sshh_s', type:'rect', shape:[CC_X, AULAS_S_Y, SSHH_W, AULAS_S_H], rx:6,
+    fill:'#0c3047', stroke:'#0891b2', sw:3,
+    name:'SSHH — Sur', type_z:'Servicios Higiénicos', icon:'🚻',
+    desc:'Servicios higiénicos bloque sur.',
+    label:'SS.HH', labelSize:13,
+    sub:'SUR', subSize:9,
+    iconEmoji:'🚻', iconSize:17,
+    cx: CC_X + SSHH_W/2,
+    cy: AULAS_S_Y + AULAS_S_H/2 },
 
-  // ══ AUDITORIO — x=144, ancho=62, alto=44 (reducido para dar espacio al SSHH inferior) ══
-  { id:'auditorio', rect:[144,176, 62, 44], fill:'#7f1d1d', stroke:'#dc2626', sw:2,
-    name:'Auditorio', type:'Auditorio', icon:'🎭',
-    desc:'Sede principal de disciplinas de mesa.',
+  // ── POLIDEPORTIVO (col A, debajo de las 3 canchas fútbol) ──────────
+  { id:'polideportivo_real', type:'path', shape: rrPath(CA_X, POLO_Y, CA_W, POLO_H, 14), rx:14,
+    fill:'#5c2d00', stroke:'#d97706', sw:5,
+    name:'Polideportivo', type_z:'Polideportivo — Apertura · Finales', icon:'🏟️',
+    desc:'Infraestructura cubierta principal. Sede de la ceremonia de apertura y finales.',
+    acts:'🎉 Ceremonia de Apertura\n🏀 Final Baloncesto · 🏐 Final Vóley',
+    label:'POLIDEPORTIVO', labelSize:20,
+    sub:'Apertura - Finales', subSize:11,
+    iconEmoji:'🏟️', iconSize:34,
+    cx: CA_X + CA_W/2,
+    cy: POLO_Y + POLO_H/2 },
+
+  // ── AUDITORIO (col B, debajo del pabellón con gap=8) ───────────────
+  { id:'auditorio', type:'rect', shape:[CB_X, AUD_Y, CB_W, AUD_H], rx:8,
+    fill:'#7c0c0c', stroke:'#dc2626', sw:4,
+    name:'Auditorio', type_z:'Auditorio / Recreativos', icon:'🎭',
+    desc:'Auditorio principal. Sede de disciplinas de mesa, recreativos y almuerzo.',
     acts:'♟️ Ajedrez · 🏓 Tenis de Mesa\n🎲 Cubilete · 🐸 Sapo · 🍱 Almuerzo',
-    label:'🎭 AUDITORIO', sub:'Recreativos · Almuerzo', labelY:.42 },
+    label:'AUDITORIO', labelSize:15,
+    sub:'RECREATIVOS Y ALMUERZO', subSize:8,
+    iconEmoji:'🎭', iconSize:22,
+    cx: CB_X + CB_W/2,
+    cy: AUD_Y + AUD_H/2 },
 
-  // ══ SSHH BAJO AUDITORIO ══
-  { id:'sshh_sur', rect:[144,222, 62, 10], fill:'#0e4a5a', stroke:'#0891b2', sw:1.5,
-    name:'SSHH — Sur', type:'Servicios Higiénicos', icon:'🚻',
-    desc:'Servicios higiénicos junto al auditorio.',
-    label:'🚻 SSHH Sur', sub:'', labelY:.5 },
+  // ── SSHH AUDITORIO (esquina sup izq del auditorio) ─────────────────
+  { id:'sshh_aud', type:'rect', shape:[360, 460, SSHH_AUD_W, SSHH_AUD_H], rx:6,
+    fill:'#083040', stroke:'#0891b2', sw:3,
+    name:'SSHH — Auditorio', type_z:'Servicios Higiénicos', icon:'🚻',
+    desc:'Servicios higiénicos adyacentes al auditorio.',
+    label:'SS.HH', labelSize:11,
+    sub:'', subSize:0,
+    iconEmoji:'🚻', iconSize:18,
+    cx: 385,
+    cy: 485 },
 
-  // ══ STANDS (debajo del SSHH del auditorio) ══
-  { id:'stand_fotos',    rect:[144,234, 62, 20], fill:'#701a75', stroke:'#db2777', sw:1.5,
-    name:'Stand de Fotos', type:'Stand Expositivo', icon:'📸',
+  // ── STAND DE FOTOS (col B, debajo del auditorio con gap=8) ─────────
+  { id:'stand_fotos', type:'rect', shape:[CB_X, SF_Y, CB_W, SF_H], rx:8,
+    fill:'#4a0d4e', stroke:'#db2777', sw:3,
+    name:'Stand de Fotos', type_z:'Stand Expositivo', icon:'📸',
     desc:'Exposición fotográfica y registro visual del evento.',
-    label:'📸 Stand Fotos', sub:'', labelY:.5 },
+    label:'STAND DE FOTOS', labelSize:14,
+    sub:'', subSize:0,
+    iconEmoji:'📸', iconSize:20,
+    cx: CB_X + CB_W/2,
+    cy: SF_Y + SF_H/2 },
 
-  { id:'stand_regional', rect:[144,256, 62, 18], fill:'#581c87', stroke:'#db2777', sw:1.5,
-    name:'Stand Regional', type:'Stand Expositivo', icon:'🌿',
+  // ── STAND REGIONAL (col B, debajo del stand fotos con gap=8) ───────
+  { id:'stand_regional', type:'rect', shape:[CB_X, SR_Y, CB_W, SR_H], rx:8,
+    fill:'#2d0e44', stroke:'#9333ea', sw:3,
+    name:'Stand Regional', type_z:'Stand Expositivo', icon:'🌿',
     desc:'Exposición de productos regionales de Madre de Dios.',
-    label:'🌿 Stand Regional', sub:'', labelY:.5 },
+    label:'STAND REGIONAL', labelSize:12,
+    sub:'', subSize:0,
+    iconEmoji:'🌿', iconSize:16,
+    cx: CB_X + CB_W/2,
+    cy: SR_Y + SR_H/2 },
 
-  // ══ COAR — columna derecha, desde nivel auditorio hasta stand fotos ══
-  { id:'coar', rect:[213,190, 56, 78], fill:'#292524', stroke:'#57534e', sw:1,
-    name:'COAR (Sin uso)', type:'Zona sin uso', icon:'🔒',
-    desc:'Bloque de instalaciones no habilitado para el evento.',
-    label:'🔒 COAR', sub:'Sin uso', labelY:.45 },
-
-  // ══ POLIDEPORTIVO ══
-  { id:'polideportivo', rect:[ 36,184, 100, 56], fill:'#78350f', stroke:'#d97706', sw:2,
-    name:'Polideportivo', type:'Polideportivo', icon:'🏟️',
-    desc:'Infraestructura cubierta para deportes bajo techo.',
-    acts:'🎉 Ceremonia de Apertura\n🏀 Final de Baloncesto · 🏐 Final de Vóley',
-    label:'🏟️ POLIDEPORTIVO', sub:'Apertura · Finales', labelY:.42 },
+  // ── COAR (mismo x y ancho que Aulas Sur, debajo de ellas) ─────────
+  { id:'coar',
+    type:'rect',
+    shape:[CC_X, COAR_Y, CC_W, COAR_H],
+    rx:10,
+    fill:'#1e1a18', stroke:'#57534e', sw:3,
+    name:'COAR — Acceso No Autorizado', type_z:'Zona Restringida', icon:'🔒',
+    desc:'Bloque de instalaciones COAR. No habilitado para el evento. Acceso restringido a personal autorizado.',
+    label:'COAR –', labelSize:26,
+    sub:'ACCESO NO AUTORIZADO', subSize:12,
+    iconEmoji:'🔒', iconSize:36,
+    cx: CC_X + CC_W/2,
+    cy: COAR_Y + COAR_H/2 },
 ];
 
-// Labels de calle (no interactivos, solo texto)
+// ── Labels de calle ─────────────────────────────────────────────────
 const STREET_LABELS = [
-  { text:'Jr. Jaime Troncoso',    x:150,  y: 14, size:9  },
-  { text:'Calle Ica — Ingreso',   x:210,  y:286, size:9  },
-  { text:'Av. 15 de Agosto',          x: 14,  y:150, size:8, rotate:-90 },
-  { text:'Av. Madre de Dios',         x:286,  y:150, size:8, rotate:90  },
+  { text:'Jr. Jaime Troncoso',  x:500, y:26,  size:20, weight:700, fill:'#8a7040' },
+  { text:'Calle Ica', x:150, y:624, size:18, weight:700, fill:'#8a7040' },
+  { text:'Av. 15 de Agosto',    x:22,  y:325, size:14, weight:600, fill:'#6a5028', rotate:-90 },
+  { text:'Av. Madre de Dios',   x:978, y:325, size:14, weight:600, fill:'#6a5028', rotate:90  },
 ];
 
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════
 // RENDER SVG
-// ═══════════════════════════════════════════════════════════
-const VIEWBOX_W = 300, VIEWBOX_H = 300;
+// ═══════════════════════════════════════════════════════════════════════
 const svg = document.getElementById('map-svg');
-svg.setAttribute('viewBox', `0 0 ${VIEWBOX_W} ${VIEWBOX_H}`);
-svg.setAttribute('width',  VIEWBOX_W);
-svg.setAttribute('height', VIEWBOX_H);
+svg.setAttribute('viewBox', `0 0 ${VW} ${VH}`);
+svg.setAttribute('width', VW);
+svg.setAttribute('height', VH);
 
+const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+defs.innerHTML = `
+  <filter id="glow-green" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"/>
+    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="glow-blue" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
+    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="glow-orange" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
+    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="glow-purple" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"/>
+    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>`;
+svg.appendChild(defs);
+
+// ── Líneas internas de cancha ────────────────────────────────────────
+
+// Fútbol: cancha HORIZONTAL (ancha en X, estrecha en Y)
+// Línea central vertical + círculo central + áreas pequeñas en extremos X
+function drawFootballLines(g, x, y, w, h) {
+  const a = 'rgba(255,255,255,0.15)';
+  const mx = x + w/2, my = y + h/2;
+  // Línea central vertical
+  addLine(g, mx, y+12, mx, y+h-12, a, 1.5);
+  // Círculo central (radio proporcional a la altura)
+  const r = Math.min(h*0.25, 26);
+  addCircle(g, mx, my, r, 'none', a, 1.5);
+  addCircle(g, mx, my, 3, a, 'none', 0);
+  // Área norte (izquierda)
+  const aw = Math.min(w*0.1, 28), ah = h*0.44;
+  addRect(g, x+12, my-ah/2, aw, ah, 'none', a, 1.5);
+  // Área sur (derecha)
+  addRect(g, x+w-12-aw, my-ah/2, aw, ah, 'none', a, 1.5);
+}
+
+// Baloncesto: cancha VERTICAL (estrecha en X, alta en Y)
+// Línea central horizontal + círculo central + zonas de tiro arriba y abajo
+function drawBasketballLines(g, x, y, w, h) {
+  const a = 'rgba(255,255,255,0.12)';
+  const mx = x + w/2, my = y + h/2;
+  // Línea central horizontal
+  addLine(g, x+10, my, x+w-10, my, a, 1.5);
+  // Círculo central
+  const r = Math.min(w*0.22, 20);
+  addCircle(g, mx, my, r, 'none', a, 1.5);
+  // Zona de tiro norte (arriba)
+  const zw = w*0.62, zh = h*0.18;
+  addRect(g, mx-zw/2, y+12, zw, zh, 'none', a, 1.5);
+  // Arco tiro libre norte
+  const arc1 = document.createElementNS('http://www.w3.org/2000/svg','path');
+  arc1.setAttribute('d', `M${mx-zw/2},${y+12+zh} A${zw/2},${zh*0.8} 0 0,0 ${mx+zw/2},${y+12+zh}`);
+  arc1.setAttribute('fill','none'); arc1.setAttribute('stroke',a); arc1.setAttribute('stroke-width','1.5');
+  g.appendChild(arc1);
+  // Zona de tiro sur (abajo)
+  addRect(g, mx-zw/2, y+h-12-zh, zw, zh, 'none', a, 1.5);
+  // Arco tiro libre sur
+  const arc2 = document.createElementNS('http://www.w3.org/2000/svg','path');
+  arc2.setAttribute('d', `M${mx-zw/2},${y+h-12-zh} A${zw/2},${zh*0.8} 0 0,1 ${mx+zw/2},${y+h-12-zh}`);
+  arc2.setAttribute('fill','none'); arc2.setAttribute('stroke',a); arc2.setAttribute('stroke-width','1.5');
+  g.appendChild(arc2);
+}
+
+// Vóley: cancha VERTICAL — red horizontal central + líneas de ataque
+function drawVoleyLines(g, x, y, w, h) {
+  const a = 'rgba(255,255,255,0.13)';
+  const my = y + h/2;
+  // Red central
+  addLine(g, x+10, my, x+w-10, my, a, 2.5);
+  // Líneas de ataque (±22% de altura)
+  const att = h * 0.22;
+  addLine(g, x+10, my - att, x+w-10, my - att, a, 1);
+  addLine(g, x+10, my + att, x+w-10, my + att, a, 1);
+}
+
+function addLine(g, x1,y1,x2,y2,stroke,sw){
+  const el = document.createElementNS('http://www.w3.org/2000/svg','line');
+  el.setAttribute('x1',x1); el.setAttribute('y1',y1);
+  el.setAttribute('x2',x2); el.setAttribute('y2',y2);
+  el.setAttribute('stroke',stroke); el.setAttribute('stroke-width',sw);
+  g.appendChild(el); return el;
+}
+function addCircle(g,cx,cy,r,fill,stroke,sw){
+  const el = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  el.setAttribute('cx',cx); el.setAttribute('cy',cy); el.setAttribute('r',r);
+  el.setAttribute('fill',fill); el.setAttribute('stroke',stroke); el.setAttribute('stroke-width',sw);
+  g.appendChild(el); return el;
+}
+function addRect(g,x,y,w,h,fill,stroke,sw){
+  const el = document.createElementNS('http://www.w3.org/2000/svg','rect');
+  el.setAttribute('x',x); el.setAttribute('y',y);
+  el.setAttribute('width',w); el.setAttribute('height',h);
+  el.setAttribute('fill',fill); el.setAttribute('stroke',stroke); el.setAttribute('stroke-width',sw);
+  g.appendChild(el); return el;
+}
+
+// Fondo campus primero
+const campusZ = ZONES.find(z => z.id === 'campus');
+{
+  const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+  const el = document.createElementNS('http://www.w3.org/2000/svg','rect');
+  const [x,y,w,h] = campusZ.shape;
+  el.setAttribute('x',x); el.setAttribute('y',y);
+  el.setAttribute('width',w); el.setAttribute('height',h);
+  el.setAttribute('fill', campusZ.fill);
+  g.appendChild(el);
+  svg.appendChild(g);
+}
+
+// Renderizar todas las zonas
 ZONES.forEach(z => {
-  const [x,y,w,h] = z.rect;
+  if (z.id === 'campus' || z.hidden) return;
+
   const g = document.createElementNS('http://www.w3.org/2000/svg','g');
   if (z.interactive !== false) g.setAttribute('class','zona');
   g.dataset.id = z.id;
 
-  const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
-  rect.setAttribute('x', x); rect.setAttribute('y', y);
-  rect.setAttribute('width', w); rect.setAttribute('height', h);
-  rect.setAttribute('fill', z.fill.startsWith('rgba') ? z.fill : z.fill);
-  rect.setAttribute('rx', 3);
-  if (z.fill && z.fill.startsWith('rgba')) rect.setAttribute('fill-opacity','0');
-  if (z.stroke && z.stroke !== 'none') {
-    rect.setAttribute('stroke', z.stroke);
-    rect.setAttribute('stroke-width', z.sw || 1);
+  let shapeEl;
+  if (z.type === 'path') {
+    shapeEl = document.createElementNS('http://www.w3.org/2000/svg','path');
+    shapeEl.setAttribute('d', z.shape);
+  } else {
+    const [x,y,w,h] = z.shape;
+    if (z.rx) {
+      shapeEl = document.createElementNS('http://www.w3.org/2000/svg','path');
+      shapeEl.setAttribute('d', rrPath(x,y,w,h,z.rx));
+    } else {
+      shapeEl = document.createElementNS('http://www.w3.org/2000/svg','rect');
+      shapeEl.setAttribute('x',x); shapeEl.setAttribute('y',y);
+      shapeEl.setAttribute('width',w); shapeEl.setAttribute('height',h);
+    }
   }
-  g.appendChild(rect);
+  shapeEl.setAttribute('fill', z.fill);
+  if (z.stroke && z.stroke !== 'none') {
+    shapeEl.setAttribute('stroke', z.stroke);
+    shapeEl.setAttribute('stroke-width', z.sw || 2);
+    shapeEl.setAttribute('stroke-linejoin','round');
+  }
+  shapeEl.setAttribute('class','zona-shape');
+  g.appendChild(shapeEl);
 
-  // Etiqueta principal
-  if (z.label && z.interactive !== false) {
-    const fontSize = h < 14 ? 5 : w < 40 ? (h < 18 ? 5.5 : 7) : (w < 70 ? 8 : 9.5);
-    const cx = x + w / 2;
-    const cy = z.labelY ? y + h * z.labelY : y + h / 2;
+  // Líneas internas de cancha
+  if (z.id === 'pa_damas')  drawFootballLines(g, CA_X, PB_Y, CA_W, PB_H);
+  if (z.id === 'pa_master') drawFootballLines(g, CA_X, PA_Y, CA_W, PA_H);
+  if (z.id === 'pa_libre')  drawFootballLines(g, CA_X, PC_Y, CA_W, PC_H);
+  if (z.id === 'sb') drawBasketballLines(g, SB_X, CANC_D_Y, SB_W, CANC_D_H);
+  if (z.id === 'sc') drawBasketballLines(g, SC_X, CANC_D_Y, SC_W, CANC_D_H);
+  if (z.id === 'sa') drawVoleyLines(g, SA_X, CANC_D_Y, SA_W, CANC_D_H);
 
+  if (z.interactive === false) { svg.appendChild(g); return; }
+
+  const cx = z.cx, cy = z.cy;
+  if (!cx || !cy) { svg.appendChild(g); return; }
+
+  // Icono
+  if (z.iconEmoji && z.iconSize > 0) {
+    const ic = document.createElementNS('http://www.w3.org/2000/svg','text');
+    ic.setAttribute('x', cx); ic.setAttribute('y', cy - (z.labelSize||16)*0.75);
+    ic.setAttribute('class','zona-icon');
+    ic.setAttribute('font-size', z.iconSize);
+    ic.textContent = z.iconEmoji;
+    g.appendChild(ic);
+  }
+
+  // Label principal
+  if (z.label) {
     const t = document.createElementNS('http://www.w3.org/2000/svg','text');
-    t.setAttribute('x', cx); t.setAttribute('y', cy - (z.sub ? 3.5 : 0));
+    const labelY = z.iconSize > 0 ? cy + (z.iconSize * 0.4) : cy - (z.sub ? (z.subSize||12)*0.8 : 0);
+    t.setAttribute('x', cx); t.setAttribute('y', labelY);
     t.setAttribute('class','zona-label');
     t.setAttribute('fill','#ffffff');
-    t.setAttribute('font-size', fontSize);
+    t.setAttribute('font-size', z.labelSize || 16);
     t.textContent = z.label;
     g.appendChild(t);
 
-    if (z.sub) {
+    // Sub-etiqueta
+    if (z.sub && z.subSize) {
       const s = document.createElementNS('http://www.w3.org/2000/svg','text');
-      s.setAttribute('x', cx); s.setAttribute('y', cy + fontSize * .9);
+      s.setAttribute('x', cx);
+      s.setAttribute('y', labelY + (z.labelSize||16) * 0.95);
       s.setAttribute('class','zona-sub');
       s.setAttribute('fill', z.stroke || '#aaa');
-      s.setAttribute('font-size', fontSize * .75);
+      s.setAttribute('font-size', z.subSize);
       s.textContent = z.sub;
       g.appendChild(s);
     }
@@ -422,85 +764,112 @@ ZONES.forEach(z => {
 
   svg.appendChild(g);
 
-  // Tap listener
-  if (z.interactive !== false && z.name) {
-    g.addEventListener('click', e => { e.stopPropagation(); openZone(z, x+w/2, y+h/2); });
+  if (z.name) {
+    g.addEventListener('click', e => { e.stopPropagation(); openZone(z); });
   }
 });
 
-// Divisores canchas de fútbol (líneas horizontales entre PC/PB y PB/PA)
-[[36,92],[36,138]].forEach(([x,y]) => {
+// ── Separadores entre canchas de deporte (SB/SC, SC/SA) ─────────────
+[[SB_X + SB_W, CANC_D_Y], [SC_X + SC_W, CANC_D_Y]].forEach(([x, y]) => {
   const l = document.createElementNS('http://www.w3.org/2000/svg','line');
-  l.setAttribute('x1',x); l.setAttribute('y1',y);
-  l.setAttribute('x2',x+100); l.setAttribute('y2',y);
-  l.setAttribute('stroke','rgba(255,255,255,0.25)'); l.setAttribute('stroke-width','0.6');
+  l.setAttribute('x1', x+3); l.setAttribute('y1', y+12);
+  l.setAttribute('x2', x+3); l.setAttribute('y2', y+CANC_D_H-12);
+  l.setAttribute('stroke','rgba(255,255,255,0.07)'); l.setAttribute('stroke-width','2');
   svg.appendChild(l);
 });
 
-// Divisores canchas secundarias (SA|SB en x=185, SB|SC en x=226)
-[[185,56],[226,56]].forEach(([x,y]) => {
+// ── Separadores entre canchas de fútbol (PA/PB, PB/PC) ──────────────
+[[CA_X, PA_Y + PA_H], [CA_X, PB_Y + PB_H]].forEach(([x, y]) => {
   const l = document.createElementNS('http://www.w3.org/2000/svg','line');
-  l.setAttribute('x1',x); l.setAttribute('y1',y);
-  l.setAttribute('x2',x); l.setAttribute('y2',y+92);
-  l.setAttribute('stroke','rgba(255,255,255,0.15)'); l.setAttribute('stroke-width','0.5');
+  l.setAttribute('x1', x+14); l.setAttribute('y1', y+4);
+  l.setAttribute('x2', x+CA_W-14); l.setAttribute('y2', y+4);
+  l.setAttribute('stroke','rgba(255,255,255,0.07)'); l.setAttribute('stroke-width','2');
   svg.appendChild(l);
 });
 
-// Flecha ingreso
+// ── Flecha de ingreso ────────────────────────────────────────────────
 {
+  // Centrada horizontalmente bajo col B (pabellón/auditorio/stands)
+  const arrowX  = 505;  // ≈ 390
+  const tipY    = CALLE_S_Y - 2;    // punta arriba = 596
+  const shaftY  = tipY + 14;        // 610
+  const textY   = shaftY + 14;      // 624 (centro texto INGRESO)
+  const subY    = textY + 14;       // 638
+
   const arrow = document.createElementNS('http://www.w3.org/2000/svg','polygon');
-  arrow.setAttribute('points','207,274 211,268 215,274');
+  arrow.setAttribute('points', `${arrowX},${tipY} ${arrowX-14},${shaftY} ${arrowX+14},${shaftY}`);
   arrow.setAttribute('fill','#e8b84b');
   svg.appendChild(arrow);
+
+  const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+  line.setAttribute('x1', arrowX); line.setAttribute('y1', shaftY);
+  line.setAttribute('x2', arrowX); line.setAttribute('y2', shaftY + 4);
+  line.setAttribute('stroke','#e8b84b'); line.setAttribute('stroke-width','4');
+  svg.appendChild(line);
+
+  const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+  t.setAttribute('x', arrowX); t.setAttribute('y', textY);
+  t.setAttribute('text-anchor','middle'); t.setAttribute('dominant-baseline','middle');
+  t.setAttribute('fill','#e8b84b'); t.setAttribute('font-size','16');
+  t.setAttribute('font-weight','800'); t.setAttribute('font-family','system-ui,sans-serif');
+  t.textContent = 'INGRESO';
+  svg.appendChild(t);
+
+  const t2 = document.createElementNS('http://www.w3.org/2000/svg','text');
+  t2.setAttribute('x', arrowX); t2.setAttribute('y', subY);
+  t2.setAttribute('text-anchor','middle'); t2.setAttribute('dominant-baseline','middle');
+  t2.setAttribute('fill','#a07828'); t2.setAttribute('font-size','11');
+  t2.setAttribute('font-family','system-ui,sans-serif');
+  t2.textContent = 'Calle Ica';
+  svg.appendChild(t2);
 }
 
-// Etiquetas de calle
+// ── Etiquetas de calle ───────────────────────────────────────────────
 STREET_LABELS.forEach(sl => {
   const t = document.createElementNS('http://www.w3.org/2000/svg','text');
   t.setAttribute('x', sl.x); t.setAttribute('y', sl.y);
   t.setAttribute('text-anchor','middle'); t.setAttribute('dominant-baseline','middle');
-  t.setAttribute('fill','#7a6b3a'); t.setAttribute('font-size', sl.size || 8);
-  t.setAttribute('font-family', 'system-ui, sans-serif'); t.setAttribute('font-weight','600');
+  t.setAttribute('fill', sl.fill || '#7a6030');
+  t.setAttribute('font-size', sl.size || 16);
+  t.setAttribute('font-family','system-ui,sans-serif');
+  t.setAttribute('font-weight', sl.weight || 700);
+  t.setAttribute('letter-spacing','0.04em');
   if (sl.rotate) t.setAttribute('transform',`rotate(${sl.rotate},${sl.x},${sl.y})`);
   t.textContent = sl.text;
   svg.appendChild(t);
 });
 
-// ═══════════════════════════════════════════════════════════
-// PAN + ZOOM (touch & mouse)
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════
+// PAN + ZOOM
+// ═══════════════════════════════════════════════════════════════════════
 const wrap = document.getElementById('map-wrap');
 let tx = 0, ty = 0, scale = 1;
 let dragging = false, lastX = 0, lastY = 0;
 let pinchDist = null;
-let activeZone = null;
 
 function applyTransform() {
   const W = wrap.offsetWidth, H = wrap.offsetHeight;
-  const sw = W / VIEWBOX_W, sh = H / VIEWBOX_H;
-  const baseScale = Math.min(sw, sh);
-  const s = baseScale * scale;
+  const bs = Math.min(W/VW, H/VH);
+  const s = bs * scale;
   svg.style.transform = `translate(${tx}px,${ty}px) scale(${s})`;
   svg.style.transformOrigin = '0 0';
-  svg.style.width  = VIEWBOX_W + 'px';
-  svg.style.height = VIEWBOX_H + 'px';
+  svg.style.width  = VW + 'px';
+  svg.style.height = VH + 'px';
 }
 
 function resetView() {
   const W = wrap.offsetWidth, H = wrap.offsetHeight;
-  const sw = W / VIEWBOX_W, sh = H / VIEWBOX_H;
-  const bs = Math.min(sw, sh);
+  const bs = Math.min(W/VW, H/VH);
   scale = 1;
-  tx = (W - VIEWBOX_W * bs) / 2;
-  ty = (H - VIEWBOX_H * bs) / 2;
+  tx = (W - VW * bs) / 2;
+  ty = (H - VH * bs) / 2;
   applyTransform();
 }
 
 function zoomBy(factor, cx, cy) {
   const W = wrap.offsetWidth, H = wrap.offsetHeight;
-  const bs = Math.min(W/VIEWBOX_W, H/VIEWBOX_H);
   cx = cx ?? W/2; cy = cy ?? H/2;
-  const newScale = Math.max(0.6, Math.min(5, scale * factor));
+  const newScale = Math.max(0.5, Math.min(6, scale * factor));
   const ratio = newScale / scale;
   tx = cx - ratio * (cx - tx);
   ty = cy - ratio * (cy - ty);
@@ -508,7 +877,6 @@ function zoomBy(factor, cx, cy) {
   applyTransform();
 }
 
-// Mouse
 wrap.addEventListener('mousedown', e => { dragging=true; lastX=e.clientX; lastY=e.clientY; wrap.classList.add('dragging'); });
 window.addEventListener('mouseup', () => { dragging=false; wrap.classList.remove('dragging'); });
 window.addEventListener('mousemove', e => {
@@ -516,84 +884,78 @@ window.addEventListener('mousemove', e => {
   tx += e.clientX - lastX; ty += e.clientY - lastY;
   lastX=e.clientX; lastY=e.clientY; applyTransform();
 });
-wrap.addEventListener('wheel', e => { e.preventDefault(); zoomBy(e.deltaY < 0 ? 1.12 : 0.9, e.clientX - wrap.getBoundingClientRect().left, e.clientY - wrap.getBoundingClientRect().top); }, {passive:false});
+wrap.addEventListener('wheel', e => {
+  e.preventDefault();
+  const r = wrap.getBoundingClientRect();
+  zoomBy(e.deltaY < 0 ? 1.12 : 0.9, e.clientX - r.left, e.clientY - r.top);
+}, {passive:false});
 
-// Touch
 function getTouchDist(e) {
   const dx = e.touches[0].clientX - e.touches[1].clientX;
   const dy = e.touches[0].clientY - e.touches[1].clientY;
   return Math.hypot(dx, dy);
 }
-let touchStart = null, touchMoved = false;
+let touchMoved = false;
 wrap.addEventListener('touchstart', e => {
   touchMoved = false;
-  if (e.touches.length === 1) {
-    touchStart = {x:e.touches[0].clientX, y:e.touches[0].clientY, tx, ty};
-    lastX=e.touches[0].clientX; lastY=e.touches[0].clientY;
-  } else if (e.touches.length === 2) {
-    pinchDist = getTouchDist(e);
-  }
+  if (e.touches.length === 1) { lastX=e.touches[0].clientX; lastY=e.touches[0].clientY; }
+  else if (e.touches.length === 2) { pinchDist = getTouchDist(e); }
 }, {passive:true});
-
 wrap.addEventListener('touchmove', e => {
-  e.preventDefault();
-  touchMoved = true;
+  e.preventDefault(); touchMoved = true;
   if (e.touches.length === 1) {
-    tx += e.touches[0].clientX - lastX;
-    ty += e.touches[0].clientY - lastY;
-    lastX=e.touches[0].clientX; lastY=e.touches[0].clientY;
-    applyTransform();
+    tx += e.touches[0].clientX - lastX; ty += e.touches[0].clientY - lastY;
+    lastX=e.touches[0].clientX; lastY=e.touches[0].clientY; applyTransform();
   } else if (e.touches.length === 2 && pinchDist) {
     const d = getTouchDist(e);
-    const cx = (e.touches[0].clientX + e.touches[1].clientX)/2 - wrap.getBoundingClientRect().left;
-    const cy = (e.touches[0].clientY + e.touches[1].clientY)/2 - wrap.getBoundingClientRect().top;
-    zoomBy(d/pinchDist, cx, cy);
-    pinchDist = d;
+    const r = wrap.getBoundingClientRect();
+    const cx = (e.touches[0].clientX+e.touches[1].clientX)/2 - r.left;
+    const cy = (e.touches[0].clientY+e.touches[1].clientY)/2 - r.top;
+    zoomBy(d/pinchDist, cx, cy); pinchDist = d;
   }
 }, {passive:false});
-
 wrap.addEventListener('touchend', () => { pinchDist = null; });
 
-// Click fondo cierra panel
 svg.addEventListener('click', () => { if (!touchMoved) closePanel(); });
-
 window.addEventListener('resize', resetView);
 
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════
 // PANEL DE INFO
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════
 const panel = document.getElementById('info-panel');
 let activeEl = null;
 
 function openZone(z) {
   document.getElementById('panel-icon').textContent = z.icon || '📍';
   document.getElementById('panel-name').textContent = z.name;
-  document.getElementById('panel-type').textContent = z.type || '';
+  document.getElementById('panel-type').textContent = z.type_z || z.type || '';
   document.getElementById('panel-desc').textContent = z.desc || '';
   document.getElementById('panel-acts').textContent = z.acts || '';
   panel.classList.add('open');
 
-  // Highlight
-  if (activeEl) activeEl.querySelector('rect').style.filter = '';
+  if (activeEl) activeEl.querySelector('.zona-shape').style.filter = '';
   activeEl = document.querySelector(`[data-id="${z.id}"]`);
-  if (activeEl) activeEl.querySelector('rect').style.filter = 'brightness(1.35)';
+  if (activeEl) {
+    const s = activeEl.querySelector('.zona-shape');
+    if (s) s.style.filter = 'brightness(1.4)';
+  }
 }
 
 function closePanel() {
   panel.classList.remove('open');
-  if (activeEl) { activeEl.querySelector('rect').style.filter = ''; activeEl = null; }
+  if (activeEl) {
+    const s = activeEl.querySelector('.zona-shape');
+    if (s) s.style.filter = '';
+    activeEl = null;
+  }
 }
 
 function toggleLegend() {
   document.getElementById('legend-body').classList.toggle('open');
 }
 
-// ═══════════════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════════════
+// ── INIT ──
 resetView();
-
-// Ocultar hint tras 4s
 setTimeout(() => { const h = document.getElementById('hint'); if(h) h.style.opacity='0'; }, 4000);
 document.getElementById('hint').style.transition = 'opacity 1s';
 </script>
